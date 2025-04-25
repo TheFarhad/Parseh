@@ -1,0 +1,10 @@
+﻿<Application x:Class="Parseh.UI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Parseh.UI">
+
+    <Application.Resources>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Generic.xaml"/>
+    </Application.Resources>
+
+</Application>

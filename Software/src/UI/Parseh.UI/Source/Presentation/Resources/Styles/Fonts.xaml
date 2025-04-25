@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <FontFamily x:Key="OpensansRegular">/Source/Presentation/Resources/Fonts/#Open Sans Regular</FontFamily>
+    <FontFamily x:Key="OpensansSemibold">/Source/Presentation/Resources/Fonts/#Open Sans SemiBold</FontFamily>
+
+    <Style TargetType="Control" x:Key="ControlFontFamilyBaseStyle">
+        <Setter Property="FontFamily" Value="{StaticResource OpensansRegular}"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TextBlockFontFamilyBaseStyle">
+        <Setter Property="FontFamily" Value="{StaticResource OpensansRegular}"/>
+    </Style>
+
+    <Style TargetType="TextBox" BasedOn="{StaticResource ControlFontFamilyBaseStyle}"/>
+    <Style TargetType="Label" BasedOn="{StaticResource ControlFontFamilyBaseStyle}"/>
+    <Style TargetType="Button" BasedOn="{StaticResource ControlFontFamilyBaseStyle}"/>
+    <Style TargetType="ListView" BasedOn="{StaticResource ControlFontFamilyBaseStyle}"/>
+    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockFontFamilyBaseStyle}"/>
+
+</ResourceDictionary>
