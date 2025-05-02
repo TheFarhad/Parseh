@@ -23,7 +23,7 @@ public class Reference : Dictionary<string, object>
 
 public abstract class ViewModel : Atom, INotify
 {
-    private readonly Reference _reference;
+    readonly Reference _reference;
     protected Type Type => GetType();
     public event PropertyChangedEventHandler? PropertyChanged = (seder, e) => { };
 
@@ -44,22 +44,22 @@ public abstract class ViewModel : Atom, INotify
 
     protected void Set(object value, [CallerMemberName] string property = Empty)
     {
-        if (ProprtyNotChanged(value, property))
-            return;
+        if (HasProp(property))
+        {
+            if (ProprtyNotChanged(value, property))
+                return;
 
-        _reference[property] = Verify(property, value);
-        Notify(property);
+            Set(property, value);
+            Notify(property);
+            return;
+        }
+
+        Set(property, value);
     }
 
-    //protected bool Set<T>(ref T field, T value, [CallerMemberName] string property = "")
-    //{
-    //    if (EqualityComparer<T>.Default.Equals(value, field))
-    //        return false;
+    bool HasProp(string property) => _reference.ContainsKey(property);
 
-    //    field = value;
-    //    Notify(property);
-    //    return true;
-    //}
+    void Set(string property, object value) => _reference[property] = Verify(property, value);
 
     public void Notify([CallerMemberName] string property = Empty)
         => PropertyChanged!.Invoke(this, new PropertyChangedEventArgs(property));
@@ -104,15 +104,15 @@ public abstract class ViewModel : Atom, INotify
 
         foreach (var memberInfo in membersInfo)
         {
-            var propValue = DefaultValue(memberInfo, ownerType);
+            var value = DefaultValue(memberInfo, ownerType);
             // اگر نال بود چه؟
             // برای خودشو کلاس های مشتق شده اش نال برمیگرداند
-            if (propValue is not null)
+            if (value is not null)
             {
                 var name = memberInfo.Name;
                 var type = memberInfo.PropertyType;
-                var propertyInfo = ownerType.GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)!;
-                propertyInfo.SetValue(this, propValue);
+                var info = ownerType.GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)!;
+                info.SetValue(this, value);
             }
         }
     }
@@ -147,7 +147,7 @@ public abstract class ViewModel : Atom, INotify
         return result!;
     }
 
-    object? DefaultSet(Type type) => typeof(Set<>).Generic(type.FirstGenericType());
+    object? DefaultSet(Type type) => typeof(Observer<>).Generic(type.FirstGenericType());
 
     #endregion
 }

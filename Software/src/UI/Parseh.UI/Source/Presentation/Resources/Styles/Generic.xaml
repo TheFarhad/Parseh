@@ -6,6 +6,9 @@
         <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Variables.xaml"/>
         <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Colors.xaml"/>
         <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Fonts.xaml"/>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Base.xaml"/>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Buttons.xaml"/>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/TextBlocks.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

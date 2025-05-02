@@ -50,7 +50,7 @@ public enum WindowDockPosition
 /// <summary>
 /// Fixes the issue with Windows of Style <see cref="WindowStyle.None"/> covering the taskbar
 /// </summary>
-public class WindowFitAdjuster
+public class LayoutFitAdjuster
 {
     #region Private Members
 
@@ -156,7 +156,7 @@ public class WindowFitAdjuster
     /// </summary>
     /// <param name="window">The window to monitor and correctly maximize</param>
     /// <param name="adjustSize">The callback for the host to adjust the maximum available size if needed</param>
-    public WindowFitAdjuster(Window window)
+    public LayoutFitAdjuster(Window window)
     {
         _window = window;
 

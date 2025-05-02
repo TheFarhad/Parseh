@@ -1,0 +1,153 @@
+﻿<local:AppLayout x:Class="Parseh.UI.Views.Layout"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Parseh.UI.Views"
+        xmlns:converters="clr-namespace:Parseh.UI.BindingConverters"
+        mc:Ignorable="d"
+        x:Name="AppShell"
+        Title="Parseh"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="{Binding MinWidth}" MinHeight="{Binding MinHeight}"
+        Width="{Binding Width}" Height="{Binding Height}"
+        d:Width="900" d:Height="506">
+
+    <local:AppLayout.Resources>
+
+        <Style TargetType="{x:Type local:Layout}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+
+                        <!--Resize Border Zone-->
+                        <Border Background="Transparent" 
+                                BorderThickness="{Binding OuterBorderThickness}"
+                                BorderBrush="{StaticResource CaptionBarBrush}">
+
+                            <!--Layout Outline-->
+                            <Grid Margin="{Binding OuterMargin, FallbackValue=3}">
+
+                                <!--Only For Mask Grid[Layout Content]-->
+                                <Border x:Name="MaskBorder" 
+                                        Background="{StaticResource CaptionBarBrush}"
+                                        CornerRadius="{Binding CornerRadius, FallbackValue=6}"
+                                        />
+
+                                <Border Background="{StaticResource CaptionBarBrush}"
+                                        CornerRadius="{Binding CornerRadius, FallbackValue=6}">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="{StaticResource CaptionBarColor}" ShadowDepth="0" Opacity="0.2"/>
+                                    </Border.Effect>
+                                </Border>
+
+                                <!--Layout Content-->
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <!--Caption Zone-->
+                                        <RowDefinition Height="{Binding CaptionHeight}"/>
+                                        <!--Shadow Border Zone-->
+                                        <RowDefinition Height="Auto"/>
+                                        <!--Container Zone-->
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=MaskBorder}"/>
+                                    </Grid.OpacityMask>
+
+                                    <!--Caption Content-->
+                                    <Grid Grid.Row="0" Panel.ZIndex="1" Background="{StaticResource CaptionBarBrush}">
+
+                                        <Grid.ColumnDefinitions>
+                                            <!--Caption Icon-->
+                                            <ColumnDefinition Width="Auto"/>
+                                            <!--Caption Title-->
+                                            <ColumnDefinition Width="*"/>
+                                            <!--Caption Buttons-->
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button 
+                                            Grid.Column="0"
+                                            Command="{Binding CaptionManuCommand}" 
+                                            Style="{StaticResource CaptionMenuButtonStyle}">
+                                            <!--<Image Source="/Source/Presentation/Resources/Images/Logo/smalllogo.png"/>-->
+                                        </Button>
+
+                                        <Viewbox Grid.Column="0" Grid.ColumnSpan="3">
+                                            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, FallbackValue='Parseh'}"
+                                                        Style="{StaticResource CaptionTitleStyle}"/>
+                                        </Viewbox>
+
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+
+                                            <Button 
+                                                Grid.Column="0"
+                                                Command="{Binding MinimizeCommand}" 
+                                                Style="{StaticResource LayoutButtonsStyle}">
+                                                _
+                                            </Button>
+
+                                            <Button 
+                                                Grid.Column="0"
+                                                Command="{Binding RestoreCommand}" 
+                                                Style="{StaticResource LayoutButtonsStyle}">
+                                                [ ]
+                                            </Button>
+
+                                            <Button 
+                                                Grid.Column="0"
+                                                Command="{Binding CloseCommand}" 
+                                                Style="{StaticResource LayoutCloseButtonStyle}">
+                                                X
+                                            </Button>
+                                        </StackPanel>
+
+                                    </Grid>
+
+                                    <!--Shadow Zone-->
+                                    <Border Grid.Row="1" Height="0.2" BorderThickness="0, 0.2, 0, 0" Margin="0 ,0 , 0, 0.2">
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Color="{StaticResource CaptionBarColor}" Offset="0.0"/>
+                                                <GradientStop Color="DimGray" Offset="0.5"/>
+                                                <GradientStop Color="{StaticResource CaptionBarColor}" Offset="1.0"/>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                    </Border>
+
+                                    <!--Page Content-->
+                                    <Border Grid.Row="2" 
+                                            Padding="{Binding InnerContentPadding}"
+                                            Background="{StaticResource CaptionBarBrush}">
+                                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                                    </Border>
+
+                                </Grid>
+
+                            </Grid>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </local:AppLayout.Resources>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+         ResizeBorderThickness="{Binding ResizeBorderThickness}"
+         CaptionHeight="{Binding CaptionHeight}"
+         CornerRadius="0"
+         GlassFrameThickness="0"
+         />
+    </WindowChrome.WindowChrome>
+
+    <Frame x:Name="PageContent" 
+           Content="{Binding Path=Page, Converter={x:Static converters:Pager.Self}}"/>
+
+</local:AppLayout>

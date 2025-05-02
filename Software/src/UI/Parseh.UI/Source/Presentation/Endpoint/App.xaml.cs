@@ -11,7 +11,7 @@ public sealed partial class App : Application
         Test();
         if (Self is null) Self = new();
         Self.InitializeComponent();
-        Self.MainWindow = new ParsehLayout();
+        Self.MainWindow = new Layout();
         Self.Run(Self.MainWindow);
         return Self;
     }

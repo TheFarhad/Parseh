@@ -1,5 +1,18 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!--<sys:Double x:Key="FS10">10</sys:Double>
+    <sys:Double x:Key="FS12">12</sys:Double>
+    <sys:Double x:Key="FS14">14</sys:Double>
+    <sys:Double x:Key="FS15">15</sys:Double>
+    <sys:Double x:Key="FS17">17</sys:Double>
+    <sys:Double x:Key="FS18">18</sys:Double>
+    <sys:Double x:Key="FS19">19</sys:Double>
+    <sys:Double x:Key="FS20">20</sys:Double>
+    <sys:Double x:Key="SmallFontSize">11</sys:Double>
+    <sys:Double x:Key="RegularFontSize">13</sys:Double>
+    <sys:Double x:Key="LargeFontSize">16</sys:Double>-->
 
     <FontFamily x:Key="OpensansRegular">/Source/Presentation/Resources/Fonts/#Open Sans Regular</FontFamily>
     <FontFamily x:Key="OpensansSemibold">/Source/Presentation/Resources/Fonts/#Open Sans SemiBold</FontFamily>

@@ -12,18 +12,23 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Source\Presentation\Resources\Fonts\OpenSans-Regular.ttf" />
-	  <None Remove="Source\Presentation\Resources\Fonts\OpenSans-Semibold.ttf" />
-	  <None Remove="Source\Presentation\Resources\Images\Icon\telegram.ico" />
+	  <Compile Remove="Source\Presentation\Views\Layout\Signin.xaml.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Source\Presentation\Views\Pages\" />
+	  <None Remove="Source\Presentation\Resources\Fonts\OpenSans-Regular.ttf" />
+	  <None Remove="Source\Presentation\Resources\Fonts\OpenSans-Semibold.ttf" />
+	  <None Remove="Source\Presentation\Resources\Images\Icon\telegram.ico" />
+	  <None Remove="Source\Presentation\Resources\Images\Logo\logo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Remove="Source\Presentation\Views\Layout\Signin.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Folder Include="Source\Presentation\Resources\Documents\" />
-		<Folder Include="Source\Presentation\Resources\Images\Logo\" />
 		<Folder Include="Source\Presentation\Resources\Animations\" />
-		<Folder Include="Source\Presentation\Resources\Controls\" />
-		<Folder Include="Source\Presentation\Resources\BindingConverters\" />
 		<Folder Include="Source\Infra\" />
 		<Folder Include="Source\Core\" />
 	</ItemGroup>
@@ -36,6 +41,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Include="Source\Presentation\Resources\Images\Icon\parseh_logo.png" />
 	  <Content Include="Source\Presentation\Resources\Images\Icon\telegram.ico" />
 	</ItemGroup>
 
@@ -49,6 +55,9 @@
 	  <Resource Include="Source\Presentation\Resources\Images\Icon\telegram.ico">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Resource>
+	  <Resource Include="Source\Presentation\Resources\Images\Logo\smalllogo.png" />
+	  <Resource Include="Source\Presentation\Resources\Images\Logo\logo.png" />
+	  <Resource Include="Source\Presentation\Resources\Images\Logo\textlogo.png" />
 	</ItemGroup>
 
 </Project>

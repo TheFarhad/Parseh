@@ -1,0 +1,54 @@
+﻿<local:ContentPage 
+      x:Class="Parseh.UI.Views.Signin"
+      x:TypeArguments="vm:SigninViewModel"
+      xmlns:local="clr-namespace:Parseh.UI.Views"
+      xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Signin">
+
+    <Border Background="Transparent">
+        <Border 
+          VerticalAlignment="Center" 
+          HorizontalAlignment="Center" 
+          Background="{StaticResource CaptionBarBrush}"
+          Width="300" Height="350"
+          CornerRadius="{StaticResource Radius}">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
+                <StackPanel Orientation="Vertical" Margin="0">
+
+                    <TextBlock Text="Enter Your Local Passcode"
+                             FontSize="{StaticResource FS18}"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             Foreground="{StaticResource Gray3Brush}"
+                             Margin="0, 20"
+                             />
+
+                    <TextBox Text="{Binding Username}" 
+                             Tag="Username" Style="{StaticResource MarkTextBox}" 
+                             Margin="0, 10"/>
+
+                    <PasswordBox Tag="Passcode" 
+                                 Style="{StaticResource MarkPasscodeBox}"/>
+
+
+                    <Button Content="Submit" 
+                            Style="{StaticResource Submit}"
+                            FontSize="{StaticResource FS13}"
+                            Foreground="{StaticResource Gray1Brush}"/>
+
+                    <Button Content="I have already an account"
+                            Style="{StaticResource TranparentBorderedButton}"
+                            Margin="0, 5" />
+                </StackPanel>
+            </ScrollViewer>
+
+        </Border>
+    </Border>
+</local:ContentPage>

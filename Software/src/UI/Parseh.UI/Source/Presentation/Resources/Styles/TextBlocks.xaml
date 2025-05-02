@@ -1,0 +1,178 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ap="clr-namespace:Parseh.UI.Resources"
+                    xmlns:converters="clr-namespace:Parseh.UI.BindingConverters">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Variables.xaml"/>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Colors.xaml"/>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Fonts.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="TextBlock" x:Key="CaptionTitleStyle" BasedOn="{StaticResource TextBlockFontFamilyBaseStyle}">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}"/>
+        <Setter Property="Margin" Value="0, 3"/>
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="MarkTextBox" BasedOn="{StaticResource ControlFontFamilyBaseStyle}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0, 0, 0, 0.5"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Gray3Brush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Foreground" Value="{StaticResource Gray1Brush}"/>
+        <Setter Property="CaretBrush" Value="{StaticResource Gray3Brush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource OpensansRegular}"/>
+        <Setter Property="FontSize" Value="{StaticResource FS14}"/>
+        <Setter Property="Opacity" Value="0.3"/>
+        <Setter Property="Template" >
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBoxBase">
+                    <Grid>
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Opacity="{TemplateBinding Opacity}"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Focusable="false" 
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+
+                        <TextBlock x:Name="Placeholder"
+                                   Text="{TemplateBinding Tag}" 
+                                   IsHitTestVisible="False"
+                                   FontSize="{StaticResource FS14}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   Background="{TemplateBinding Background}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Padding="{TemplateBinding Padding}"
+                                   Opacity="0.8"
+                                   >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text.Length, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+
+                        </TextBlock>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+
+                        <EventTrigger RoutedEvent="GotFocus">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource Gray3}" Duration="0:0:0.7" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush.Color"/>
+                                    <DoubleAnimation To="1" Duration="0:0:0.7" Storyboard.TargetName="Border" Storyboard.TargetProperty="Opacity"/>
+                                    <ThicknessAnimation To="0, 0, 0, 1" Duration="0:0:0.1" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderThickness"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="LostFocus">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource Gray12}" Duration="0:0:0.2" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush.Color"/>
+                                    <DoubleAnimation To="0.5" Duration="0:0:0.2" Storyboard.TargetName="Border" Storyboard.TargetProperty="Opacity"/>
+                                    <ThicknessAnimation To="0, 0, 0, 0.5" Duration="0:0:0.1" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderThickness"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="PasswordBox" x:Key="MarkPasscodeBox" BasedOn="{StaticResource ControlFontFamilyBaseStyle}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0, 0, 0, 0.5"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Gray3Brush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Foreground" Value="{StaticResource Gray1Brush}"/>
+        <Setter Property="CaretBrush" Value="{StaticResource Gray3Brush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource OpensansRegular}"/>
+        <Setter Property="FontSize" Value="{StaticResource FS14}"/>
+        <Setter Property="Opacity" Value="0.3"/>
+        <Setter Property="ap:PasscodeHasText.Value" Value="False"/>
+        <Setter Property="ap:PasscodeHasPlaceholder.Value" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Grid>
+                        <Border x:Name="Border" 
+                              Background="{TemplateBinding Background}" 
+                              BorderBrush="{TemplateBinding BorderBrush}" 
+                              BorderThickness="{TemplateBinding BorderThickness}" 
+                              Opacity="{TemplateBinding Opacity}"
+                              SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                        Focusable="false" 
+                                        HorizontalScrollBarVisibility="Hidden"
+                                        VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+
+                        <TextBlock x:Name="Placeholder"
+                                 Text="{TemplateBinding Tag}" 
+                                 IsHitTestVisible="False"
+                                 FontSize="{StaticResource FS14}"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                 Background="{TemplateBinding Background}"
+                                 Foreground="{TemplateBinding Foreground}"
+                                 Padding="{TemplateBinding Padding}"
+                                 Opacity="0.8"
+                                 Visibility="{TemplateBinding ap:PasscodeHasText.Value, Converter={converters:BooleanToVisibilityRevert}}"
+                                 >
+                        </TextBlock>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+
+                        <EventTrigger RoutedEvent="GotFocus">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource Gray3}" Duration="0:0:0.7" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush.Color"/>
+                                    <DoubleAnimation To="1" Duration="0:0:0.7" Storyboard.TargetName="Border" Storyboard.TargetProperty="Opacity"/>
+                                    <ThicknessAnimation To="0, 0, 0, 1" Duration="0:0:0.1" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderThickness"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="LostFocus">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource Gray12}" Duration="0:0:0.2" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush.Color"/>
+                                    <DoubleAnimation To="0.5" Duration="0:0:0.2" Storyboard.TargetName="Border" Storyboard.TargetProperty="Opacity"/>
+                                    <ThicknessAnimation To="0, 0, 0, 0.5" Duration="0:0:0.1" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderThickness"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
+    
+    
+        

@@ -1,0 +1,207 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Colors.xaml"/>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Fonts.xaml"/>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Variables.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--base style to caption's buttons-->
+    <Style TargetType="Button" x:Key="CaptionButtonsBaseStyle">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Width" Value="27"/>
+        <Setter Property="Height" Value="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" 
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                    </Border>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="CaptionMenuButtonStyle" BasedOn="{StaticResource CaptionButtonsBaseStyle}">
+        <Setter Property="Padding" Value="6"/>
+    </Style>
+
+
+    <!--base style to minimaize, maximaze and restore buttons-->
+    <Style TargetType="Button" x:Key="LayoutButtonsBaseStyle" BasedOn="{StaticResource CaptionButtonsBaseStyle}">
+        <Setter Property="Foreground" Value="{StaticResource Gray6Brush}"/>
+        <!--<Setter Property="Width" Value="27"/>
+        <Setter Property="Height" Value="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"/>-->
+        <Setter Property="Padding" Value="3"/>
+
+        <!--<Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="LayoutTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>-->
+
+    </Style>
+
+    <Style TargetType="Button" x:Key="LayoutButtonsStyle" BasedOn="{StaticResource LayoutButtonsBaseStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource Gray14Brush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="LayoutCloseButtonStyle" BasedOn="{StaticResource LayoutButtonsBaseStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Red"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style TargetType="Button" x:Key="Submit">
+        <Setter Property="Background" Value="{StaticResource Gray12Brush}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="0, 15, 0, 5"/>
+        <Setter Property="Padding" Value="7, 15"/>
+        <Setter Property="FontFamily" Value="{StaticResource OpensansSemibold}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+
+                    <Border x:Name="ButtonBorder"
+                            CornerRadius="{StaticResource Radius}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            Margin="{TemplateBinding Margin}"
+                            SnapsToDevicePixels="true"
+                            IsEnabled="{TemplateBinding IsEnabled}">
+
+                        <TextBlock x:Name="presenter"
+                                   Text="{TemplateBinding Content}"
+                                   Focusable="False"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                  />
+
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource Gray9}" Duration="0:0:0.2" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="Background.Color"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource Gray12}" Duration="0:0:0.2" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="Background.Color"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!--<Trigger Property="Button.IsDefaulted" Value="true">
+                            <Setter Property="BorderBrush" TargetName="ButtonBorder" Value=""/>
+                        </Trigger>-->
+
+                        <!--<Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="ButtonBorder" Value=""/>
+                        </Trigger>-->
+
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="ButtonBorder" Value="DarkGray"/>
+                            <!--<Setter Property="TextElement.Foreground" TargetName="presenter" Value=""/>-->
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <Style TargetType="Button" x:Key="TranparentBorderedButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{StaticResource Gray5Brush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Gray5Brush}"/>
+        <Setter Property="FontSize" Value="{StaticResource FS14}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel>
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+
+                        <Border x:Name="Underline" 
+                                Opacity="0" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Margin="0, -6, 0, 0"
+                                Height="1"/>
+                    </StackPanel>
+
+                    <ControlTemplate.Triggers>
+
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimation To="0, 0.4, 0, 0" Duration="0:0:0.2" Storyboard.TargetName="Underline" Storyboard.TargetProperty="BorderThickness"/>
+                                    <DoubleAnimation To="0.8" Duration="0:0:0.2" Storyboard.TargetName="Underline" Storyboard.TargetProperty="Opacity"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="Underline" Storyboard.TargetProperty="BorderThickness"/>
+                                    <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="Underline" Storyboard.TargetProperty="Opacity"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+</ResourceDictionary>

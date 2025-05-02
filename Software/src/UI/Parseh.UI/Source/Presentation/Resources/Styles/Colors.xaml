@@ -16,4 +16,107 @@
     <Color x:Key="ForegroundLightColor" >#ffffff</Color>
     <SolidColorBrush Color="{StaticResource ForegroundLightColor}" x:Key="ForegroundLightBrush"/>
 
+    <Color x:Key="CaptionBarColor" >#0e0e0e</Color>
+    <SolidColorBrush Color="{StaticResource CaptionBarColor}" x:Key="CaptionBarBrush"/>
+
+
+
+
+    <!-- ## TOTAL ##-->
+    <Color x:Key="Primary">#512BD4</Color>
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
+
+    <Color x:Key="PrimaryDark">#ac99ea</Color>
+    <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDark}"/>
+
+    <Color x:Key="PrimaryDarkText">#242424</Color>
+    <SolidColorBrush x:Key="PrimaryDarkTextBrush" Color="{StaticResource PrimaryDarkText}"/>
+
+    <Color x:Key="Secondary">#DFD8F7</Color>
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
+
+    <Color x:Key="SecondaryDarkText">#9880e5</Color>
+    <SolidColorBrush x:Key="SecondaryDarkTextBrush" Color="{StaticResource SecondaryDarkText}"/>
+
+    <Color x:Key="Tertiary">#2B0B98</Color>
+    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
+
+    <Color x:Key="White">White</Color>
+    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
+
+    <Color x:Key="Black">Black</Color>
+    <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
+
+    <Color x:Key="Magenta">#D600AA</Color>
+    <SolidColorBrush x:Key="MagentaBrush" Color="{StaticResource Magenta}"/>
+
+    <Color x:Key="MidnightBlue">#190649</Color>
+    <SolidColorBrush x:Key="MidnightBlueBrush" Color="{StaticResource MidnightBlue}"/>
+
+    <Color x:Key="BlackOlive">#3b3c36</Color>
+    <SolidColorBrush x:Key="BlackOliveBrush" Color="{StaticResource BlackOlive}"/>
+
+
+
+
+    <!-- ## OFF BLACK ##-->
+    <Color x:Key="OffBlack1">#1f1f1f</Color>
+    <SolidColorBrush x:Key="OffBlack1Brush" Color="{StaticResource OffBlack1}"/>
+
+    <Color x:Key="OffBlack2">#181414</Color>
+    <SolidColorBrush x:Key="OffBlack2Brush" Color="{StaticResource OffBlack2}"/>
+
+    <Color x:Key="OffBlack3">#0e0e0e</Color>
+    <SolidColorBrush x:Key="OffBlack3Brush" Color="{StaticResource OffBlack3}"/>
+
+
+
+
+
+    <!-- ## GRAY ##-->
+    <Color x:Key="Gray1">#E1E1E1</Color>
+    <SolidColorBrush x:Key="Gray1Brush" Color="{StaticResource Gray1}"/>
+
+    <Color x:Key="Gray2">#C8C8C8</Color>
+    <SolidColorBrush x:Key="Gray2Brush" Color="{StaticResource Gray2}"/>
+
+    <Color x:Key="Gray3">#ACACAC</Color>
+    <SolidColorBrush x:Key="Gray3Brush" Color="{StaticResource Gray3}"/>
+
+    <Color x:Key="Gray4">#919191</Color>
+    <SolidColorBrush x:Key="Gray4Brush" Color="{StaticResource Gray4}"/>
+
+    <Color x:Key="Gray5">#6E6E6E</Color>
+    <SolidColorBrush x:Key="Gray5Brush" Color="{StaticResource Gray5}"/>
+
+    <Color x:Key="Gray6">#5c5c5c</Color>
+    <SolidColorBrush x:Key="Gray6Brush" Color="{StaticResource Gray6}"/>
+
+    <Color x:Key="Gray7">#4b4b4b</Color>
+    <SolidColorBrush x:Key="Gray7Brush" Color="{StaticResource Gray7}"/>
+
+    <Color x:Key="Gray8">#474747</Color>
+    <SolidColorBrush x:Key="Gray8Brush" Color="{StaticResource Gray8}"/>
+
+    <Color x:Key="Gray9">#444444</Color>
+    <SolidColorBrush x:Key="Gray9Brush" Color="{StaticResource Gray9}"/>
+
+    <Color x:Key="Gray10">#404040</Color>
+    <SolidColorBrush x:Key="Gray10Brush" Color="{StaticResource Gray10}"/>
+
+    <Color x:Key="Gray11">#3c3c3c</Color>
+    <SolidColorBrush x:Key="Gray11Brush" Color="{StaticResource Gray11}"/>
+
+    <Color x:Key="Gray12">#393939</Color>
+    <SolidColorBrush x:Key="Gray12Brush" Color="{StaticResource Gray12}"/>
+
+    <Color x:Key="Gray13">#353535</Color>
+    <SolidColorBrush x:Key="Gray13Brush" Color="{StaticResource Gray13}"/>
+
+    <Color x:Key="Gray14">#212121</Color>
+    <SolidColorBrush x:Key="Gray14Brush" Color="{StaticResource Gray14}"/>
+
+    <Color x:Key="Gray15">#141414</Color>
+    <SolidColorBrush x:Key="Gray15Brush" Color="{StaticResource Gray15}"/>
+
 </ResourceDictionary>
