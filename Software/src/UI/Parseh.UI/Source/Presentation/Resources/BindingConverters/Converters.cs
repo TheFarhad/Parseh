@@ -1,15 +1,9 @@
 ﻿namespace Parseh.UI.BindingConverters;
 
-internal sealed class Pager : BindConverter<Pager>
+internal sealed class RevertBoolean : BindConverter<RevertBoolean>
 {
     public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        => value.As<PageMode>() switch
-        {
-            PageMode.Signin => new Signin(),
-            PageMode.Signup => new Signup(),
-            PageMode.Chat => new Chat(),
-            _ => new Signin()
-        };
+        => !value.As<bool>();
 
     public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {

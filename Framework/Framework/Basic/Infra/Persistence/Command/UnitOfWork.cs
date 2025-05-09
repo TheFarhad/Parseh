@@ -35,8 +35,13 @@ public abstract class UnitOfWork<TStoreContext>(TStoreContext storeContext) : IU
         }
     }
 
-    public async Task<bool> SaveAsync(CancellationToken token = default)
-        => await _context.SaveChangesAsync(token) > 0;
+    public async Task<bool> SaveAsync(CancellationToken token = default) => await _context.SaveChangesAsync(token) > 0;
+
+    /// <summary>
+    /// Used when we work with in-memory databases
+    /// </summary>
+    /// <returns></returns>
+    public bool Save() => _context.SaveChanges() > 0;
 
     public async ValueTask DisposeAsync() => await _context.DisposeAsync();
 }

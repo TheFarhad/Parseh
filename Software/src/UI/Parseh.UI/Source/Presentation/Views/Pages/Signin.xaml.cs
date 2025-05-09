@@ -1,6 +1,10 @@
 ﻿namespace Parseh.UI.Views;
 
-public partial class Signin : ContentPage<SigninViewModel>
+using System.Security;
+
+public partial class Signin : ContentPage<SigninViewModel>, IHavePassword
 {
+    public SecureString SecurePasscode => Passcode.SecurePassword;
+
     public Signin() => InitializeComponent();
 }

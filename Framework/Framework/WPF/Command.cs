@@ -2,11 +2,16 @@
 
 using System.Windows.Input;
 
-public sealed class Command : ICommand
+public interface IRelayCommand : ICommand
 {
-    public event EventHandler? CanExecuteChanged = (sender, eventArgs) => { };
+    void Notify();
+}
+
+public sealed class Command : IRelayCommand
+{
     private readonly Action _execute;
     private readonly Func<bool> _canexecute = () => true;
+    public event EventHandler? CanExecuteChanged = (sender, eventArgs) => { };
 
     public Command(Action execute, Func<bool> canexecute = default!)
     {
@@ -14,15 +19,16 @@ public sealed class Command : ICommand
         if (canexecute is { }) _canexecute = canexecute;
     }
 
-    public bool CanExecute(object? parameter) => _canexecute.Invoke();
     public void Execute(object? parameter) => _execute?.Invoke();
+    public bool CanExecute(object? parameter) => _canexecute!.Invoke();
+    public void Notify() => CanExecuteChanged!.Invoke(this, EventArgs.Empty);
 }
 
-public sealed class Command<Input> : ICommand
+public sealed class Command<Input> : IRelayCommand
 {
-    public event EventHandler? CanExecuteChanged = (sender, eventArgs) => { };
     private readonly Action<Input> _execute;
     private readonly Func<Input, bool> _canexecute = _ => true;
+    public event EventHandler? CanExecuteChanged = (sender, eventArgs) => { };
 
     public Command(Action<Input> execute, Func<Input, bool> canexecute = default!)
     {
@@ -30,7 +36,8 @@ public sealed class Command<Input> : ICommand
         if (canexecute is { }) _canexecute = canexecute;
     }
 
-    public bool CanExecute(object? parameter) => _canexecute.Invoke((Input)parameter!);
-    public void Execute(object? parameter) => _execute?.Invoke((Input)parameter!);
+    public void Notify() => CanExecuteChanged!.Invoke(this, EventArgs.Empty);
+    public void Execute(object? parameter) => _execute?.Invoke(parameter!.As<Input>());
+    public bool CanExecute(object? parameter) => _canexecute.Invoke(parameter!.As<Input>());
 }
 

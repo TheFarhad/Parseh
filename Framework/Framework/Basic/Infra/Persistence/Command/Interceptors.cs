@@ -8,13 +8,27 @@ public class SaveInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> interceptionResult, CancellationToken token = default!)
     {
-        ValueTask<InterceptionResult<int>> result = default!;
         var context = GetContext(eventData);
+
+        // از آنجا که متود دیتکت چنجز، به صورت اتوماتیک فقط در متود سیو چینجز فراخوانی می شود
+        // ولی ما در اینجا می خواهیم که شدوپراپرتی ها را مقدار دهی کنیم
+        // پس نیاز داریم که قبل از سیوچیجز، تغییرات اعمال شوند
+        // پس اینکار را خودمان به صورت دستی انجام می دهیم
         context.ChangeTracker.DetectChanges();
+
         BeforeSaving(context);
+
+        // برای اینکه در متود سیو چینجز، دیتکت چنجز دوباره فراخوانی نشود    
+        // و در نتیجه باعث کاهش کارایی نشود
+        // دیتکت چنجز را موقتا غیرفعال می کنیم
+        // این پراپرتی باعث می شود که در صورت ذخیره، فقط تغییرات در دیتابیس اعمال شوند و دیگر چنج ترکر وارد عمل نشود
         context.ChangeTracker.AutoDetectChangesEnabled = false;
-        result = base.SavingChangesAsync(eventData, interceptionResult, token);
+
+        var result = base.SavingChangesAsync(eventData, interceptionResult, token);
+
+        // در اینجا دوباره دیتکت چنجز را مجددا فعال می کنیم
         context.ChangeTracker.AutoDetectChangesEnabled = true;
+
         return result;
     }
 

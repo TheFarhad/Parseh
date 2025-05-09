@@ -7,24 +7,92 @@
         <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Variables.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <!--base style to caption's buttons-->
-    <Style TargetType="Button" x:Key="CaptionButtonsBaseStyle">
+    <Style TargetType="Button" x:Key="TransparentButton">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Height" Value="{Binding Width, RelativeSource={x:Static RelativeSource.Self}}"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="FontIconButton" BasedOn="{StaticResource TransparentButton}">
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+        <Setter Property="Foreground" Value="{StaticResource Gray2Brush}"/>
         <Setter Property="Width" Value="27"/>
-        <Setter Property="Height" Value="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"/>
+        <Setter Property="FontSize" Value="{StaticResource FS15}"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ChatSidebarButton" BasedOn="{StaticResource FontIconButton}">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Padding" Value="4"/>
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" 
-                            Padding="{TemplateBinding Padding}">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}" 
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            CornerRadius="4">
+
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   FontFamily="{TemplateBinding FontFamily}"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Border" Value="{StaticResource Gray13Brush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="LayoutFontIconButton" BasedOn="{StaticResource FontIconButton}">
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"
+                        Background="{TemplateBinding Background}" 
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+
+                        <TextBlock Text="{TemplateBinding Content}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontFamily="{TemplateBinding FontFamily}"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Border" Value="{StaticResource Gray13Brush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--base style to caption's buttons-->
+    <Style TargetType="Button" x:Key="CaptionButtonsBaseStyle" BasedOn="{StaticResource TransparentButton}">
+        <Setter Property="Width" Value="27"/>
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border  Background="{TemplateBinding Background}" 
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             Padding="{TemplateBinding Padding}">
+
                         <ContentPresenter Content="{TemplateBinding Content}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"/>
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   />
                     </Border>
 
                 </ControlTemplate>
@@ -33,33 +101,25 @@
     </Style>
 
     <Style TargetType="Button" x:Key="CaptionMenuButtonStyle" BasedOn="{StaticResource CaptionButtonsBaseStyle}">
-        <Setter Property="Padding" Value="6"/>
+        <Setter Property="Padding" Value="6.5"/>
     </Style>
 
 
     <!--base style to minimaize, maximaze and restore buttons-->
     <Style TargetType="Button" x:Key="LayoutButtonsBaseStyle" BasedOn="{StaticResource CaptionButtonsBaseStyle}">
         <Setter Property="Foreground" Value="{StaticResource Gray6Brush}"/>
-        <!--<Setter Property="Width" Value="27"/>
-        <Setter Property="Height" Value="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"/>-->
-        <Setter Property="Padding" Value="3"/>
+        <Setter Property="Padding" Value="6.5"/>
+    </Style>
 
-        <!--<Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="LayoutTransform">
-                    <Setter.Value>
-                        <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>-->
-
+    <Style TargetType="Button" x:Key="ChatPageImageButtonsBaseStyle" BasedOn="{StaticResource CaptionButtonsBaseStyle}">
+        <Setter Property="Foreground" Value="{StaticResource Gray6Brush}"/>
+        <Setter Property="Padding" Value="4"/>
     </Style>
 
     <Style TargetType="Button" x:Key="LayoutButtonsStyle" BasedOn="{StaticResource LayoutButtonsBaseStyle}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource Gray14Brush}"/>
+                <Setter Property="Background" Value="{StaticResource Gray12Brush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -72,17 +132,50 @@
         </Style.Triggers>
     </Style>
 
-
-    <Style TargetType="Button" x:Key="Submit">
-        <Setter Property="Background" Value="{StaticResource Gray12Brush}"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Margin" Value="0, 15, 0, 5"/>
-        <Setter Property="Padding" Value="7, 15"/>
-        <Setter Property="FontFamily" Value="{StaticResource OpensansSemibold}"/>
+    <Style TargetType="Button" x:Key="ImageButtonStyle" BasedOn="{StaticResource ChatPageImageButtonsBaseStyle}">
+        <Setter Property="Width" Value="27"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
 
         <Setter Property="Template">
             <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border  Background="{TemplateBinding Background}" 
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      Padding="{TemplateBinding Padding}"
+                      CornerRadius="2">
+
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            />
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Gray12Brush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="Button" x:Key="Submit">
+        <Setter Property="Background" Value="{StaticResource Gray12Brush}"/>
+        <Setter Property="Foreground" Value="{StaticResource Gray1Brush}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="7, 15"/>
+        <Setter Property="FontFamily" Value="{StaticResource OpensansSemibold}"/>
+        <Setter Property="FontSize" Value="{StaticResource FS13}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+
                 <ControlTemplate TargetType="Button">
 
                     <Border x:Name="ButtonBorder"
@@ -126,17 +219,9 @@
                             </BeginStoryboard>
                         </EventTrigger>
 
-                        <!--<Trigger Property="Button.IsDefaulted" Value="true">
-                            <Setter Property="BorderBrush" TargetName="ButtonBorder" Value=""/>
-                        </Trigger>-->
-
-                        <!--<Trigger Property="IsPressed" Value="true">
-                            <Setter Property="Background" TargetName="ButtonBorder" Value=""/>
-                        </Trigger>-->
-
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Background" TargetName="ButtonBorder" Value="DarkGray"/>
-                            <!--<Setter Property="TextElement.Foreground" TargetName="presenter" Value=""/>-->
+                            <Setter Property="Background" TargetName="ButtonBorder" Value="{StaticResource Gray14Brush}"/>
+                            <Setter Property="TextElement.Foreground" TargetName="presenter" Value="{StaticResource Gray8Brush}"/>
                         </Trigger>
 
                     </ControlTemplate.Triggers>
@@ -159,22 +244,35 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <StackPanel>
-                        <Border x:Name="Border" 
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
+                    <Grid>
+                        <!--original template-->
+                        <StackPanel>
+                            <Border x:Name="Border" 
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    SnapsToDevicePixels="true">
+                                <ContentPresenter x:Name="contentPresenter" 
+                                                  Focusable="False" 
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Margin="{TemplateBinding Padding}" 
+                                                  RecognizesAccessKey="True" 
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
 
-                        <Border x:Name="Underline" 
-                                Opacity="0" 
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Margin="0, -6, 0, 0"
-                                Height="1"/>
-                    </StackPanel>
+                            <Border x:Name="Underline" 
+                                    Opacity="0" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Margin="0, -6, 0, 0"
+                                    Height="1"/>
+                        </StackPanel>
+
+                        <!--loadign progress template-->
+                        <!--TODO: Create Loading Progress bar-->
+
+                    </Grid>
 
                     <ControlTemplate.Triggers>
 
@@ -202,6 +300,42 @@
             </Setter.Value>
         </Setter>
 
+    </Style>
+
+
+
+
+
+
+    <Style TargetType="Button" x:Key="ImageButton" BasedOn="{StaticResource TransparentButton}">
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"
+                    Background="{TemplateBinding Background}" 
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Padding="{TemplateBinding Padding}">
+
+                        <Image Source="{TemplateBinding Content}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                               />
+
+                        <!--<TextBlock Text="{TemplateBinding Content}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontFamily="{TemplateBinding FontFamily}"/>-->
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Border" Value="{StaticResource Gray13Brush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

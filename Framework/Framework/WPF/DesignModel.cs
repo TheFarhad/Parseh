@@ -5,5 +5,7 @@ public abstract class DesignModel<Owner, Viewmodel>
     where Viewmodel : ViewModel, new()
 {
     public static readonly Owner Self = new();
-    public readonly Viewmodel Model = new();
+    public Viewmodel Model { get; set; } = default!;
+
+    protected DesignModel() => Model = new();
 }

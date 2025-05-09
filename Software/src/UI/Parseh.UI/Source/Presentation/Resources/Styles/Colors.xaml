@@ -72,7 +72,6 @@
 
 
 
-
     <!-- ## GRAY ##-->
     <Color x:Key="Gray1">#E1E1E1</Color>
     <SolidColorBrush x:Key="Gray1Brush" Color="{StaticResource Gray1}"/>

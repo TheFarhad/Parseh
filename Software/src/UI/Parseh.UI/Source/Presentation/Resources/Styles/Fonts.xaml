@@ -2,20 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!--<sys:Double x:Key="FS10">10</sys:Double>
-    <sys:Double x:Key="FS12">12</sys:Double>
-    <sys:Double x:Key="FS14">14</sys:Double>
-    <sys:Double x:Key="FS15">15</sys:Double>
-    <sys:Double x:Key="FS17">17</sys:Double>
-    <sys:Double x:Key="FS18">18</sys:Double>
-    <sys:Double x:Key="FS19">19</sys:Double>
-    <sys:Double x:Key="FS20">20</sys:Double>
-    <sys:Double x:Key="SmallFontSize">11</sys:Double>
-    <sys:Double x:Key="RegularFontSize">13</sys:Double>
-    <sys:Double x:Key="LargeFontSize">16</sys:Double>-->
-
     <FontFamily x:Key="OpensansRegular">/Source/Presentation/Resources/Fonts/#Open Sans Regular</FontFamily>
     <FontFamily x:Key="OpensansSemibold">/Source/Presentation/Resources/Fonts/#Open Sans SemiBold</FontFamily>
+    <FontFamily x:Key="FontAwesome">/Source/Presentation/Resources/Fonts/#FontAwesome</FontFamily>
 
     <Style TargetType="Control" x:Key="ControlFontFamilyBaseStyle">
         <Setter Property="FontFamily" Value="{StaticResource OpensansRegular}"/>
@@ -30,5 +19,19 @@
     <Style TargetType="Button" BasedOn="{StaticResource ControlFontFamilyBaseStyle}"/>
     <Style TargetType="ListView" BasedOn="{StaticResource ControlFontFamilyBaseStyle}"/>
     <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockFontFamilyBaseStyle}"/>
+
+    <sys:String x:Key="FontAwesomeChatIcon">&#xf086;</sys:String>
+    <sys:String x:Key="FontAwesomeUserIcon">&#xf007;</sys:String>
+    <sys:String x:Key="FontAwesomePictureIcon">&#xf1c5;</sys:String>
+    <sys:String x:Key="FontAwesomeSettingIcon">&#xf013;</sys:String>
+    <sys:String x:Key="FontAwesomeSearchIcon">&#xf002;</sys:String>
+    <sys:String x:Key="FontAwesomeEllipsisIcon">&#xf141;</sys:String>
+    <sys:String x:Key="FontAwesomeEllipsisVerticalIcon">&#xf142;</sys:String>
+    <sys:String x:Key="FontAwesomePaperclipIcon">&#xf0c6;</sys:String>
+    <sys:String x:Key="FontAwesomeEmojiIcon">&#xf118;</sys:String>
+    <sys:String x:Key="FontAwesomeArrowLeftIcon">&#xf060;</sys:String>
+    <sys:String x:Key="FontAwesomeTickIcon">&#xf00c;</sys:String>
+    <sys:String x:Key="FontAwesomeCloseIcon">&#xf00d;</sys:String>
+    <sys:String x:Key="FontAwesomeMinimizeIcon">&#xf2d1;</sys:String>
 
 </ResourceDictionary>

@@ -1,0 +1,37 @@
+﻿<local:Component x:Class="Parseh.UI.Views.ChatMessageContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Parseh.UI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Border Background="Transparent" Margin="1, 0, 0, 0">
+        <Grid Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!--info and search bar-->
+            <Border Grid.Row="0" Height="60">
+
+            </Border>
+
+
+            <!--message container-->
+            <Border Grid.Row="1">
+
+            </Border>
+
+            <!--send message bar-->
+            <Border Grid.Row="2" Height="60">
+
+            </Border>
+
+        </Grid>
+    </Border>
+
+</local:Component>

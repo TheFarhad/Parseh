@@ -9,7 +9,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Signin">
+      x:Name="SigninPage">
 
     <Border Background="Transparent">
         <Border 
@@ -27,23 +27,28 @@
                              VerticalAlignment="Center"
                              HorizontalAlignment="Left"
                              Foreground="{StaticResource Gray3Brush}"
-                             Margin="0, 20"
                              />
 
-                    <TextBox Text="{Binding Username}" 
-                             Tag="Username" Style="{StaticResource MarkTextBox}" 
-                             Margin="0, 10"/>
+                    <StackPanel Margin="0, 20, 0, 15">
+                        <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
+                                 Tag="Username" 
+                                 Style="{StaticResource MarkTextBox}" 
+                                 Margin="0, 0, 0, 5"/>
 
-                    <PasswordBox Tag="Passcode" 
-                                 Style="{StaticResource MarkPasscodeBox}"/>
+                        <PasswordBox x:Name="Passcode"
+                                     Tag="Passcode" 
+                                     Style="{StaticResource MarkPasscodeBox}"/>
+                    </StackPanel>
 
-
-                    <Button Content="Submit" 
+                    <Button Content="Submit"
+                            Command="{Binding SigninCommand}"
+                            CommandParameter="{Binding ElementName=SigninPage}"
                             Style="{StaticResource Submit}"
-                            FontSize="{StaticResource FS13}"
-                            Foreground="{StaticResource Gray1Brush}"/>
+                            IsDefault="True"
+                            />
 
-                    <Button Content="I have already an account"
+                    <Button Content="Create a free account"
+                            Command="{Binding SignupCommand}"
                             Style="{StaticResource TranparentBorderedButton}"
                             Margin="0, 5" />
                 </StackPanel>

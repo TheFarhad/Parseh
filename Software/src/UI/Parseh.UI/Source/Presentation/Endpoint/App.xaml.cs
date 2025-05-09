@@ -6,15 +6,17 @@ public sealed partial class App : Application
 
     private App() { }
 
-    public static App Start()
+    public static void Start()
     {
         Test();
         if (Self is null) Self = new();
         Self.InitializeComponent();
-        Self.MainWindow = new Layout();
+        Self.MainWindow = NetCoreIoC.Self.GetRequired<Layout>();
         Self.Run(Self.MainWindow);
-        return Self;
     }
+
+    public static void Dispatch(Action act) => Application.Current.Dispatcher.Invoke(act);
+    public static DispatcherOperation<Task> Dispatch(Func<Task> func) => Application.Current.Dispatcher.InvokeAsync(func);
 
     private static void Test()
     {

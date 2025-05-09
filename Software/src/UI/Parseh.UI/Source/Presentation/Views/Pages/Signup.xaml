@@ -8,10 +8,14 @@
       xmlns:local="clr-namespace:Parseh.UI.Views"
       xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Signup">
+      d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="Red">
-
+    <Grid Background="{StaticResource Gray15Brush}">
+        <Button 
+            Content="Signin" 
+            Background="{StaticResource Gray10Brush}"
+            Click="Button_Click"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"/>
     </Grid>
 </local:ContentPage>

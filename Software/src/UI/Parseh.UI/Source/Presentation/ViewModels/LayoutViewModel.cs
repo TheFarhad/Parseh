@@ -1,13 +1,16 @@
-﻿namespace Parseh.UI.ViewModels;
+﻿using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+namespace Parseh.UI.ViewModels;
 
 internal sealed class LayoutViewModel : VM
 {
+    const string IconPath = "/Source/Presentation/Resources/Images/Icon/";
     Layout _layout = default!;
     WindowState _state => _layout.WindowState;
     LayoutFitAdjuster _fitAdjuster = default!;
     WindowDockPosition _dockPosition = WindowDockPosition.Undocked;
 
-    public PageMode Page { get => Get(); private set => Set(value); }
     public double MinWidth { get => Get(); private set => Set(value); }
     public double MinHeight { get => Get(); private set => Set(value); }
     //TODO: آیا پرایپوت ست مشکلی در بایندینگ دو طرفه ایجاد نمیکند
@@ -20,14 +23,18 @@ internal sealed class LayoutViewModel : VM
     public Thickness OuterMargin { get => NormalState() ? Get() : new Thickness(0); private set => Set(value); }
     public Thickness ResizeBorderThickness { get => NormalState() ? Get() : new Thickness(0); private set => Set(value); }
     public Thickness OuterBorderThickness { get => NormalState() ? Get() : new Thickness(1); private set => Set(value); }
+    public ImageSource RestoreButtonImage
+    {
+        get => NormalState() ? Get() : ImageSource("Restore");
+        private set => Set(value);
+    }
 
-    public ICommand MinimizeCommand { get; private set; } = default!;
-    public ICommand RestoreCommand { get; private set; } = default!;
-    public ICommand CloseCommand { get; private set; } = default!;
-    public ICommand CaptionManuCommand { get; private set; } = default!;
+    public IRelayCommand MinimizeCommand { get; private set; } = default!;
+    public IRelayCommand RestoreCommand { get; private set; } = default!;
+    public IRelayCommand CloseCommand { get; private set; } = default!;
+    public IRelayCommand CaptionManuCommand { get; private set; } = default!;
 
     internal LayoutViewModel(Layout layout) => Init(layout);
-
 
     #region Private Functionality
 
@@ -42,7 +49,6 @@ internal sealed class LayoutViewModel : VM
 
     void InitProperties()
     {
-        Page = PageMode.Signin;
         MinWidth = 700;
         MinHeight = 394;
         Width = 900;
@@ -54,6 +60,7 @@ internal sealed class LayoutViewModel : VM
         InnerContentPadding = new(0);
         OuterBorderThickness = new(0);
         ResizeBorderThickness = new(3);
+        RestoreButtonImage = ImageSource("Maximize");
     }
 
     void InitLayout(Layout layout)
@@ -93,7 +100,11 @@ internal sealed class LayoutViewModel : VM
         Notify(nameof(CornerRadius));
         Notify(nameof(OuterMargin));
         Notify(nameof(ResizeBorderThickness));
+        Notify(nameof(RestoreButtonImage));
     }
+
+    BitmapImage ImageSource(string icon)
+        => new BitmapImage(new Uri($"/Source/Presentation/Resources/Images/Icon/{icon}.png", uriKind: UriKind.Relative));
 
     #endregion
 

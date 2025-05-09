@@ -3,5 +3,9 @@
 internal static class Startup
 {
     [STAThread]
-    internal static void Main(string[] args) => App.Start();
+    internal static void Main(string[] args)
+    {
+        var host = NetCoreIoC.Self;
+        App.Start();
+    }
 }

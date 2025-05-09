@@ -29,7 +29,7 @@ public abstract class ViewModel : Atom, INotify
 
     protected ViewModel()
     {
-        _reference = new Reference();
+        _reference = new();
         OnCreate();
         InitDefaults();
     }
@@ -46,6 +46,7 @@ public abstract class ViewModel : Atom, INotify
     {
         if (HasProp(property))
         {
+            // TODO: اگر برای اتچ پراپرتی ها و برای متود مربوط به کوئرس آنها مشکل ایجاد میکند،این خط حذف شود
             if (ProprtyNotChanged(value, property))
                 return;
 
@@ -57,14 +58,12 @@ public abstract class ViewModel : Atom, INotify
         Set(property, value);
     }
 
-    bool HasProp(string property) => _reference.ContainsKey(property);
-
-    void Set(string property, object value) => _reference[property] = Verify(property, value);
-
     public void Notify([CallerMemberName] string property = Empty)
-        => PropertyChanged!.Invoke(this, new PropertyChangedEventArgs(property));
+      => PropertyChanged!.Invoke(this, new PropertyChangedEventArgs(property));
 
-    protected async Task RunAsync(Func<Task> command, Action<Exception>? exeptionHandler = null)
+    protected void Notify(IRelayCommand command) => command?.Notify();
+
+    protected async Task RunAsync(Func<Task> command, Action<Exception> exeptionHandler = default!, Action final = default!)
     {
         try
         {
@@ -74,24 +73,36 @@ public abstract class ViewModel : Atom, INotify
         {
             exeptionHandler?.Invoke(e);
         }
+        finally
+        {
+            final?.Invoke();
+        }
     }
 
-    protected async Task<Output> RunAsync<Output>(Func<Task<Output>> command, Action<Exception>? errorhandler = null)
+    protected async Task<Output> RunAsync<Output>(Func<Task<Output>> command, Action<Exception> errorhandler = default!, Action final = default!)
     {
         Output result = default!;
         try
         {
-            return await command();
+            result = await command();
         }
         catch (Exception e)
         {
             errorhandler?.Invoke(e);
             //throw;
         }
+        finally
+        {
+            final?.Invoke();
+        }
         return result;
     }
 
-    #region private methods
+    #region Private Functionality
+
+    bool HasProp(string property) => _reference.ContainsKey(property);
+
+    void Set(string property, object value) => _reference[property] = Verify(property, value);
 
     bool ProprtyNotChanged(object newvalue, string property)
         // its ok...
@@ -147,7 +158,7 @@ public abstract class ViewModel : Atom, INotify
         return result!;
     }
 
-    object? DefaultSet(Type type) => typeof(Observer<>).Generic(type.FirstGenericType());
+    object? DefaultSet(Type type) => typeof(ObservableSet<>).Generic(type.FirstGenericType());
 
     #endregion
 }

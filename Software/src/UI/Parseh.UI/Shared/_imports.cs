@@ -6,10 +6,12 @@ global using System.Windows.Input;
 global using System.Globalization;
 global using System.Windows.Markup;
 global using System.Windows.Controls;
+global using System.Windows.Threading;
 
 // .NET
 
 // EXTERNAL LIBRARIES
+global using Microsoft.Extensions.DependencyInjection;
 
 //LOCAL LIBRARIES
 global using Framework;
