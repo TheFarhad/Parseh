@@ -2,13 +2,13 @@
 
 public partial class Layout : ContentLayout
 {
-    LayoutViewModel _viewmodel = default!;
+    LayoutViewModel _model = default!;
 
-    public Layout(IServiceProvider provider) => Init(provider);
+    public Layout() => Init();
 
-    void Init(IServiceProvider provider)
+    void Init()
     {
-        _viewmodel = new LayoutViewModel(this);
+        _model = new LayoutViewModel(this);
         InitializeComponent();
     }
 }

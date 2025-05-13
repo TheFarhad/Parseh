@@ -8,6 +8,10 @@ public class SaveInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> interceptionResult, CancellationToken token = default!)
     {
+        if (eventData.Context is null)
+            return ValueTask.FromResult(interceptionResult);
+
+
         var context = GetContext(eventData);
 
         // از آنجا که متود دیتکت چنجز، به صورت اتوماتیک فقط در متود سیو چینجز فراخوانی می شود
@@ -16,7 +20,7 @@ public class SaveInterceptor : SaveChangesInterceptor
         // پس اینکار را خودمان به صورت دستی انجام می دهیم
         context.ChangeTracker.DetectChanges();
 
-        BeforeSaving(context);
+        BeforeSave(context);
 
         // برای اینکه در متود سیو چینجز، دیتکت چنجز دوباره فراخوانی نشود    
         // و در نتیجه باعث کاهش کارایی نشود
@@ -32,13 +36,29 @@ public class SaveInterceptor : SaveChangesInterceptor
         return result;
     }
 
-    protected virtual void BeforeSaving(DbContext context)
+    protected virtual void BeforeSave(DbContext context)
     {
-        SetShadowProperties(context);
+        // TODO: در صورت نیاز اعمال شود
+        //DetectSoftDelete(context);
+        InitShadowProperties(context);
         HandleEvents(context);
     }
 
-    private void SetShadowProperties(DbContext context)
+    #region Private Functionality
+
+    void DetectSoftDelete(DbContext context)
+    {
+        foreach (var entry in context.ChangeTracker.Entries())
+        {
+            if (entry is { State: EntityState.Deleted, Entity: ISoftDelete entity })
+            {
+                entity.Delete();
+                entry.State = EntityState.Modified;
+            }
+        }
+    }
+
+    void InitShadowProperties(DbContext context)
     {
         var service = context.GetService<IIdentityService>();
         context
@@ -46,7 +66,7 @@ public class SaveInterceptor : SaveChangesInterceptor
             .SetAuditableEntityShadowPropertyValues(service);
     }
 
-    private void HandleEvents(DbContext context)
+    void HandleEvents(DbContext context)
     {
         var domainEventPipeline = context.GetService<DomainEventPipe>();
         context
@@ -57,14 +77,16 @@ public class SaveInterceptor : SaveChangesInterceptor
             .ForEach(async _ => await domainEventPipeline.HandleAsync(_ as dynamic)); // old (dynamic)_
     }
 
-    private DbContext GetContext(DbContextEventData source) => source.Context!;
+    DbContext GetContext(DbContextEventData source) => source.Context!;
+
+    #endregion
 }
 
 public sealed class EventSourcingSaveChangeInterceptor : SaveInterceptor
 {
-    protected override void BeforeSaving(DbContext context)
+    protected override void BeforeSave(DbContext context)
     {
-        base.BeforeSaving(context);
+        base.BeforeSave(context);
         OutboxEvents(context);
     }
 

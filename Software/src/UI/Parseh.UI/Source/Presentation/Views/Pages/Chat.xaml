@@ -7,6 +7,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Parseh.UI.Views"
       xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
+      xmlns:convert="clr-namespace:Parseh.UI.BindingConverters"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
@@ -15,19 +16,22 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!--chat list-->
             <!--DataContext=""-->
-            <local:ChatContactMenu/>
+            <local:ChatContactMenu Grid.Column="0"/>
 
             <!--selected chat messages-->
-            <Border Grid.Column="1">
-                <!--DataContext=""-->
-                <local:ChatMessageContainer />
-            </Border>
+            <!--DataContext="ChatViewModel"-->
+            <Border Grid.Column="1" 
+                    Background="{StaticResource Gray14Brush}"
+                    Visibility="{Binding SelectedChat, Converter={convert:BooleanToVisibilityRevert}}"/>
+            <local:ChatMessageContainer Grid.Column="1" Visibility="{Binding SelectedChat, Converter={convert:BooleanToVisibility}}"/>
 
-
+            <!--profile info-->
+            <Border Grid.Column="2"/>
         </Grid>
     </Border>
 

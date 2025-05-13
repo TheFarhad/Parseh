@@ -19,15 +19,23 @@
 		<None Remove="Source\Presentation\Resources\Fonts\fontawesome-webfont.ttf" />
 		<None Remove="Source\Presentation\Resources\Fonts\OpenSans-Regular.ttf" />
 		<None Remove="Source\Presentation\Resources\Fonts\OpenSans-Semibold.ttf" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Attachment.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Call.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Chat.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\ChatMessageContainerMenu.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Close.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Contact.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Maximize.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Minimize.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Person.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Picture.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Pin.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Restore.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Search.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Send.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Setting.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\SideRight.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Sticker.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\telegram.ico" />
 		<None Remove="Source\Presentation\Resources\Images\Logo\logo.png" />
 	</ItemGroup>
@@ -68,15 +76,23 @@
 		<Resource Include="Source\Presentation\Resources\Fonts\fontawesome-webfont.ttf" />
 		<Resource Include="Source\Presentation\Resources\Fonts\OpenSans-Regular.ttf" />
 		<Resource Include="Source\Presentation\Resources\Fonts\OpenSans-Semibold.ttf" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Attachment.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Call.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Chat.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\ChatMessageContainerMenu.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Close.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Contact.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Maximize.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Minimize.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Person.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Picture.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Pin.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Restore.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Search.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Send.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Setting.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\SideRight.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Sticker.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\telegram.ico">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>

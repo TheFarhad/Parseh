@@ -4,31 +4,114 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Parseh.UI.Views"
+             xmlns:res="clr-namespace:Parseh.UI.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Border Background="Transparent" Margin="1, 0, 0, 0">
-        <Grid Background="Transparent">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!--info and search bar-->
-            <Border Grid.Row="0" Height="60">
+            <!--contact info-->
+            <Border Grid.Row="0" 
+                    Height="45" 
+                    Background="{StaticResource Gray14Brush}"
+                    Padding="15, 5, 10, 5"
+                    >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <!--conatact and last seen-->
+                        <ColumnDefinition Width="Auto"/>
+                        <!--empty space-->
+                        <ColumnDefinition Width="*"/>
+                        <!--setting buttons-->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
+                    <StackPanel Grid.Column="0" 
+                                Orientation="Vertical"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="Farhad" 
+                                   FontSize="{StaticResource FS13}"
+                                   Foreground="{StaticResource Gray1Brush}"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="Last Seen Recently" 
+                                   FontSize="{StaticResource FS12}"
+                                   Foreground="{StaticResource Gray6Brush}"/>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2"
+                                Orientation="Horizontal">
+
+                        <Button Style="{StaticResource ChatMessageTopBarImageButtonStyle}">
+                            <Image Source="/Source/Presentation/Resources/Images/Icon/Call.png"/>
+                        </Button>
+
+                        <Button Style="{StaticResource ChatMessageTopBarImageButtonStyle}">
+                            <Image Source="/Source/Presentation/Resources/Images/Icon/SideRight.png"/>
+                        </Button>
+
+                        <Button Style="{StaticResource ChatMessageTopBarImageButtonStyle}">
+                            <Image Source="/Source/Presentation/Resources/Images/Icon/ChatMessageContainerMenu.png"/>
+                        </Button>
+
+                    </StackPanel>
+
+                </Grid>
             </Border>
-
 
             <!--message container-->
-            <Border Grid.Row="1">
-
-            </Border>
+            <local:ChatMessageContainerCard Grid.Row="1"
+                                            VerticalAlignment="Bottom"/>
 
             <!--send message bar-->
-            <Border Grid.Row="2" Height="60">
+            <Border Grid.Row="2" 
+                    Background="{StaticResource Gray14Brush}"
+                    Padding="15, 5, 10, 5"
+                    >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <!--conatact and last seen-->
+                        <ColumnDefinition Width="Auto"/>
+                        <!--empty space-->
+                        <ColumnDefinition Width="*"/>
+                        <!--setting buttons-->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
+                    <Button Grid.Column="0" Style="{StaticResource ChatMessageTopBarImageButtonStyle}">
+                        <Image Source="/Source/Presentation/Resources/Images/Icon/Attachment.png"/>
+                    </Button>
+
+                    <TextBox Grid.Column="1" 
+                             Tag="Write your message" 
+                             FontSize="{StaticResource FS14}"
+                             Margin="5"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             Style="{StaticResource SendMessageMarkTextBox}"
+                             res:FocusOnLoad.Value="True"
+                             />
+
+                    <StackPanel Grid.Column="2"
+                                Orientation="Horizontal">
+
+                        <Button Style="{StaticResource ChatMessageTopBarImageButtonStyle}">
+                            <Image Source="/Source/Presentation/Resources/Images/Icon/Sticker.png"/>
+                        </Button>
+
+                        <Button Style="{StaticResource ChatMessageTopBarImageButtonStyle}">
+                            <Image Source="/Source/Presentation/Resources/Images/Icon/Send.png"/>
+                        </Button>
+
+                    </StackPanel>
+
+                </Grid>
             </Border>
 
         </Grid>

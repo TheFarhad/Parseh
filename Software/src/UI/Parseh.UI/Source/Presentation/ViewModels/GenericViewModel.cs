@@ -2,44 +2,49 @@
 
 internal sealed class GenericViewModel : VM
 {
+    public PageMode Mode { get => Get(); private set => Set(value); }
     public ContentPage Page { get => Get(); private set => Set(value); }
-    public ViewModel ViewModel { get => Get(); private set => Set(value); }
 
     public GenericViewModel() => Init();
 
-    public void ToPage(PageMode page)
+    public void ToPage(PageMode mode)
     {
-        Page = Pager(page);
+        if (Mode != mode) Pager(mode);
     }
 
     #region Private Functionality
 
     void Init()
     {
-        Page = Pager(PageMode.Signin);
+        Mode = PageMode.Chat;
+        Pager(Mode);
     }
 
-    ContentPage Pager(PageMode page)
-        => page switch
+    void Pager(PageMode mode)
+    {
+        Page = mode switch
         {
             PageMode.Signin => new Signin(),
             PageMode.Signup => new Signup(),
             PageMode.Chat => new Chat(),
-            _ => throw new NotImplementedException(""),
+            _ => throw new NotImplementedException("A page for this mode has not been implemented."),
         };
+        Mode = mode;
+    }
 
     #endregion
 }
 
 internal sealed class Generic
 {
-    public static readonly Generic Self = new();
+    private static readonly Generic _default = default!;
+    public static readonly Generic Default = new();
 
     Generic()
     {
-        var ioc = NetCoreIoC.Self;
-        ViewModel = ioc.GetRequired<GenericViewModel>();
+        var ioc = NetIoC.Default;
+        Model = ioc.GetRequired<GenericViewModel>();
     }
 
-    public GenericViewModel ViewModel { get; }
+    public GenericViewModel Model { get; }
 }

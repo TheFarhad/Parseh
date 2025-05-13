@@ -58,6 +58,9 @@ internal sealed class LayoutViewModel : VM
         CornerRadius = 6;
         OuterMargin = new(3);
         InnerContentPadding = new(0);
+        // TODO: اگر صفر باشد، نمی توان ویندو را ریسیز کرد
+        // بوردر راش هم نیاید ترنسپزنت باشد
+        // چرا؟
         OuterBorderThickness = new(0);
         ResizeBorderThickness = new(3);
         RestoreButtonImage = ImageSource("Maximize");

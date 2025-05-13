@@ -98,6 +98,67 @@
         </Setter>
     </Style>
 
+
+    <Style TargetType="TextBox" x:Key="SendMessageMarkTextBox" BasedOn="{StaticResource ControlFontFamilyBaseStyle}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Foreground" Value="{StaticResource Gray1Brush}"/>
+        <Setter Property="CaretBrush" Value="{StaticResource Gray1Brush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource OpensansRegular}"/>
+        <!--<Setter Property="FontSize" Value="{StaticResource FS13}"/>-->
+        <Setter Property="Opacity" Value="0.8"/>
+        <Setter Property="Template" >
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBoxBase">
+                    <Grid>
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Opacity="{TemplateBinding Opacity}"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Focusable="false" 
+                                          FontSize="{TemplateBinding FontSize}"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Auto"/>
+                        </Border>
+
+                        <TextBlock x:Name="Placeholder"
+                                   Text="{TemplateBinding Tag}" 
+                                   IsHitTestVisible="False"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   Background="{TemplateBinding Background}"
+                                   Foreground="{StaticResource Gray3Brush}"
+                                   Padding="{TemplateBinding Padding}"
+                                   Opacity="0.5"
+                                   >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text.Length, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+
+                        </TextBlock>
+
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="PasswordBox" x:Key="MarkPasscodeBox" BasedOn="{StaticResource ControlFontFamilyBaseStyle}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0, 0, 0, 0.5"/>

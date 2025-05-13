@@ -4,6 +4,7 @@ using System.Windows.Media.Animation;
 
 internal static class Animator
 {
+    // TODO: برای حالت های چب به راست، راست به چپ، بالا به پایین و پایین به بالا هم متود پیشفرض نوشته شود
     const double DecelerationRatio = 0.5;
     const double Duration = 0.5;
 

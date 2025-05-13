@@ -15,6 +15,7 @@ public static partial class Extention
     public static Type Type(this object source) => source.GetType();
 
     public static bool Is<T>(this object source) => source is T;
+    public static bool Isnt<T>(this object source) => !source.Is<T>();
 
     public static bool Is<T>(this object source, out T output)
     {

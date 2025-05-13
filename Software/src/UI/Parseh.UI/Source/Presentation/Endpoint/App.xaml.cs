@@ -8,18 +8,18 @@ public sealed partial class App : Application
 
     public static void Start()
     {
-        Test();
+        var ico = NetIoC.Default;
         if (Self is null) Self = new();
         Self.InitializeComponent();
-        Self.MainWindow = NetCoreIoC.Self.GetRequired<Layout>();
+        Self.MainWindow = ico.GetRequired<Layout>();
+        Test();
         Self.Run(Self.MainWindow);
     }
 
     public static void Dispatch(Action act) => Application.Current.Dispatcher.Invoke(act);
     public static DispatcherOperation<Task> Dispatch(Func<Task> func) => Application.Current.Dispatcher.InvokeAsync(func);
 
-    private static void Test()
+    static void Test()
     {
-
     }
 }

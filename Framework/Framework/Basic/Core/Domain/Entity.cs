@@ -86,6 +86,8 @@ public abstract class AggregateRoot<TId> : Entity<TId>, IAggregateRoot
 public interface ISoftDelete
 {
     bool Deleted { get; }
+    void Delete();
+    void Restore();
 }
 
 public abstract class AggregateRootDeleteable<TId> : AggregateRoot<TId>, ISoftDelete

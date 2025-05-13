@@ -48,7 +48,8 @@ public sealed class SigninViewModel : VM
 
     void InitCommands()
     {
-        SigninCommand = new Command<IHavePassword>(async page => await Signin(page), _ => Username.Length > 0 && !IsSigning);
+        // TODO: شرط اجرایی کامند برگردانه شود
+        SigninCommand = new Command<IHavePassword>(async page => await Signin(page)/*, _ => Username.Length > 0 && !IsSigning*/);
         SignupCommand = new Command(Signup);
         SignoutCommand = new Command(async () => await Signout());
     }
@@ -66,12 +67,12 @@ public sealed class SigninViewModel : VM
             Passcode = signinPage.SecurePasscode.Unsecure();
 
             await Task.Delay(20);
-            Generic.Self.ViewModel.ToPage(PageMode.Chat);
+            Generic.Default.Model.ToPage(PageMode.Chat);
 
             IsSigning = false;
         });
     }
-    void Signup() => Generic.Self.ViewModel.ToPage(PageMode.Signup);
+    void Signup() => Generic.Default.Model.ToPage(PageMode.Signup);
 
     async Task Signout()
     {

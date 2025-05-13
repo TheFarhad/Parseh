@@ -50,7 +50,13 @@
                     <Button Content="Create a free account"
                             Command="{Binding SignupCommand}"
                             Style="{StaticResource TranparentBorderedButton}"
-                            Margin="0, 5" />
+                            Margin="0, 15, 0, 10" />
+
+                    <Button Content="Signout"
+                            Command="{Binding SignoutCommand}"
+                            Style="{StaticResource TranparentBorderedButton}"
+                            FontSize="{StaticResource FS12}"/>
+
                 </StackPanel>
             </ScrollViewer>
 

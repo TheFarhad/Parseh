@@ -3,11 +3,34 @@
 public sealed class ChatViewModel : VM
 {
     public ChatContactViewModel Contact { get => Get(); private set => Set(value); }
+    public double SettingbarHeight { get => Get(); private set => Set(value); }
+    public bool IsSearching { get => Get(); private set => Set(value); }
+    public bool SelectedChat { get => Get(); private set => Set(value); }
+
+
+    public IRelayCommand ShowSearchbarCommand { get; private set; }
+    public IRelayCommand CloseSearchbarCommand { get; private set; }
 
     public ChatViewModel()
     {
+        SettingbarHeight = 60;
+        IsSearching = false;
+        ShowSearchbarCommand = new Command(ShowSearchbar);
+        CloseSearchbarCommand = new Command(CloseSearchbar);
+        SelectedChat = true;
+
         // TODO: Load data form server (only Contats-Items Info)
     }
+
+    #region Private Functionality
+
+    //void ShowSearchbar() => IsSearching = true;
+    //void CloseSearchbar() => IsSearching = false;
+
+    void ShowSearchbar() => IsSearching = !IsSearching;
+    void CloseSearchbar() => IsSearching = !IsSearching;
+
+    #endregion
 }
 
 public sealed class ChatContactViewModel : VM

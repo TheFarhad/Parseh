@@ -5,7 +5,7 @@ internal static class Startup
     [STAThread]
     internal static void Main(string[] args)
     {
-        var host = NetCoreIoC.Self;
+        var host = NetIoC.Default;
         App.Start();
     }
 }

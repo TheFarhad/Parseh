@@ -4,21 +4,21 @@ public class ContentPage : Page
 {
     const double FadeFrom = 0;
     const double FadeTo = 1;
-    public const double AnimateDuration = 0.5;
+    public const double AnimateDuration = 0.4;
     public bool ShouldUnload { get; set; } = false;
 
     public ContentPage() => Init();
 
     public virtual async Task AnimateIn()
     {
-        var size = this.WindowWidth;
-        await this.TranlateFadeAsync(new(size, 0, -size, 0), new(0), FadeFrom, FadeTo, AnimateDuration);
+        var offset = this.WindowWidth;
+        await this.TranlateFadeAsync(new(offset, 0, -offset, 0), new(0), FadeFrom, FadeTo, AnimateDuration);
     }
 
     public virtual async Task AnimateOut()
     {
-        var size = this.WindowWidth;
-        await this.TranlateFadeAsync(new(0), new(-size, 0, size, 0), FadeTo, FadeFrom, AnimateDuration);
+        var offset = this.WindowWidth;
+        await this.TranlateFadeAsync(new(0), new(-offset, 0, offset, 0), FadeTo, FadeFrom, AnimateDuration);
     }
 
     #region Private Functionality
@@ -49,7 +49,7 @@ public class ContentPage : Page
 public class ContentPage<TVM> : ContentPage where TVM : VM, new()
 {
     public readonly TVM Model = default!;
-    protected readonly NetCoreIoC Ioc = NetCoreIoC.Self;
+    protected readonly NetIoC Ioc = NetIoC.Default;
 
     public ContentPage() => DataContext = Model = Ioc.Get<TVM>() ?? new();
 }

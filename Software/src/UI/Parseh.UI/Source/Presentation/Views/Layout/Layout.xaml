@@ -38,8 +38,7 @@
                                         />
 
                                 <!--Background="{StaticResource Gray15Brush}"-->
-                                <Border 
-                                        CornerRadius="{Binding CornerRadius, FallbackValue=6}">
+                                <Border CornerRadius="{Binding CornerRadius, FallbackValue=6}">
                                     <Border.Effect>
                                         <DropShadowEffect Color="{StaticResource CaptionBarColor}" ShadowDepth="0" Opacity="0.2"/>
                                     </Border.Effect>
@@ -61,7 +60,7 @@
                                     </Grid.OpacityMask>
 
                                     <!--Caption Content-->
-                                    <Grid Grid.Row="0" Panel.ZIndex="1" Background="{StaticResource Gray14Brush}">
+                                    <Grid Grid.Row="0" Panel.ZIndex="1" Background="{StaticResource Gray13Brush}">
 
                                         <Grid.ColumnDefinitions>
                                             <!--Caption Icon-->
@@ -95,7 +94,6 @@
                                             <Button Grid.Column="0"
                                                     Command="{Binding RestoreCommand}" 
                                                     Style="{StaticResource LayoutButtonsStyle}">
-
                                                 <Image Source="{Binding RestoreButtonImage}"/>
                                             </Button>
 
@@ -149,6 +147,6 @@
          />
     </WindowChrome.WindowChrome>
 
-    <local:Pager Page="{Binding Path=ViewModel.Page, Source={x:Static vm:Generic.Self}}"/>
+    <local:Pager Page="{Binding Path=Model.Page, Source={x:Static vm:Generic.Default}}"/>
 
 </local:ContentLayout>

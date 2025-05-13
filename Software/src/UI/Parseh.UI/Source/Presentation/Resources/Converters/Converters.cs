@@ -28,3 +28,21 @@ internal sealed class BooleanToVisibilityRevert : BindConverter<BooleanToVisibil
     public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => value.As<Visibility>() != Visibility.Visible;
 }
+
+internal sealed class BooleanToHAlignment : BindConverter<BooleanToHAlignment>
+{
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value.As<bool>() ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => value.As<HorizontalAlignment>() == HorizontalAlignment.Right;
+}
+
+internal sealed class BooleanToHAlignmentRevert : BindConverter<BooleanToHAlignmentRevert>
+{
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value.As<bool>() ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => value.As<HorizontalAlignment>() == HorizontalAlignment.Left;
+}
