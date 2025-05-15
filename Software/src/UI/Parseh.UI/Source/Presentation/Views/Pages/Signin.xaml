@@ -11,23 +11,26 @@
       d:DesignHeight="450" d:DesignWidth="800"
       x:Name="SigninPage">
 
-    <Border Background="Transparent">
+    <Border Background="{StaticResource Gray14Brush}">
+
         <Border 
           VerticalAlignment="Center" 
-          HorizontalAlignment="Center" 
-          Background="{StaticResource CaptionBarBrush}"
+          HorizontalAlignment="Center"
           Width="300" Height="350"
           CornerRadius="{StaticResource Radius}">
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
-                <StackPanel Orientation="Vertical" Margin="0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                          Padding="20">
+
+                <StackPanel Orientation="Vertical" 
+                            Margin="0">
 
                     <TextBlock Text="Enter Your Local Passcode"
-                             FontSize="{StaticResource FS18}"
-                             VerticalAlignment="Center"
-                             HorizontalAlignment="Left"
-                             Foreground="{StaticResource Gray3Brush}"
-                             />
+                               FontSize="{StaticResource FS18}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               Foreground="{StaticResource Gray3Brush}"
+                               />
 
                     <StackPanel Margin="0, 20, 0, 15">
                         <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 

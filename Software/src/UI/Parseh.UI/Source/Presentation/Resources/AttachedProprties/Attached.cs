@@ -1,8 +1,5 @@
 ﻿namespace Parseh.UI.Resources;
 
-using System.Runtime.CompilerServices;
-using System.Security.AccessControl;
-using System.Windows;
 using System.Windows.Navigation;
 
 internal sealed class PasscodeHasPlaceholder : AttachedProperty<PasscodeHasPlaceholder, bool>
@@ -54,7 +51,7 @@ internal sealed class ShowSearchbar : SimpleAnimatedProperty<ShowSearchbar>
     {
         if (!firstload)
         {
-            const double Duration = 0.4;
+            const double Duration = 0.2;
             var offset = element.Height;
             if (value) await element.TranslateAsync(new(0), new(0, offset, 0, -offset), Duration);
             else await element.TranslateAsync(new(0, offset, 0, -offset), new(0), Duration);
@@ -72,7 +69,7 @@ internal sealed class HideSearchbar : SimpleAnimatedProperty<HideSearchbar>
         var offset = element.Height;
         if (!firstload)
         {
-            const double Duration = 0.4;
+            const double Duration = 0.2;
             if (value) await element.TranslateAsync(new(0, -offset, 0, offset), new(0), Duration);
             else await element.TranslateAsync(new(0), new(0, -offset, 0, offset), Duration);
         }
@@ -83,8 +80,6 @@ internal sealed class HideSearchbar : SimpleAnimatedProperty<HideSearchbar>
         }
     }
 }
-
-
 
 #endregion
 
@@ -101,3 +96,53 @@ internal sealed class FocusOnLoad : AttachedProperty<FocusOnLoad, bool>
         textblock.Loaded += (sender, ee) => App.Dispatch(() => sender.As<TextBox>().Focus());
     }
 }
+
+#region Setting Menu
+
+internal sealed class SettingMenuAnimate : AttachedProperty<SettingMenuAnimate, bool>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        if (uielement.IsNull())
+            return;
+
+        var settingMenu = uielement.As<Border>();
+        var value = e.NewValue.As<bool>();
+        var offset = 70;
+        var duration = 0.3;
+
+        if (value) App.Dispatch(() => settingMenu.TranlateFadeAsync(new(offset, 0, -offset, 0), new(0), 0, 1, duration));
+        else App.Dispatch(() => settingMenu.TranlateFadeAsync(new(0), new(-offset, 0, offset, 0), 1, 0, duration));
+    }
+}
+
+internal sealed class SettingMenuZIndexAnimate : AttachedProperty<SettingMenuZIndexAnimate, bool>
+{
+    public override async void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        if (uielement.IsNull())
+            return;
+
+        var settingContainer = uielement.As<Setting>();
+        var value = e.NewValue.As<bool>();
+        var duration = 0.3;
+
+        if (value)
+        {
+            settingContainer.Visibility = Visibility.Visible;
+            Panel.SetZIndex(settingContainer, 1);
+            await settingContainer.FadeAsync(0, 1, duration);
+        }
+        else
+        {
+            await settingContainer.FadeAsync(1, 0, duration);
+            Panel.SetZIndex(settingContainer, 0);
+            settingContainer.Visibility = Visibility.Collapsed;
+        }
+    }
+}
+
+#endregion
+
+
+

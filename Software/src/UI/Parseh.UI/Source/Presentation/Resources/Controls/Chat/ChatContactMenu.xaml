@@ -12,12 +12,11 @@
              d:DesignHeight="450" d:DesignWidth="250"
              Width="300"
              MinWidth="300"
-             MaxWidth="300"
-             x:Name="this"
-             >
+             MaxWidth="300">
 
     <local:Component.Template>
         <ControlTemplate TargetType="{x:Type UserControl}">
+
             <Grid Grid.Column="0" Background="{StaticResource Gray15Brush}">
                 <Grid.RowDefinitions>
                     <!--buttons zone-->
@@ -29,13 +28,14 @@
                 <Border Grid.Row="0"
                         Background="Transparent"
                         Padding="4"
-                         Height="45"
+                        Height="45"
                         res:HideSearchbar.Value="{Binding IsSearching}"
                         >
 
                     <Border CornerRadius="5" 
                             Background="{StaticResource Gray14Brush}"
                            >
+
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -44,14 +44,16 @@
 
                             <TextBox Grid.Column="0" 
                                      Tag="Search your title" 
-                                     FontSize="{StaticResource FS11}"
-                                     Margin="5"
+                                     FontSize="{StaticResource FS12}"
+                                     Margin="15, 2"
                                      Style="{StaticResource SendMessageMarkTextBox}"
-                                     res:FocusOnLoad.Value="True"/>
+                                     res:FocusOnLoad.Value="True"
+                                     TabIndex="0"
+                                     x:Name="searchtext"/>
 
                             <Button Grid.Column="1" 
                                     Command="{Binding CloseSearchbarCommand}"
-                                    Style="{StaticResource ChatMessageTopBarImageButtonStyle}"
+                                    Style="{StaticResource OpacityImageButtonStyle}"
                                     Padding="5">
                                 <Image Source="/Source/Presentation/Resources/Images/Icon/Close.png"/>
                             </Button>
@@ -78,46 +80,62 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                <Button Style="{StaticResource ImageButtonStyle}">
-                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Chat.png"/>
+
+                                <!--menu-->
+                                <Button Style="{StaticResource OpacityImageButtonStyle}"
+                                        Margin="3, 0, 10, 0">
+                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Menu.png"/>
                                 </Button>
 
-                                <Button Style="{StaticResource ImageButtonStyle}">
-                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Contact.png"/>
+                                <!--lock app-->
+                                <Button Command="{Binding LockCommand}" 
+                                        Style="{StaticResource OpacityImageButtonStyle}"
+>
+                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Lock.png"/>
                                 </Button>
 
-                                <Button Style="{StaticResource ImageButtonStyle}">
-                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Picture.png"/>
-                                </Button>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
+
+                                <!--search bar-->
                                 <Button Command="{Binding ShowSearchbarCommand}" 
-                                        Style="{StaticResource ImageButtonStyle}">
+                                        Style="{StaticResource OpacityImageButtonStyle}">
                                     <Image Source="/Source/Presentation/Resources/Images/Icon/Search.png"/>
                                 </Button>
 
-                                <Button Style="{StaticResource ImageButtonStyle}">
+                                <!--setting-->
+                                <Button Style="{StaticResource OpacityImageButtonStyle}"
+                                        Command="{Binding OpenSettingMenuCommand}"
+                                        >
+                                    <!--Click="Button_Click"-->
+
                                     <Image Source="/Source/Presentation/Resources/Images/Icon/Setting.png"/>
                                 </Button>
+
                             </StackPanel>
                         </Grid>
 
                     </Border>
                 </Border>
 
-                <Border Grid.Row="1" Background="{StaticResource Gray13Brush}">
+                <!--contact chat list-->
+                <Border Grid.Row="1" 
+                        Background="{StaticResource Gray14Brush}">
+
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                   VerticalScrollBarVisibility="Auto">
-                        <!--ItemsSource="{Binding Model.Contacts}"-->
-                        <ItemsControl >
+
+                        <ItemsControl ItemsSource="{Binding Contact.Contacts}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <local:ChatContactItemCard/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+
                     </ScrollViewer>
+
                 </Border>
 
             </Grid>

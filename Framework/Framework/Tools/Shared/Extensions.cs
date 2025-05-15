@@ -24,6 +24,11 @@ public static partial class Extention
         return result;
     }
 
+    public static void IsDo<T>(this object source, Action<T> onDo)
+    {
+        if (source.Is<T>()) onDo(source.As<T>());
+    }
+
     public static T As<T>(this object source) => (T)source;
 
     public static bool IsNull(this object source) => Equals(source, null) || source == default;

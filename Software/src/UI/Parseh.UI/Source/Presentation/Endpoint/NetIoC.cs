@@ -7,17 +7,21 @@ using static Microsoft.Extensions.Hosting.Host;
 public sealed class NetIoC
 {
     readonly IHost _host;
-    static NetIoC _self = default!;
+    static NetIoC _default = default!;
     readonly static Lock _lock = new();
     readonly IServiceProvider _sp;
     public static NetIoC Default
     {
         get
         {
-            lock (_lock)
+            if (_default.IsNull())
             {
-                return _self ??= new();
+                lock (_lock)
+                {
+                    if (_default.IsNull()) _default = new();
+                }
             }
+            return _default;
         }
     }
 
@@ -38,6 +42,7 @@ public sealed class NetIoC
     void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
         services.AddSingleton<GenericViewModel>();
+        services.AddSingleton<SettingViewModel>();
         services.AddSingleton<Layout>();
     }
 

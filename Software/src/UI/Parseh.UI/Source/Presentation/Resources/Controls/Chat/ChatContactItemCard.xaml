@@ -12,21 +12,23 @@
              Height="60">
 
     <local:Component.Resources>
+
         <Style TargetType="ContentControl" x:Key="CardStyle">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Grid x:Name="ContactCard" Background="{StaticResource Gray13Brush}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <Border x:Name="Container">
+                            <Grid x:Name="ContactCard" Background="{StaticResource Gray13Brush}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0"  
+                                <!--<Border Grid.Column="0"  
                                         HorizontalAlignment="Left"
                                         BorderThickness="0" 
-                                        Width="1.2" 
+                                        Width="1.4" 
                                         Visibility="{Binding Selected, Converter={converter:BooleanToVisibility}}">
                                 <Border.Background>
                                     <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1">
@@ -35,70 +37,72 @@
                                         <GradientStop Color="{StaticResource Gray13}" Offset="1"/>
                                     </LinearGradientBrush>
                                 </Border.Background>
-                            </Border>
+                            </Border>-->
 
-                            <!--profile picture-->
-                            <Border Grid.Column="0" 
+                                <!--profile picture-->
+                                <Border Grid.Column="0" 
                                     Padding="3" 
+                                    Margin="3, 0, 0, 0"
                                     BorderThickness="0"  
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center">
-                                <Border Background="{StaticResource Gray15Brush}"
+                                    <Border x:Name="PictureBorder"
+                                        Background="{StaticResource Gray14Brush}"
                                         BorderThickness="0"
                                         Width="45"
                                         Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                                        CornerRadius="12">
+                                        CornerRadius="8">
 
-                                    <TextBlock Text="{Binding Nikname}"
+                                        <TextBlock Text="{Binding Nikname}"
                                                FontSize="{StaticResource FS18}"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
                                                Foreground="{StaticResource BlackOliveBrush}"/>
 
+                                    </Border>
                                 </Border>
-                            </Border>
 
-                            <Border Grid.Column="1"
+                                <Border Grid.Column="1"
                                     Padding="4"
                                     BorderThickness="0" >
-                                <StackPanel Orientation="Vertical"
+                                    <StackPanel Orientation="Vertical"
                                             VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Contact}" 
+                                        <TextBlock Text="{Binding Contact}" 
                                                HorizontalAlignment="Left"
                                                Foreground="White"
                                                 Margin="0, 1, 0, 3"/>
-                                    <TextBlock Text="{Binding Message}" 
+                                        <TextBlock Text="{Binding Message}" 
                                                HorizontalAlignment="Left"
                                                Foreground="{StaticResource Gray3Brush}"
                                                TextTrimming="WordEllipsis"
                                                    />
-                                </StackPanel>
-                            </Border>
+                                    </StackPanel>
+                                </Border>
 
-                            <Border Grid.Column="2"
+                                <Border Grid.Column="2"
                               Padding="4"
                               BorderThickness="0">
-                                <Grid VerticalAlignment="Top">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+                                    <Grid VerticalAlignment="Top">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
 
-                                    <Border Grid.Row="0">
-                                        <TextBlock Text="Tue"
+                                        <Border Grid.Row="0">
+                                            <TextBlock Text="Tue"
                                                    Foreground="{StaticResource Gray3Brush}"
                                                    FontSize="{StaticResource FS12}"
                                                    HorizontalAlignment="Right"
                                                    VerticalAlignment="Center"/>
-                                    </Border>
+                                        </Border>
 
-                                    <Grid Grid.Row="1" VerticalAlignment="Top">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Row="1" VerticalAlignment="Top">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <Border Grid.Column="0"
+                                            <Border Grid.Column="0"
                                                 CornerRadius="2"
                                                 Margin="2"
                                                 Padding="2"
@@ -106,14 +110,14 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center" >
 
-                                            <TextBlock Text="{Binding UnreadMessageCount}" 
+                                                <TextBlock Text="{Binding UnreadMessageCount}" 
                                                        HorizontalAlignment="Center"
                                                        VerticalAlignment="Center"
                                                        FontSize="{StaticResource FS12}"/>
 
-                                        </Border>
+                                            </Border>
 
-                                        <Image Grid.Column="1" 
+                                            <Image Grid.Column="1" 
                                                Source="/Source/Presentation/Resources/Images/Icon/Pin.png"
                                                Width="16"
                                                Height="16"
@@ -121,15 +125,28 @@
                                                HorizontalAlignment="Center"
                                                Visibility="{Binding Pinned, Converter={converter:BooleanToVisibility}}"/>
 
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </Border>
-                        </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
 
                         <ControlTemplate.Triggers>
 
                             <DataTrigger Binding="{Binding Selected}" Value="True">
-                                <Setter Property="Background" TargetName="ContactCard" Value="{StaticResource Gray14Brush}"/>
+                                <Setter Property="Background" TargetName="ContactCard" Value="{StaticResource Gray13Brush}"/>
+                                <!--<Setter Property="BorderThickness" TargetName="PictureBorder" Value="0.7"/>
+                                <Setter Property="BorderBrush" TargetName="PictureBorder" Value="{StaticResource Gray5Brush}"/>-->
+                                <Setter Property="BorderThickness" TargetName="Container" Value="0, 0.6, 0, 0"/>
+                                <Setter Property="BorderBrush" TargetName="Container">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
+                                            <GradientStop Color="{StaticResource Gray13}" Offset="0"/>
+                                            <GradientStop Color="{StaticResource White}" Offset="0.5"/>
+                                            <GradientStop Color="{StaticResource Gray13}" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
 
                             <MultiDataTrigger>
@@ -145,7 +162,7 @@
                                     <Condition Binding="{Binding Selected}" Value="False"/>
                                     <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="False"/>
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Background" TargetName="ContactCard" Value="{StaticResource Gray13Brush}"/>
+                                <Setter Property="Background" TargetName="ContactCard" Value="{StaticResource Gray12Brush}"/>
                             </MultiDataTrigger>
 
                         </ControlTemplate.Triggers>
@@ -154,6 +171,7 @@
             </Setter>
 
         </Style>
+
     </local:Component.Resources>
 
     <ContentControl Style="{StaticResource CardStyle}"/>

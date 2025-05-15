@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Parseh.UI.Views"
         xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
         xmlns:converters="clr-namespace:Parseh.UI.BindingConverters"
+        xmlns:res="clr-namespace:Parseh.UI.Resources"
         mc:Ignorable="d"
         x:Name="AppShell"
         Title="Parseh"
@@ -14,7 +15,8 @@
         WindowStartupLocation="CenterScreen"
         MinWidth="{Binding MinWidth}" MinHeight="{Binding MinHeight}"
         Width="{Binding Width}" Height="{Binding Height}"
-        d:Width="900" d:Height="506">
+        d:Width="900" d:Height="506"
+                     >
 
     <local:ContentLayout.Resources>
 
@@ -37,10 +39,9 @@
                                         CornerRadius="{Binding CornerRadius, FallbackValue=6}"
                                         />
 
-                                <!--Background="{StaticResource Gray15Brush}"-->
                                 <Border CornerRadius="{Binding CornerRadius, FallbackValue=6}">
                                     <Border.Effect>
-                                        <DropShadowEffect Color="{StaticResource CaptionBarColor}" ShadowDepth="0" Opacity="0.2"/>
+                                        <DropShadowEffect Color="{StaticResource Gray15}" ShadowDepth="0" Opacity="0.2"/>
                                     </Border.Effect>
                                 </Border>
 
@@ -72,15 +73,15 @@
                                         </Grid.ColumnDefinitions>
 
                                         <!--<Button Grid.Column="0"
-                                                Command="{Binding CaptionManuCommand}" 
+                                                Command="{Binding CaptionMenuCommand}" 
                                                 Style="{StaticResource CaptionMenuButtonStyle}">
                                             <Image Source="/Source/Presentation/Resources/Images/Logo/smalllogo.png"/>
                                         </Button>-->
 
-                                        <Viewbox Grid.Column="0" Grid.ColumnSpan="3">
-                                            <!--<TextBlock Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, FallbackValue='Parseh'}"
-                                                        Style="{StaticResource CaptionTitleStyle}"/>-->
-                                        </Viewbox>
+                                        <!--<Viewbox Grid.Column="1" Grid.ColumnSpan="3">
+                                            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, FallbackValue='Parseh'}"
+                                                        Style="{StaticResource CaptionTitleStyle}"/>
+                                        </Viewbox>-->
 
                                         <StackPanel Grid.Column="2" Orientation="Horizontal">
 
@@ -118,13 +119,24 @@
                                         </Border.BorderBrush>
                                     </Border>-->
 
-                                    <!--Page Content-->
-                                    <Border Grid.Row="2" 
-                                            ClipToBounds="True"
-                                            Padding="{Binding InnerContentPadding}"
-                                            Background="{StaticResource Gray15Brush}">
-                                        <ContentPresenter Content="{TemplateBinding Content}"/>
-                                    </Border>
+                                    <!--page content and setting menu-->
+                                    <Grid Grid.Row="2" 
+                                          ClipToBounds="True">
+
+                                        <!--setting menu-->
+                                        <local:Setting  Panel.ZIndex="0"
+                                                        Visibility="Collapsed"
+                                                        res:SettingMenuZIndexAnimate.Value="{Binding Path=Model.IsOpenSettingMenu, Source={x:Static vm:Generic.Default}}"/>
+
+                                        <!--page content-->
+                                        <Border Padding="{Binding InnerContentPadding}"
+                                                Background="{StaticResource Gray15Brush}">
+
+                                            <ContentPresenter Content="{TemplateBinding Content}"/>
+
+                                        </Border>
+
+                                    </Grid>
 
                                 </Grid>
 
@@ -139,12 +151,11 @@
     </local:ContentLayout.Resources>
 
     <WindowChrome.WindowChrome>
-        <WindowChrome
-         ResizeBorderThickness="{Binding ResizeBorderThickness}"
-         CaptionHeight="{Binding CaptionHeight}"
-         CornerRadius="0"
-         GlassFrameThickness="0"
-         />
+        <WindowChrome ResizeBorderThickness="{Binding ResizeBorderThickness}"
+                      CaptionHeight="{Binding CaptionHeight}"
+                      CornerRadius="0"
+                      GlassFrameThickness="0"
+                      />
     </WindowChrome.WindowChrome>
 
     <local:Pager Page="{Binding Path=Model.Page, Source={x:Static vm:Generic.Default}}"/>

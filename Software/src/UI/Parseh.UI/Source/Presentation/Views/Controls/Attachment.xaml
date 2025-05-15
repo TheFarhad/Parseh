@@ -1,0 +1,32 @@
+﻿<local:Component x:Class="Parseh.UI.Views.Attachment"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Parseh.UI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="180"
+             d:DesignWidth="230"
+             Width="230"
+             Height="200">
+
+    <Border Background="{StaticResource Gray14Brush}"
+            CornerRadius="5">
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <local:AttachmentItem Grid.Row="0" AttachmentTitle="Photo or video" AttachmentImageSource="/Source/Presentation/Resources/Images/Icon/PhotoOrVideo.png"/>
+            <local:AttachmentItem Grid.Row="1" AttachmentTitle="Document" AttachmentImageSource="/Source/Presentation/Resources/Images/Icon/Document.png"/>
+            <local:AttachmentItem Grid.Row="2" AttachmentTitle="Location" AttachmentImageSource="/Source/Presentation/Resources/Images/Icon/Location.png"/>
+
+        </Grid>
+
+    </Border>
+
+</local:Component>

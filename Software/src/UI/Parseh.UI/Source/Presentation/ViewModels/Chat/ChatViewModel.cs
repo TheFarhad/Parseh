@@ -2,33 +2,61 @@
 
 public sealed class ChatViewModel : VM
 {
+    #region Properties
+
     public ChatContactViewModel Contact { get => Get(); private set => Set(value); }
     public double SettingbarHeight { get => Get(); private set => Set(value); }
     public bool IsSearching { get => Get(); private set => Set(value); }
     public bool SelectedChat { get => Get(); private set => Set(value); }
 
+    #endregion
 
-    public IRelayCommand ShowSearchbarCommand { get; private set; }
-    public IRelayCommand CloseSearchbarCommand { get; private set; }
+    #region Commands
+
+    public IRelayCommand ShowSearchbarCommand { get; private set; } = default!;
+    public IRelayCommand CloseSearchbarCommand { get; private set; } = default!;
+    public IRelayCommand LockCommand { get; private set; } = default!;
+    public IRelayCommand OpenSettingMenuCommand { get; private set; } = default!;
+    public IRelayCommand CloseSettingMenuCommand { get; private set; } = default!;
+
+    #endregion
 
     public ChatViewModel()
     {
+        Init();
+        // TODO: Load data form server (only Contats-Items Info)
+    }
+
+    void Init()
+    {
+        InitProperties();
+        InitCommands();
+    }
+
+    void InitProperties()
+    {
         SettingbarHeight = 60;
         IsSearching = false;
+        SelectedChat = true;
+        Contact = new();
+    }
+
+    void InitCommands()
+    {
         ShowSearchbarCommand = new Command(ShowSearchbar);
         CloseSearchbarCommand = new Command(CloseSearchbar);
-        SelectedChat = true;
-
-        // TODO: Load data form server (only Contats-Items Info)
+        LockCommand = new Command(Lock);
+        OpenSettingMenuCommand = new Command(OpenSettingMenu);
+        CloseSettingMenuCommand = new Command(CloseSettingMenu);
     }
 
     #region Private Functionality
 
-    //void ShowSearchbar() => IsSearching = true;
-    //void CloseSearchbar() => IsSearching = false;
-
-    void ShowSearchbar() => IsSearching = !IsSearching;
-    void CloseSearchbar() => IsSearching = !IsSearching;
+    void ShowSearchbar() => IsSearching = true;
+    void CloseSearchbar() => IsSearching = false;
+    void Lock() => Generic.Default.Model.ToPage(PageMode.Signin);
+    void OpenSettingMenu() => Generic.Default.Model.IsOpenSettingMenu = true;
+    void CloseSettingMenu() => Generic.Default.Model.IsOpenSettingMenu = false;
 
     #endregion
 }
@@ -39,7 +67,33 @@ public sealed class ChatContactViewModel : VM
 
     public ChatContactViewModel()
     {
-        //Contacts = [];
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "PS",
+            Contact = "Panah",
+            Message = "Hi, Where are you?!!",
+            Selected = false,
+            Pinned = true,
+            UnreadMessageCount = 1007
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!!",
+            Selected = true,
+            Pinned = false,
+            UnreadMessageCount = 3
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
+        });
     }
 }
 

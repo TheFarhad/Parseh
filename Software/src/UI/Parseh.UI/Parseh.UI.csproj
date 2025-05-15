@@ -12,6 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="Source\Presentation\Views\Layout\Setting.xaml.cs" />
 		<Compile Remove="Source\Presentation\Views\Layout\Signin.xaml.cs" />
 	</ItemGroup>
 
@@ -25,11 +26,17 @@
 		<None Remove="Source\Presentation\Resources\Images\Icon\ChatMessageContainerMenu.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Close.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Contact.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Document.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Location.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Lock.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Maximize.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Menu.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Minimize.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Person.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\PhotoOrVideo.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Picture.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Pin.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Profile.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Restore.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Search.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Send.png" />
@@ -41,6 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Page Remove="Source\Presentation\Views\Layout\Setting.xaml" />
 		<Page Remove="Source\Presentation\Views\Layout\Signin.xaml" />
 	</ItemGroup>
 
@@ -82,11 +90,17 @@
 		<Resource Include="Source\Presentation\Resources\Images\Icon\ChatMessageContainerMenu.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Close.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Contact.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Document.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Location.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Lock.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Maximize.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Menu.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Minimize.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Person.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\PhotoOrVideo.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Picture.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Pin.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Profile.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Restore.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Search.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Send.png" />

@@ -1,0 +1,29 @@
+﻿<local:Component x:Class="Parseh.UI.Views.AttachmentItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Parseh.UI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
+    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0, 1">
+
+        <Image Source="{Binding AttachmentImageSource}" 
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Margin="10, 0"
+               Width="32"
+               Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"/>
+
+        <TextBlock Text="{Binding AttachmentTitle}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="{StaticResource FS20}"
+                   Foreground="{StaticResource Gray1Brush}"
+                   Margin="10, 0"
+                   />
+    </StackPanel>
+
+</local:Component>

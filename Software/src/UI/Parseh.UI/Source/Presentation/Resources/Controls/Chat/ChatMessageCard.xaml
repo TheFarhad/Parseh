@@ -8,15 +8,13 @@
              xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
              xmlns:convert="clr-namespace:Parseh.UI.BindingConverters"
              mc:Ignorable="d" 
-             d:DesignHeight="55" d:DesignWidth="600">
+             d:DesignHeight="60" d:DesignWidth="600">
 
-    <Border Background="Transparent"
-            Margin="0, 5"
-            >
-        <!--{Binding SendByMe, Converter={convert:BooleanToAlignment}}-->
-        <Grid MaxWidth="300"
-              HorizontalAlignment="{Binding SendByMe, Converter={convert:BooleanToHAlignment}}"
-              >
+    <Border Margin="0, 5">
+
+        <Grid MaxWidth="350"
+              HorizontalAlignment="{Binding SendByMe, Converter={convert:BooleanToHAlignment}}">
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -24,11 +22,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <!--*-->
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
+            <!--prfile picture-->
             <Border Grid.Row ="0"
                     Grid.Column="0"
                     Width="30"
@@ -40,8 +38,7 @@
                     CornerRadius="{Binding Path=Width, RelativeSource={RelativeSource Mode=Self}}"
                     ClipToBounds="True"
                     Margin="0, 0, -5, 3"
-                    Visibility="{Binding SendByMe, Converter={convert:BooleanToVisibilityRevert}}"
-                    >
+                    Visibility="{Binding SendByMe, Converter={convert:BooleanToVisibilityRevert}}">
 
                 <Border.Clip>
                     <EllipseGeometry Center="15,15"
@@ -49,11 +46,11 @@
                                      RadiusY="{Binding Path=RadiusX, RelativeSource={RelativeSource Mode=Self}}"/>
                 </Border.Clip>
 
-                <!--TODO: تصویر فیت نیست و اصلا-->
                 <Image Source="/Source/Presentation/Resources/Images/Icon/Person.png"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Stretch="UniformToFill"/>
+
             </Border>
 
             <Border Grid.Row ="0"
@@ -64,20 +61,20 @@
                 <Path HorizontalAlignment="Left"
                       VerticalAlignment="Bottom"
                       StrokeThickness="0" 
-                      Panel.ZIndex="2"
-                      Fill="{StaticResource Gray12Brush}" 
-                      Margin="0, 0, -4, 0"
-                      Data="M 0,0 L 3,-1 L 6,-2 L 9,-3 L 12,-5 L 16,0 L 0,0"  
+                      Fill="{StaticResource Gray14Brush}" 
+                      Margin="0, 0, 0, 3"
+                      Data="M 0,0 L 4,-1 L 8,-3 L 12.5,-10 L 12.5,-2 L 0,0"  
                       />
 
             </Border>
 
+            <!--message container-->
             <Border Grid.Row ="0"
                     Grid.Column="2"
                     MinHeight="40"
                     HorizontalAlignment="{Binding SendByMe, Converter={convert:BooleanToHAlignment}}"
                     VerticalAlignment="Center"
-                    Background="{StaticResource Gray12Brush}"
+                    Background="{StaticResource Gray14Brush}"
                     CornerRadius="5"
                     Padding="10, 5"
                     >
@@ -109,7 +106,7 @@
                             VerticalAlignment="Center">
 
                     <TextBlock Text="{Binding Message}"
-                               Foreground="{StaticResource Gray1Brush}"
+                               Foreground="{StaticResource Gray4Brush}"
                                TextWrapping="Wrap"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Top"/>
@@ -118,9 +115,9 @@
                                Opacity="0"
                                Text="{Binding SendAt, StringFormat={}{0:hh}:{0:mm}}" 
                                HorizontalAlignment="{Binding SendByMe, Converter={convert:BooleanToHAlignmentRevert}}"
-                               FontSize="{StaticResource FS12}"
-                               Foreground="{StaticResource OffBlack1Brush}"
-                               Margin="0, 3"
+                               FontSize="{StaticResource FS11}"
+                               Foreground="{StaticResource Gray2Brush}"
+                               Margin="0, 4, 0, 2"
                                />
 
                 </StackPanel>
@@ -136,10 +133,10 @@
                             VerticalAlignment="Bottom"
                             HorizontalAlignment="Left">
 
-                    <Canvas Background="{StaticResource Gray11Brush}">
+                    <Canvas Background="{StaticResource Gray14Brush}">
                         <Ellipse Canvas.Top="0"
                                  Canvas.Left="0"
-                                 Fill="{StaticResource Gray11Brush}"
+                                 Fill="{StaticResource Gray14Brush}"
                                  Height="5"
                                  Width="5"/>
                     </Canvas>

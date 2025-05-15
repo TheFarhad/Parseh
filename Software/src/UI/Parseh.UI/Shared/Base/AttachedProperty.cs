@@ -34,6 +34,16 @@ public abstract class AttachedProperty<TOwner, TProperty>
 
     #endregion
 
+    #region Tutorial
+
+    // کوئرس دقیقا یک مرحله قبل از ولیونج اتفاق می افتد
+    // بیشتر برای اعتبارسنجی ولو ارسال شده صورت میگیرد
+    // مثلا اگر ولیو نامعتبر بود خودمان در متود کوئرس، آن را به مقدار مورد نطر تغییر میدهیم
+    // واین مقدار تغییر یافته به متود ولیو چنجد ارسال می شود
+    // سپس آنجا تصمیم گرفته می شود که در ازای این مقدار، چه واکنشی داشته باشیم
+
+    #endregion
+
 }
 
 public abstract class SimpleAnimatedProperty<TOwner> : AttachedProperty<TOwner, bool>

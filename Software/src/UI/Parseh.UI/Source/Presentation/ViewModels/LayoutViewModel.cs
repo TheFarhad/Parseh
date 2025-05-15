@@ -1,15 +1,21 @@
-﻿using System.Windows.Media;
-using System.Windows.Media.Imaging;
+﻿namespace Parseh.UI.ViewModels;
 
-namespace Parseh.UI.ViewModels;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 internal sealed class LayoutViewModel : VM
 {
-    const string IconPath = "/Source/Presentation/Resources/Images/Icon/";
-    Layout _layout = default!;
-    WindowState _state => _layout.WindowState;
+    #region Fileds
+
+    Layout _view = default!;
+    WindowState _state => _view.WindowState;
     LayoutFitAdjuster _fitAdjuster = default!;
+    // TODO: ببین در پروژه اصلی با پراپرتی زیر دقیقا چه کاری کرده
     WindowDockPosition _dockPosition = WindowDockPosition.Undocked;
+
+    #endregion
+
+    #region Properties
 
     public double MinWidth { get => Get(); private set => Set(value); }
     public double MinHeight { get => Get(); private set => Set(value); }
@@ -29,10 +35,16 @@ internal sealed class LayoutViewModel : VM
         private set => Set(value);
     }
 
+    #endregion
+
+    #region Commands
+
     public IRelayCommand MinimizeCommand { get; private set; } = default!;
     public IRelayCommand RestoreCommand { get; private set; } = default!;
     public IRelayCommand CloseCommand { get; private set; } = default!;
-    public IRelayCommand CaptionManuCommand { get; private set; } = default!;
+    public IRelayCommand CaptionMenuCommand { get; private set; } = default!;
+
+    #endregion
 
     internal LayoutViewModel(Layout layout) => Init(layout);
 
@@ -51,8 +63,11 @@ internal sealed class LayoutViewModel : VM
     {
         MinWidth = 700;
         MinHeight = 394;
-        Width = 900;
-        Height = 506;
+        // TODO:
+        //Width = 900;
+        //Height = 506;
+        Width = 1068;
+        Height = 600;
         ActivateMode = true;
         CaptionHeight = 27;
         CornerRadius = 6;
@@ -68,16 +83,15 @@ internal sealed class LayoutViewModel : VM
 
     void InitLayout(Layout layout)
     {
-        _layout = layout;
-        _layout.DataContext = this;
+        _view = layout;
+        _view.DataContext = this;
 
         _fitAdjuster = new LayoutFitAdjuster(layout);
         _fitAdjuster.WindowDockChanged += WindowDockChanged;
 
-
-        _layout.StateChanged += OnStateChanged;
-        _layout.Activated += OnActivated;
-        _layout.Deactivated += OnDeactivated;
+        _view.StateChanged += OnStateChanged;
+        _view.Activated += OnActivated;
+        _view.Deactivated += OnDeactivated;
     }
 
     void InitCommands()
@@ -85,11 +99,11 @@ internal sealed class LayoutViewModel : VM
         MinimizeCommand = new Command(OnMinimize);
         RestoreCommand = new Command(OnRestore);
         CloseCommand = new Command(OnClose);
-        CaptionManuCommand = new Command(OnCaptionManu);
+        CaptionMenuCommand = new Command(OnCaptionMenu);
     }
 
     void OnStateChanged(object? sender, EventArgs e) => OnNotifyStateChanged();
-    private void WindowDockChanged(WindowDockPosition dockPosition)
+    void WindowDockChanged(WindowDockPosition dockPosition)
     {
         _dockPosition = dockPosition;
         OnNotifyStateChanged();
@@ -102,21 +116,22 @@ internal sealed class LayoutViewModel : VM
     {
         Notify(nameof(CornerRadius));
         Notify(nameof(OuterMargin));
+        Notify(nameof(OuterBorderThickness));
         Notify(nameof(ResizeBorderThickness));
         Notify(nameof(RestoreButtonImage));
     }
 
     BitmapImage ImageSource(string icon)
-        => new BitmapImage(new Uri($"/Source/Presentation/Resources/Images/Icon/{icon}.png", uriKind: UriKind.Relative));
+        => new(new Uri($"/Source/Presentation/Resources/Images/Icon/{icon}.png", uriKind: UriKind.Relative));
 
     #endregion
 
-    #region Commands
+    #region Command Methods
 
-    void OnMinimize() => _layout.WindowState = WindowState.Minimized;
-    void OnRestore() => _layout.WindowState ^= WindowState.Maximized;
-    void OnClose() => _layout.Close();
-    void OnCaptionManu() => SystemCommands.ShowSystemMenu(_layout, _layout.PointToScreen(new Point(30, 5)));
+    void OnMinimize() => _view.WindowState = WindowState.Minimized;
+    void OnRestore() => _view.WindowState ^= WindowState.Maximized;
+    void OnClose() => _view.Close();
+    void OnCaptionMenu() => SystemCommands.ShowSystemMenu(_view, _view.PointToScreen(new Point(30, 5)));
 
     #endregion
 }
