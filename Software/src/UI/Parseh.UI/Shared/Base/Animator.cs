@@ -1,5 +1,6 @@
 ﻿namespace Parseh.UI;
 
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 internal static class Animator
@@ -13,15 +14,18 @@ internal static class Animator
         await OnAnimateAsync(element, sb =>
         {
             Translate(sb, translateFrom, trablateTo, duration);
-            Fade(sb, fadeFrom, fadeTo, duration);
+            FadeTo(sb, fadeFrom, fadeTo, duration);
         }, duration);
     }
 
-    public static async Task FadeAsync(this FrameworkElement element, double from = 0, double to = 1, double duration = Duration)
-        => await OnAnimateAsync(element, sb => Fade(sb, from, to, duration), duration);
+    public static async Task FadeToAsync(this FrameworkElement element, double from = 0, double to = 1, double duration = Duration)
+        => await OnAnimateAsync(element, sb => FadeTo(sb, from, to, duration), duration);
 
     public static async Task TranslateAsync(this FrameworkElement element, Thickness from, Thickness to, double duration = Duration)
         => await OnAnimateAsync(element, sb => Translate(sb, from, to, duration), duration);
+
+    public static async Task RotateTo(this FrameworkElement element, double from, double to, double duration = Duration)
+        => await OnAnimateAsync(element, sb => RotateTo(sb, element, from, to, duration), duration);
 
     #region Private Functionality
 
@@ -38,7 +42,22 @@ internal static class Animator
         sb.Children.Add(animation);
     }
 
-    static void Fade(this Storyboard sb, double from = 0, double to = 1, double duration = Duration)
+    static void RotateTo(this Storyboard sb, FrameworkElement element, double from, double to, double duration = Duration)
+    {
+        element.RenderTransformOrigin = new Point(0.5, 0.5);
+        element.RenderTransform = new RotateTransform();
+        var animation = new DoubleAnimation
+        {
+            Duration = TimeSpan.FromSeconds(duration),
+            From = from,
+            To = to,
+            DecelerationRatio = DecelerationRatio
+        };
+        Storyboard.SetTargetProperty(animation, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));
+        sb.Children.Add(animation);
+    }
+
+    static void FadeTo(this Storyboard sb, double from = 0, double to = 1, double duration = Duration)
     {
         var animation = new DoubleAnimation
         {

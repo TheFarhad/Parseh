@@ -49,14 +49,14 @@ internal sealed class ShowSearchbar : SimpleAnimatedProperty<ShowSearchbar>
 
     protected override async void DoAnimate(FrameworkElement element, bool value)
     {
-        if (!firstload)
+        if (firstload) firstload = false;
+        else
         {
             const double Duration = 0.2;
             var offset = element.Height;
             if (value) await element.TranslateAsync(new(0), new(0, offset, 0, -offset), Duration);
             else await element.TranslateAsync(new(0, offset, 0, -offset), new(0), Duration);
         }
-        else firstload = false;
     }
 }
 
@@ -67,17 +67,29 @@ internal sealed class HideSearchbar : SimpleAnimatedProperty<HideSearchbar>
     protected override async void DoAnimate(FrameworkElement element, bool value)
     {
         var offset = element.Height;
-        if (!firstload)
+        if (firstload)
+        {
+            await element.TranslateAsync(new(0, -offset, 0, offset), new(0), 0);
+            firstload = false;
+        }
+        else
         {
             const double Duration = 0.2;
             if (value) await element.TranslateAsync(new(0, -offset, 0, offset), new(0), Duration);
             else await element.TranslateAsync(new(0), new(0, -offset, 0, offset), Duration);
         }
-        else
-        {
-            await element.TranslateAsync(new(0, -offset, 0, offset), new(0), 0);
-            firstload = false;
-        }
+    }
+}
+
+internal sealed class CloseSearchbarButtonRotateAnimate : AttachedProperty<CloseSearchbarButtonRotateAnimate, bool>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        if (uielement.IsNull())
+            return;
+
+        if (e.NewValue.As<bool>()) App.Dispatch(() => uielement.As<Button>().RotateTo(0, 45, 0.8));
+        else App.Dispatch(() => uielement.As<Button>().RotateTo(0, 45, 0.8));
     }
 }
 
@@ -86,14 +98,9 @@ internal sealed class HideSearchbar : SimpleAnimatedProperty<HideSearchbar>
 
 internal sealed class FocusOnLoad : AttachedProperty<FocusOnLoad, bool>
 {
-    // TODO: برای سرچ بار کار نمیکند
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
-        if (uielement.IsNull()) return;
-
-        var textblock = uielement.As<TextBox>();
-
-        textblock.Loaded += (sender, ee) => App.Dispatch(() => sender.As<TextBox>().Focus());
+        uielement?.As<TextBox>().Focus();
     }
 }
 
@@ -112,7 +119,8 @@ internal sealed class SettingMenuAnimate : AttachedProperty<SettingMenuAnimate, 
         var duration = 0.3;
 
         if (value) App.Dispatch(() => settingMenu.TranlateFadeAsync(new(offset, 0, -offset, 0), new(0), 0, 1, duration));
-        else App.Dispatch(() => settingMenu.TranlateFadeAsync(new(0), new(-offset, 0, offset, 0), 1, 0, duration));
+        //else App.Dispatch(() => settingMenu.TranlateFadeAsync(new(0), new(-offset, 0, offset, 0), 1, 0, duration));
+        else App.Dispatch(() => settingMenu.FadeToAsync(1, 0, duration));
     }
 }
 
@@ -131,11 +139,11 @@ internal sealed class SettingMenuZIndexAnimate : AttachedProperty<SettingMenuZIn
         {
             settingContainer.Visibility = Visibility.Visible;
             Panel.SetZIndex(settingContainer, 1);
-            await settingContainer.FadeAsync(0, 1, duration);
+            await settingContainer.FadeToAsync(0, 1, duration);
         }
         else
         {
-            await settingContainer.FadeAsync(1, 0, duration);
+            await settingContainer.FadeToAsync(1, 0, duration);
             Panel.SetZIndex(settingContainer, 0);
             settingContainer.Visibility = Visibility.Collapsed;
         }

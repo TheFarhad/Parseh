@@ -96,7 +96,7 @@
                              TextWrapping="Wrap"
                              AcceptsReturn="True"
                              Style="{StaticResource SendMessageMarkTextBox}"
-                             res:FocusOnLoad.Value="True"
+                             res:FocusOnLoad.Value="{Binding SelectedChat}"
                              />
 
                     <StackPanel Grid.Column="2"

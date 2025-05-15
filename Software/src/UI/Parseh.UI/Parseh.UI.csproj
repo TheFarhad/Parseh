@@ -25,6 +25,7 @@
 		<None Remove="Source\Presentation\Resources\Images\Icon\Chat.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\ChatMessageContainerMenu.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Close.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\ClosePlus.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Contact.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Document.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Location.png" />
@@ -89,6 +90,7 @@
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Chat.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\ChatMessageContainerMenu.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Close.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\ClosePlus.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Contact.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Document.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Location.png" />

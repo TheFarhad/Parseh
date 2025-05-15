@@ -126,6 +126,7 @@
                                         <!--setting menu-->
                                         <local:Setting  Panel.ZIndex="0"
                                                         Visibility="Collapsed"
+                                                        Opacity="0"
                                                         res:SettingMenuZIndexAnimate.Value="{Binding Path=Model.IsOpenSettingMenu, Source={x:Static vm:Generic.Default}}"/>
 
                                         <!--page content-->

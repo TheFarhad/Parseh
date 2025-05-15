@@ -19,12 +19,13 @@
 
             <Grid Grid.Column="0" Background="{StaticResource Gray15Brush}">
                 <Grid.RowDefinitions>
-                    <!--buttons zone-->
+                    <!--menu and searchbar-->
                     <RowDefinition Height="Auto"/>
-                    <!--contact list-->
+                    <!--contacts chat list-->
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
+                <!--searchbar-->
                 <Border Grid.Row="0"
                         Background="Transparent"
                         Padding="4"
@@ -47,15 +48,18 @@
                                      FontSize="{StaticResource FS12}"
                                      Margin="15, 2"
                                      Style="{StaticResource SendMessageMarkTextBox}"
-                                     res:FocusOnLoad.Value="True"
+                                     res:FocusOnLoad.Value="{Binding IsSearching}"
                                      TabIndex="0"
                                      x:Name="searchtext"/>
 
                             <Button Grid.Column="1" 
                                     Command="{Binding CloseSearchbarCommand}"
                                     Style="{StaticResource OpacityImageButtonStyle}"
-                                    Padding="5">
-                                <Image Source="/Source/Presentation/Resources/Images/Icon/Close.png"/>
+                                    Padding="5"
+                                    res:CloseSearchbarButtonRotateAnimate.Value="{Binding IsSearching}">
+
+                                <Image Source="/Source/Presentation/Resources/Images/Icon/ClosePlus.png"/>
+
                             </Button>
                         </Grid>
                     </Border>
@@ -63,7 +67,8 @@
                 </Border>
 
                 <!--Menu-->
-                <Border Background="Transparent"
+                <Border Grid.Row="0"
+                        Background="Transparent"
                         Padding="4"
                         Height="45"
                         res:ShowSearchbar.Value="{Binding IsSearching}">
@@ -117,6 +122,7 @@
                         </Grid>
 
                     </Border>
+
                 </Border>
 
                 <!--contact chat list-->

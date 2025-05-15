@@ -19,12 +19,10 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!--chat list-->
-            <!--DataContext=""-->
+            <!--chat contacts-->
             <local:ChatContactMenu Grid.Column="0"/>
 
             <!--selected chat messages-->
-            <!--DataContext="ChatViewModel"-->
             <local:ChatMessageContainer Grid.Column="1" 
                                         Visibility="{Binding SelectedChat, Converter={convert:BooleanToVisibility}}"/>
 
