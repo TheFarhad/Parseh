@@ -7,80 +7,49 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Parseh.UI.Views"
       xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
+      xmlns:res="clr-namespace:Parseh.UI.Resources"
       xmlns:convert="clr-namespace:Parseh.UI.BindingConverters"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800">
 
-    <Border Background="Transparent">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+    <!--هم مو ستینگ و هم اتچمنت به یک کامپوننت جدا تبدیل شوند-->
 
-            <!--chat contacts-->
-            <local:ChatContactMenu Grid.Column="0"/>
+    <Grid>
 
-            <!--selected chat messages-->
-            <local:ChatMessageContainer Grid.Column="1" 
+        <!--setting menu-->
+        <local:Setting Panel.ZIndex="0"
+                       Visibility="Collapsed"
+                       Opacity="0"
+                       res:SettingMenuZIndexAnimate.Value="{Binding DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"/>
+
+        <!--attachment menu-->
+        <local:Attachment x:Name="AttachmentMenu"
+                          Background="Transparent"
+                          Panel.ZIndex="0"
+                          res:OverlayAttachmentMenu.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                          />
+
+        <!--chat main content-->
+        <Border Background="Transparent">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!--chat contacts-->
+                <local:ChatContactMenu Grid.Column="0"/>
+
+                <!--selected chat messages-->
+                <local:ChatMessageContainer Grid.Column="1" 
                                         Visibility="{Binding SelectedChat, Converter={convert:BooleanToVisibility}}"/>
 
-            <!--profile info-->
-            <Border Grid.Column="2"/>
-        </Grid>
-    </Border>
+                <!--profile info-->
+                <Border Grid.Column="2"/>
+            </Grid>
+        </Border>
 
-
-
-    <!--TODO: Dont work... Why??-->
-    <!--<Grid Background="Transparent">
-
-        -->
-
-    <!--<Grid Panel.ZIndex="0"
-              Visibility="{Binding Path=Model.IsOpenSettingMenu, Source={x:Static vm:Generic.Default}, Converter={convert:BooleanToVisibility}}">
-
-            <Border Background="{StaticResource Gray15Brush}"
-                    CornerRadius="6"
-                    Opacity="0.85">
-
-                <Border.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" 
-                                  Command="{Binding CloseSettingMenuCommand}"/>
-                </Border.InputBindings>
-
-            </Border>
-
-            <local:Setting HorizontalAlignment="Center" 
-                           VerticalAlignment="Center"/>
-
-        </Grid>-->
-    <!--
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            -->
-    <!--chat list-->
-    <!--
-            <local:ChatContactMenu Grid.Column="0"/>
-
-            -->
-    <!--selected chat messages-->
-    <!--
-            <local:ChatMessageContainer Grid.Column="1" 
-                                        Visibility="{Binding SelectedChat, Converter={convert:BooleanToVisibility}}"/>
-
-            -->
-    <!--profile info-->
-    <!--
-            <Border Grid.Column="2"/>
-        </Grid>
-    </Grid>-->
+    </Grid>
 
 </local:ContentPage>

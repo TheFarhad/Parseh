@@ -43,6 +43,7 @@ internal sealed class LayoutViewModel : VM
     public IRelayCommand RestoreCommand { get; private set; } = default!;
     public IRelayCommand CloseCommand { get; private set; } = default!;
     public IRelayCommand CaptionMenuCommand { get; private set; } = default!;
+    public IRelayCommand CloseAttachmentMenuCommand { get; private set; } = default!;
 
     #endregion
 
@@ -100,6 +101,7 @@ internal sealed class LayoutViewModel : VM
         RestoreCommand = new Command(OnRestore);
         CloseCommand = new Command(OnClose);
         CaptionMenuCommand = new Command(OnCaptionMenu);
+        CloseAttachmentMenuCommand = new Command(OnCloseAttachmentMenu);
     }
 
     void OnStateChanged(object? sender, EventArgs e) => OnNotifyStateChanged();
@@ -132,6 +134,7 @@ internal sealed class LayoutViewModel : VM
     void OnRestore() => _view.WindowState ^= WindowState.Maximized;
     void OnClose() => _view.Close();
     void OnCaptionMenu() => SystemCommands.ShowSystemMenu(_view, _view.PointToScreen(new Point(30, 5)));
+    void OnCloseAttachmentMenu() => Cortex.Default.Model.ToggleAttachmentMenu = false;
 
     #endregion
 }

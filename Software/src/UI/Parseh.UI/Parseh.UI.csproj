@@ -28,13 +28,13 @@
 		<None Remove="Source\Presentation\Resources\Images\Icon\ClosePlus.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Contact.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Document.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\DoubleTick.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Location.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Lock.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Maximize.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Menu.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Minimize.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Person.png" />
-		<None Remove="Source\Presentation\Resources\Images\Icon\PhotoOrVideo.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Picture.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Pin.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Profile.png" />
@@ -45,6 +45,7 @@
 		<None Remove="Source\Presentation\Resources\Images\Icon\SideRight.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Sticker.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\telegram.ico" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Tick.png" />
 		<None Remove="Source\Presentation\Resources\Images\Logo\logo.png" />
 	</ItemGroup>
 
@@ -93,13 +94,14 @@
 		<Resource Include="Source\Presentation\Resources\Images\Icon\ClosePlus.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Contact.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Document.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\DoubleTick.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Location.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Lock.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Maximize.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Menu.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Minimize.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Person.png" />
-		<Resource Include="Source\Presentation\Resources\Images\Icon\PhotoOrVideo.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Media.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Picture.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Pin.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Profile.png" />
@@ -112,6 +114,7 @@
 		<Resource Include="Source\Presentation\Resources\Images\Icon\telegram.ico">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Tick.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\smalllogo.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\logo.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\textlogo.png" />

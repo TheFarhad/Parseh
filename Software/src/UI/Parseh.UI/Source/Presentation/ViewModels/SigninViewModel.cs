@@ -67,12 +67,12 @@ public sealed class SigninViewModel : VM
             Passcode = signinPage.SecurePasscode.Unsecure();
 
             await Task.Delay(20);
-            Generic.Default.Model.ToPage(PageMode.Chat);
+            Cortex.Default.Model.ToPage(PageMode.Chat);
 
             IsSigning = false;
         });
     }
-    void Signup() => Generic.Default.Model.ToPage(PageMode.Signup);
+    void Signup() => Cortex.Default.Model.ToPage(PageMode.Signup);
 
     async Task Signout()
     {

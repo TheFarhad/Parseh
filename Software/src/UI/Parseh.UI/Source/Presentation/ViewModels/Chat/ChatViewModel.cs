@@ -6,8 +6,10 @@ public sealed class ChatViewModel : VM
 
     public ChatContactViewModel Contact { get => Get(); private set => Set(value); }
     public double SettingbarHeight { get => Get(); private set => Set(value); }
-    public bool IsSearching { get => Get(); private set => Set(value); }
     public bool SelectedChat { get => Get(); private set => Set(value); }
+    public bool IsSearching { get => Get(); private set => Set(value); }
+    public bool IsOpenAttachmentMenu { get => Get(); private set => Set(value); }
+    public bool IsOpenSettingMenu { get => Get(); private set => Set(value); }
 
     #endregion
 
@@ -16,8 +18,8 @@ public sealed class ChatViewModel : VM
     public IRelayCommand ShowSearchbarCommand { get; private set; } = default!;
     public IRelayCommand CloseSearchbarCommand { get; private set; } = default!;
     public IRelayCommand LockCommand { get; private set; } = default!;
-    public IRelayCommand OpenSettingMenuCommand { get; private set; } = default!;
-    public IRelayCommand CloseSettingMenuCommand { get; private set; } = default!;
+    public IRelayCommand ToggleSettingMenuCommand { get; private set; } = default!;
+    public IRelayCommand ToggleAttachmentMenuCommand { get; private set; } = default!;
 
     #endregion
 
@@ -37,8 +39,10 @@ public sealed class ChatViewModel : VM
     {
         SettingbarHeight = 60;
         IsSearching = false;
-        SelectedChat = true;
         Contact = new();
+        SelectedChat = true;
+        IsOpenAttachmentMenu = false;
+        IsOpenSettingMenu = false;
     }
 
     void InitCommands()
@@ -46,17 +50,17 @@ public sealed class ChatViewModel : VM
         ShowSearchbarCommand = new Command(ShowSearchbar);
         CloseSearchbarCommand = new Command(CloseSearchbar);
         LockCommand = new Command(Lock);
-        OpenSettingMenuCommand = new Command(OpenSettingMenu);
-        CloseSettingMenuCommand = new Command(CloseSettingMenu);
+        ToggleSettingMenuCommand = new Command(ToggleSettingMenu);
+        ToggleAttachmentMenuCommand = new Command(ToggleAttachmentMenu);
     }
 
     #region Private Functionality
 
     void ShowSearchbar() => IsSearching = true;
     void CloseSearchbar() => IsSearching = false;
-    void Lock() => Generic.Default.Model.ToPage(PageMode.Signin);
-    void OpenSettingMenu() => Generic.Default.Model.IsOpenSettingMenu = true;
-    void CloseSettingMenu() => Generic.Default.Model.IsOpenSettingMenu = false;
+    void Lock() => Cortex.Default.Model.ToPage(PageMode.Signin);
+    void ToggleSettingMenu() => IsOpenSettingMenu ^= true;
+    void ToggleAttachmentMenu() => IsOpenAttachmentMenu ^= true;
 
     #endregion
 }

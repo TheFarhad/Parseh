@@ -41,7 +41,7 @@ public sealed class NetIoC
 
     void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
-        services.AddSingleton<GenericViewModel>();
+        services.AddSingleton<CortexViewModel>();
         services.AddSingleton<SettingViewModel>();
         services.AddSingleton<Layout>();
     }

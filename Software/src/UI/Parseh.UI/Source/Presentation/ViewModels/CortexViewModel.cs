@@ -1,13 +1,16 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-internal sealed class GenericViewModel : VM
+internal sealed class CortexViewModel : VM
 {
     public PageMode Mode { get => Get(); private set => Set(value); }
     public ContentPage Page { get => Get(); private set => Set(value); }
     public bool IsOpenSettingMenu { get => Get(); set => Set(value); }
-    public bool IsOpenAttachmentMenu { get => Get(); set => Set(value); }
+    public bool ToggleAttachmentMenu { get => Get(); set => Set(value); }
+    public SettingViewModel SettingModel { get => Get(); private set => Set(value); }
 
-    public GenericViewModel() => Init();
+    public string Test { get => Get(); set => Set(value); }
+
+    public CortexViewModel() => Init();
 
     public void ToPage(PageMode mode)
     {
@@ -18,10 +21,12 @@ internal sealed class GenericViewModel : VM
 
     void Init()
     {
+        Test = "Write your message";
         Mode = PageMode.Chat;
         Pager(Mode);
         IsOpenSettingMenu = false;
-        IsOpenAttachmentMenu = false;
+        ToggleAttachmentMenu = false;
+        SettingModel = NetIoC.Default.Get<SettingViewModel>()!;
     }
 
     void Pager(PageMode mode)
@@ -39,16 +44,15 @@ internal sealed class GenericViewModel : VM
     #endregion
 }
 
-internal sealed class Generic
+internal sealed class Cortex
 {
-    private static readonly Generic _default = default!;
-    public static readonly Generic Default = new();
+    public static readonly Cortex Default = new();
 
-    Generic()
+    Cortex()
     {
         var ioc = NetIoC.Default;
-        Model = ioc.GetRequired<GenericViewModel>();
+        Model = ioc.GetRequired<CortexViewModel>();
     }
 
-    public GenericViewModel Model { get; }
+    public CortexViewModel Model { get; } = new();
 }

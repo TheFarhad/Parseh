@@ -61,40 +61,5 @@ public sealed partial class Pager : Component
         currFrame.Content = currentpage;
     }
 
-    static object OnPageChanging(DependencyObject sender, object newpage)
-    {
-        var pager = sender.As<Pager>();
-        var currentpage = newpage.As<ContentPage>();
-
-        var prevFrame = pager.Previous;
-        var currFrame = pager.Current;
-
-        var prevPage = currFrame.Content;
-        currFrame.Content = null;
-
-        if (prevPage is ContentPage oldpage)
-        {
-            // در اینجا هم تعیین میکنیم که در هنگام لود مجدد، باید انیمیت اوت اتفاق بیفتد
-            oldpage.ShouldUnload = true;
-            prevFrame.Content = oldpage;
-
-            // در اینجا م به اندازه مدت زمان اجرای انیمشین صبر میکنیم تا به صورت کامل اجرا شود
-            // سپس کنترل پشتی را نال میکنیم تا پیج قبلی کاملا از مموری حذف شود
-            Task.Delay(TimeSpan.FromSeconds(ContentPage.AnimateDuration))
-                .ContinueWith((t) =>
-                {
-                    App.Dispatch(() => oldpage.Content = null);
-                });
-        }
-        else
-        {
-            // در اینجا چون پیج جاری را به المان پشتی اختصاص میدهیم
-            // پس این پیج، مجددا بارگذاری شده و بنابراین متود لود آن فراخوانی میشود
-            prevFrame.Content = prevPage;
-        }
-        currFrame.Content = currentpage;
-        return currentpage;
-    }
-
     #endregion
 }

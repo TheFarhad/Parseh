@@ -6,6 +6,7 @@ public class ContentPage : Page
     const double FadeTo = 1;
     public const double AnimateDuration = 0.4;
     public bool ShouldUnload { get; set; } = false;
+    public readonly NetIoC Ioc = NetIoC.Default;
 
     public ContentPage() => Init();
 
@@ -49,7 +50,6 @@ public class ContentPage : Page
 public class ContentPage<TVM> : ContentPage where TVM : VM, new()
 {
     public readonly TVM Model = default!;
-    protected readonly NetIoC Ioc = NetIoC.Default;
 
     public ContentPage() => DataContext = Model = Ioc.Get<TVM>() ?? new();
 }

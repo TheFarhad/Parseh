@@ -24,9 +24,13 @@ public static partial class Extention
         return result;
     }
 
-    public static void IsDo<T>(this object source, Action<T> onDo)
+    public static void Is<T>(this object source, Action<T> ondo)
     {
-        if (source.Is<T>()) onDo(source.As<T>());
+        if (source.Is<T>()) ondo(source.As<T>());
+    }
+    public static async void Is<T>(this object source, Func<T, Task> ondo)
+    {
+        if (source.Is<T>()) await ondo(source.As<T>());
     }
 
     public static T As<T>(this object source) => (T)source;

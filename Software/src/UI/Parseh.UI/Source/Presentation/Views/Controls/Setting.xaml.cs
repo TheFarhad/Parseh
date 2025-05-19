@@ -1,12 +1,11 @@
 ﻿namespace Parseh.UI.Views;
 
-public partial class Setting : Component
+public partial class Setting : Component<SettingViewModel>
 {
     public Setting() => Init();
 
     void Init()
     {
-        DataContext = NetIoC.Default.Get<SettingViewModel>();
         InitializeComponent();
     }
 }

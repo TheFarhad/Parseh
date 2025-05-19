@@ -11,8 +11,8 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="250"
              Width="300"
-             MinWidth="300"
-             MaxWidth="300">
+             MinWidth="{Binding Path=Width, RelativeSource={RelativeSource Mode=Self}}"
+             MaxWidth="{Binding Path=Width, RelativeSource={RelativeSource Mode=Self}}">
 
     <local:Component.Template>
         <ControlTemplate TargetType="{x:Type UserControl}">
@@ -111,7 +111,7 @@
 
                                 <!--setting-->
                                 <Button Style="{StaticResource OpacityImageButtonStyle}"
-                                        Command="{Binding OpenSettingMenuCommand}"
+                                        Command="{Binding ToggleSettingMenuCommand}"
                                         >
                                     <!--Click="Button_Click"-->
 

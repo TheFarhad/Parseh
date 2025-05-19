@@ -118,4 +118,13 @@
     <Color x:Key="Gray15">#141414</Color>
     <SolidColorBrush x:Key="Gray15Brush" Color="{StaticResource Gray15}"/>
 
+    <Color x:Key="Gray16" >#111111</Color>
+    <SolidColorBrush x:Key="Gray16Brush" Color="{StaticResource Gray16}"/>
+
+    <Color x:Key="Gray17" >#0f0f0f</Color>
+    <SolidColorBrush x:Key="Gray17Brush" Color="{StaticResource Gray17}"/>
+
+    <Color x:Key="Gray18" >#0c0c0c</Color>
+    <SolidColorBrush x:Key="Gray18Brush" Color="{StaticResource Gray18}"/>
+
 </ResourceDictionary>

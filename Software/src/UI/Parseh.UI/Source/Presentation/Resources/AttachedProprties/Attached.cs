@@ -1,5 +1,9 @@
 ﻿namespace Parseh.UI.Resources;
 
+using Newtonsoft.Json.Linq;
+using Parseh.UI.Views;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Navigation;
 
 internal sealed class PasscodeHasPlaceholder : AttachedProperty<PasscodeHasPlaceholder, bool>
@@ -99,58 +103,94 @@ internal sealed class CloseSearchbarButtonRotateAnimate : AttachedProperty<Close
 internal sealed class FocusOnLoad : AttachedProperty<FocusOnLoad, bool>
 {
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
-    {
-        uielement?.As<TextBox>().Focus();
-    }
+        => uielement?.As<TextBox>().Focus();
 }
 
 #region Setting Menu
 
 internal sealed class SettingMenuAnimate : AttachedProperty<SettingMenuAnimate, bool>
 {
+    const double Duration = 0.3;
+    const double Offset = 70;
+
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
         if (uielement.IsNull())
             return;
 
-        var settingMenu = uielement.As<Border>();
-        var value = e.NewValue.As<bool>();
-        var offset = 70;
-        var duration = 0.3;
+        uielement.Is<Border>(settingMenuBorder =>
+        {
+            var value = e.NewValue.As<bool>();
 
-        if (value) App.Dispatch(() => settingMenu.TranlateFadeAsync(new(offset, 0, -offset, 0), new(0), 0, 1, duration));
-        //else App.Dispatch(() => settingMenu.TranlateFadeAsync(new(0), new(-offset, 0, offset, 0), 1, 0, duration));
-        else App.Dispatch(() => settingMenu.FadeToAsync(1, 0, duration));
+            if (value) App.Dispatch(() => settingMenuBorder.TranlateFadeAsync(new(Offset, 0, -Offset, 0), new(0), 0, 1, Duration));
+            else App.Dispatch(() => settingMenuBorder.FadeToAsync(1, 0, Duration));
+        });
     }
 }
 
 internal sealed class SettingMenuZIndexAnimate : AttachedProperty<SettingMenuZIndexAnimate, bool>
 {
-    public override async void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    const double Duration = 0.3;
+
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
         if (uielement.IsNull())
             return;
 
-        var settingContainer = uielement.As<Setting>();
-        var value = e.NewValue.As<bool>();
-        var duration = 0.3;
-
-        if (value)
+        uielement.Is<Setting>(async setting =>
         {
-            settingContainer.Visibility = Visibility.Visible;
-            Panel.SetZIndex(settingContainer, 1);
-            await settingContainer.FadeToAsync(0, 1, duration);
-        }
-        else
-        {
-            await settingContainer.FadeToAsync(1, 0, duration);
-            Panel.SetZIndex(settingContainer, 0);
-            settingContainer.Visibility = Visibility.Collapsed;
-        }
+            var value = e.NewValue.As<bool>();
+            if (value)
+            {
+                setting.Visibility = Visibility.Visible;
+                Panel.SetZIndex(setting, 1);
+                await setting.FadeToAsync(0, 1, Duration);
+            }
+            else
+            {
+                await setting.FadeToAsync(1, 0, Duration);
+                Panel.SetZIndex(setting, 0);
+                setting.Visibility = Visibility.Collapsed;
+            }
+        });
     }
 }
 
 #endregion
+
+internal sealed class ShowAttachmentMenu : AttachedProperty<ShowAttachmentMenu, bool>
+{
+    const double Duration = 0.3;
+
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        if (uielement.IsNull())
+            return;
+
+        uielement.Is<Border>(async attachment =>
+        {
+            if (e.NewValue.As<bool>()) await attachment.FadeToAsync(0, 1, Duration);
+            else await attachment.FadeToAsync(1, 0, Duration);
+        });
+    }
+}
+
+internal sealed class OverlayAttachmentMenu : AttachedProperty<OverlayAttachmentMenu, bool>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        if (uielement.IsNull())
+            return;
+
+        uielement.Is<Attachment>(grid =>
+        {
+            if (e.NewValue.As<bool>()) Panel.SetZIndex(grid, 1);
+            else Panel.SetZIndex(grid, 0);
+        });
+    }
+}
+
+
 
 
 

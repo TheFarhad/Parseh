@@ -10,8 +10,6 @@ public sealed class SettingViewModel : VM
 
     #region Properties
 
-    public IRelayCommand CloseCommand { get; private set; } = default!;
-    public IRelayCommand CloseSettingMenuCommand { get; private set; } = default!;
 
     #endregion
 
@@ -34,16 +32,13 @@ public sealed class SettingViewModel : VM
 
     void InitCommands()
     {
-        CloseCommand = new Command(Close);
-        CloseSettingMenuCommand = new Command(CloseSettingMenu);
+
     }
 
     #endregion
 
     #region Command Methods
 
-    void Close() => Generic.Default.Model.IsOpenSettingMenu = false;
-    void CloseSettingMenu() => Generic.Default.Model.IsOpenSettingMenu = false;
 
     #endregion
 }

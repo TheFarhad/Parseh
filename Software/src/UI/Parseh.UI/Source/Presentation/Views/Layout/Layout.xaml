@@ -119,25 +119,15 @@
                                         </Border.BorderBrush>
                                     </Border>-->
 
-                                    <!--page content and setting menu-->
-                                    <Grid Grid.Row="2" 
-                                          ClipToBounds="True">
+                                    <!--page content-->
+                                    <Border Grid.Row="2" 
+                                                Padding="{Binding InnerContentPadding}"
+                                                Background="{StaticResource Gray15Brush}"
+                                                ClipToBounds="True">
 
-                                        <!--setting menu-->
-                                        <local:Setting  Panel.ZIndex="0"
-                                                        Visibility="Collapsed"
-                                                        Opacity="0"
-                                                        res:SettingMenuZIndexAnimate.Value="{Binding Path=Model.IsOpenSettingMenu, Source={x:Static vm:Generic.Default}}"/>
+                                        <ContentPresenter Content="{TemplateBinding Content}"/>
 
-                                        <!--page content-->
-                                        <Border Padding="{Binding InnerContentPadding}"
-                                                Background="{StaticResource Gray15Brush}">
-
-                                            <ContentPresenter Content="{TemplateBinding Content}"/>
-
-                                        </Border>
-
-                                    </Grid>
+                                    </Border>
 
                                 </Grid>
 
@@ -159,6 +149,6 @@
                       />
     </WindowChrome.WindowChrome>
 
-    <local:Pager Page="{Binding Path=Model.Page, Source={x:Static vm:Generic.Default}}"/>
+    <local:Pager Page="{Binding Path=Model.Page, Source={x:Static vm:Cortex.Default}}"/>
 
 </local:ContentLayout>

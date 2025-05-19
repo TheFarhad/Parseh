@@ -6,6 +6,6 @@ public partial class Signup : ContentPage<SignupViewModel>
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-        Generic.Default.Model.ToPage(PageMode.Signin);
+        Cortex.Default.Model.ToPage(PageMode.Signin);
     }
 }

@@ -2,5 +2,12 @@
 
 public partial class Chat : ContentPage<ChatViewModel>
 {
-    public Chat() => InitializeComponent();
+    public Chat() => Init();
+
+    void Init()
+    {
+        InitializeComponent();
+    }
 }
+
+

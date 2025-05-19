@@ -1,6 +1,7 @@
 ﻿namespace Parseh.UI.Views;
 
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 public partial class AttachmentItem : Component
 {
@@ -9,7 +10,7 @@ public partial class AttachmentItem : Component
             new PropertyMetadata(default(string)));
 
     public static readonly DependencyProperty AttachmentImageSourceProperty =
-        DependencyProperty.Register(nameof(AttachmentImageSource), typeof(ImageSource), typeof(AttachmentItem),
+        DependencyProperty.Register(nameof(AttachmentImageSource), typeof(BitmapSource), typeof(AttachmentItem),
             new PropertyMetadata(default(ImageSource)));
 
     public string AttachmentTitle
@@ -18,9 +19,9 @@ public partial class AttachmentItem : Component
         set => SetValue(AttachmentTitleProperty, value);
     }
 
-    public ImageSource AttachmentImageSource
+    public BitmapSource AttachmentImageSource
     {
-        get => GetValue(AttachmentImageSourceProperty).As<ImageSource>();
+        get => GetValue(AttachmentImageSourceProperty).As<BitmapSource>();
         set => SetValue(AttachmentImageSourceProperty, value);
     }
 
@@ -30,4 +31,6 @@ public partial class AttachmentItem : Component
     {
         InitializeComponent();
     }
+
+
 }
