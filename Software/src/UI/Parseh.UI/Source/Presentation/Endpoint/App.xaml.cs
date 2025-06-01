@@ -2,8 +2,8 @@
 
 public sealed partial class App : Application
 {
-    public static App Default { get; private set; } = default!;
     static Dispatcher _dispatcher => Application.Current.Dispatcher;
+    public static App Default { get; private set; } = default!;
 
     private App() { }
 
@@ -18,9 +18,15 @@ public sealed partial class App : Application
     }
 
     public static void Dispatch(Action act) => _dispatcher.Invoke(act);
-    public static DispatcherOperation<Task> Dispatch(Func<Task> func) => _dispatcher.InvokeAsync(func);
+    public static DispatcherOperation<Task> DispatchAsync(Func<Task> func) => _dispatcher.InvokeAsync(func);
+    public static T Resource<T>(string resource) => Application.Current.FindResource(resource).As<T>();
+
+    #region Private Functionality
 
     static void Test()
     {
+
     }
+
+    #endregion
 }

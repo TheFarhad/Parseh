@@ -25,6 +25,8 @@ public sealed class NetIoC
         }
     }
 
+    internal CortexViewModel CortexViewModel => GetRequired<CortexViewModel>();
+
     NetIoC()
     {
         _host = Build();
@@ -42,7 +44,6 @@ public sealed class NetIoC
     void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
         services.AddSingleton<CortexViewModel>();
-        services.AddSingleton<SettingViewModel>();
         services.AddSingleton<Layout>();
     }
 

@@ -14,7 +14,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8.73"/>
+                <RowDefinition Height="40.337"/>
             </Grid.RowDefinitions>
 
             <!--contact info-->
@@ -68,12 +69,12 @@
             </Border>
 
             <!--message container-->
-            <local:ChatMessageContainerCard Grid.Row="1"/>
+            <local:ChatMessageContainerCard Grid.Row="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
 
             <!--message send bar-->
             <Border Grid.Row="2" 
                     Background="{StaticResource Gray14Brush}"
-                    Padding="15, 5, 10, 5"
+                    Padding="15, 5, 10, 5" Grid.RowSpan="2"
                     >
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -88,6 +89,8 @@
                     <Button Grid.Column="0"
                             Command="{Binding ToggleAttachmentMenuCommand}"
                             Style="{StaticResource OpacityImageButtonStyle}">
+                        <!--res:MouseEnterCommand.Value="{Binding ToggleAttachmentMenuCommand}"
+                            res:MouseLeaveCommand.Value="{Binding ToggleAttachmentMenuCommand}"-->
 
                         <Image Source="/Source/Presentation/Resources/Images/Icon/Attachment.png"/>
 
@@ -96,11 +99,14 @@
                     <TextBox Grid.Column="1" 
                              Tag="Write your message" 
                              FontSize="{StaticResource FS14}"
-                             Margin="5"
+                             Margin="10, 5, 30, 5"
+                             MaxHeight="120"
                              TextWrapping="Wrap"
                              AcceptsReturn="True"
+                             AcceptsTab="True"
                              Style="{StaticResource SendMessageMarkTextBox}"
                              res:FocusOnLoad.Value="{Binding SelectedChat}"
+                             VerticalScrollBarVisibility="Auto"
                              />
 
                     <StackPanel Grid.Column="2"

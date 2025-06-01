@@ -1,6 +1,6 @@
 ﻿namespace Parseh.UI.Views;
 
-public partial class Attachment : Component<AttachmentViewModel>
+public partial class Attachment : Component
 {
     public Attachment() => Init();
 

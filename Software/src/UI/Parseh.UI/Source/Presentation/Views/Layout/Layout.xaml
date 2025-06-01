@@ -15,14 +15,17 @@
         WindowStartupLocation="CenterScreen"
         MinWidth="{Binding MinWidth}" MinHeight="{Binding MinHeight}"
         Width="{Binding Width}" Height="{Binding Height}"
+        Activated="OnAtcivated"
+        Deactivated="OnDeactivated"
         d:Width="900" d:Height="506"
-                     >
+         >
 
     <local:ContentLayout.Resources>
 
         <Style TargetType="{x:Type local:Layout}">
             <Setter Property="Template">
                 <Setter.Value>
+
                     <ControlTemplate TargetType="{x:Type Window}">
 
                         <!--Resize Border Zone-->
@@ -32,6 +35,13 @@
 
                             <!--Layout Outline-->
                             <Grid Margin="{Binding OuterMargin, FallbackValue=3}">
+
+                                <!--overlay for deactive window-->
+                                <Border Panel.ZIndex="2" 
+                                        Opacity="0.8" 
+                                        Background="{StaticResource Gray15Brush}"
+                                        CornerRadius="{Binding CornerRadius, FallbackValue=6}"
+                                        Visibility="{Binding IsLayoutActivated, Converter={converters:BooleanToVisibilityRevert}}"/>
 
                                 <!--Only For Mask Grid[Layout Content]-->
                                 <Border x:Name="MaskBorder" 
@@ -134,7 +144,9 @@
                             </Grid>
 
                         </Border>
+
                     </ControlTemplate>
+
                 </Setter.Value>
             </Setter>
         </Style>

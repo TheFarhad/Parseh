@@ -17,8 +17,8 @@ public abstract class AttachedProperty<TOwner, TProperty>
     public static TProperty GetValue(DependencyObject uielement) => uielement.GetValue(ValueProperty).As<TProperty>();
     public static void SetValue(DependencyObject uielement, TProperty value) => uielement.SetValue(ValueProperty, value);
 
-    public virtual void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e) { }
     public virtual void OnCoerceValue(DependencyObject uielement, object value) { }
+    public virtual void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e) { }
 
     #region Private Functionality
 
@@ -36,10 +36,10 @@ public abstract class AttachedProperty<TOwner, TProperty>
 
     #region Tutorial
 
-    // کوئرس دقیقا یک مرحله قبل از ولیونج اتفاق می افتد
-    // بیشتر برای اعتبارسنجی ولو ارسال شده صورت میگیرد
+    // کوئرس دقیقا یک مرحله قبل از ولیوچنج اتفاق می افتد
+    // بیشتر برای اعتبارسنجی ولیو ارسال شده صورت میگیرد
     // مثلا اگر ولیو نامعتبر بود خودمان در متود کوئرس، آن را به مقدار مورد نطر تغییر میدهیم
-    // واین مقدار تغییر یافته به متود ولیو چنجد ارسال می شود
+    // و این مقدار تغییر یافته به متود ولیوچنجد ارسال می شود
     // سپس آنجا تصمیم گرفته می شود که در ازای این مقدار، چه واکنشی داشته باشیم
 
     #endregion

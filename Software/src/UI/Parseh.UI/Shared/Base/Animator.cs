@@ -44,7 +44,7 @@ internal static class Animator
 
     static void RotateTo(this Storyboard sb, FrameworkElement element, double from, double to, double duration = Duration)
     {
-        element.RenderTransformOrigin = new Point(0.5, 0.5);
+        element.RenderTransformOrigin = new(0.5, 0.5);
         element.RenderTransform = new RotateTransform();
         var animation = new DoubleAnimation
         {
@@ -70,6 +70,34 @@ internal static class Animator
         sb.Children.Add(animation);
     }
 
+    static void ScaleTo(this Storyboard sb, FrameworkElement element, double from, double to, double duration = Duration)
+    {
+        element.RenderTransformOrigin = new(0.5, 0.5);
+        element.RenderTransform = new ScaleTransform();
+
+        var time = TimeSpan.FromSeconds(duration);
+        var scalex = new DoubleAnimation
+        {
+            Duration = time,
+            From = from,
+            To = to,
+            DecelerationRatio = DecelerationRatio
+        };
+        Storyboard.SetTargetProperty(scalex, new PropertyPath("(UIElement.RenderTransform).(ScaleTransform.ScaleX)"));
+
+        var scaley = new DoubleAnimation
+        {
+            Duration = time,
+            From = from,
+            To = to,
+            DecelerationRatio = DecelerationRatio
+        };
+        Storyboard.SetTargetProperty(scaley, new PropertyPath("(UIElement.RenderTransform).(ScaleTransform.ScaleY)"));
+
+        sb.Children.Add(scalex);
+        sb.Children.Add(scaley);
+    }
+
     static async Task OnAnimateAsync(FrameworkElement element, Action<Storyboard> animations, double duration = Duration)
     {
         var board = new Storyboard();
@@ -84,4 +112,5 @@ internal static class Animator
     #endregion
 }
 
+// TODO: پروژه لوک مالپاس بررسی شود که دقیقا کجاها بعد از اعمال انیمشین، ویزیبیلیتی کولاپس شده و به چه دلیلی
 

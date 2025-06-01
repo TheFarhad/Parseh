@@ -1,10 +1,9 @@
 ﻿namespace Parseh.UI.Resources;
 
-using Newtonsoft.Json.Linq;
-using Parseh.UI.Views;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Navigation;
+using System.Xml.Linq;
+using Views;
 
 internal sealed class PasscodeHasPlaceholder : AttachedProperty<PasscodeHasPlaceholder, bool>
 {
@@ -44,6 +43,43 @@ internal sealed class NoFrameHistory : AttachedProperty<NoFrameHistory, bool>
         frame.Navigated += (sender, _) => sender.As<Frame>().RemoveBackEntry();
     }
 }
+
+#region Mouse-Over Commands [very useful]
+
+internal sealed class MouseOverCommandParamrter : AttachedProperty<MouseOverCommandParamrter, object>
+{
+
+}
+
+internal sealed class MouseEnterCommand : AttachedProperty<MouseEnterCommand, IRelayCommand>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+        => uielement.Is<UIElement>(element => element.MouseEnter += OnMouseEnter);
+
+    void OnMouseEnter(object sender, MouseEventArgs e)
+    {
+        var element = sender.As<UIElement>();
+        var parameter = MouseOverCommandParamrter.GetValue(element);
+        var command = GetValue(element).As<IRelayCommand>();
+        if (command?.CanExecute(parameter) is true) command.Execute(parameter);
+    }
+}
+
+internal sealed class MouseLeaveCommand : AttachedProperty<MouseLeaveCommand, IRelayCommand>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+        => uielement.Is<UIElement>(element => element.MouseLeave += OnMouseLeave);
+
+    void OnMouseLeave(object sender, MouseEventArgs e)
+    {
+        var element = sender.As<UIElement>();
+        var parameter = MouseOverCommandParamrter.GetValue(element);
+        var command = GetValue(element).As<IRelayCommand>();
+        if (command?.CanExecute(parameter) is true) command.Execute(parameter);
+    }
+}
+
+#endregion
 
 #region Chat Menu
 
@@ -87,13 +123,16 @@ internal sealed class HideSearchbar : SimpleAnimatedProperty<HideSearchbar>
 
 internal sealed class CloseSearchbarButtonRotateAnimate : AttachedProperty<CloseSearchbarButtonRotateAnimate, bool>
 {
+    const double Duration = 0.8;
+    const double Angle = 45;
+
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
         if (uielement.IsNull())
             return;
 
-        if (e.NewValue.As<bool>()) App.Dispatch(() => uielement.As<Button>().RotateTo(0, 45, 0.8));
-        else App.Dispatch(() => uielement.As<Button>().RotateTo(0, 45, 0.8));
+        if (e.NewValue.As<bool>()) App.DispatchAsync(() => uielement.As<Button>().RotateTo(0, Angle, Duration));
+        else App.DispatchAsync(() => uielement.As<Button>().RotateTo(Angle, 0, Duration));
     }
 }
 
@@ -122,13 +161,13 @@ internal sealed class SettingMenuAnimate : AttachedProperty<SettingMenuAnimate, 
         {
             var value = e.NewValue.As<bool>();
 
-            if (value) App.Dispatch(() => settingMenuBorder.TranlateFadeAsync(new(Offset, 0, -Offset, 0), new(0), 0, 1, Duration));
-            else App.Dispatch(() => settingMenuBorder.FadeToAsync(1, 0, Duration));
+            if (value) App.DispatchAsync(() => settingMenuBorder.TranlateFadeAsync(new(Offset, 0, -Offset, 0), new(0), 0, 1, Duration));
+            else App.DispatchAsync(() => settingMenuBorder.FadeToAsync(1, 0, Duration));
         });
     }
 }
 
-internal sealed class SettingMenuZIndexAnimate : AttachedProperty<SettingMenuZIndexAnimate, bool>
+internal sealed class SettingMenuAnimatedVisibility : AttachedProperty<SettingMenuAnimatedVisibility, bool>
 {
     const double Duration = 0.3;
 
@@ -160,7 +199,7 @@ internal sealed class SettingMenuZIndexAnimate : AttachedProperty<SettingMenuZIn
 
 internal sealed class ShowAttachmentMenu : AttachedProperty<ShowAttachmentMenu, bool>
 {
-    const double Duration = 0.3;
+    const double Duration = 0.4;
 
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
@@ -175,17 +214,17 @@ internal sealed class ShowAttachmentMenu : AttachedProperty<ShowAttachmentMenu, 
     }
 }
 
-internal sealed class OverlayAttachmentMenu : AttachedProperty<OverlayAttachmentMenu, bool>
+internal sealed class AttachmentMenuVisibility : AttachedProperty<AttachmentMenuVisibility, bool>
 {
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
         if (uielement.IsNull())
             return;
 
-        uielement.Is<Attachment>(grid =>
+        uielement.Is<Attachment>(attachment =>
         {
-            if (e.NewValue.As<bool>()) Panel.SetZIndex(grid, 1);
-            else Panel.SetZIndex(grid, 0);
+            if (e.NewValue.As<bool>()) Panel.SetZIndex(attachment, 1);
+            else Panel.SetZIndex(attachment, 0);
         });
     }
 }

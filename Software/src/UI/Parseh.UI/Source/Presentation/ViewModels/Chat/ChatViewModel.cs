@@ -2,14 +2,18 @@
 
 public sealed class ChatViewModel : VM
 {
+    // TODO: می توان ویومدل های ستینگ و اتچمنت را به همین ویومدل اضافه کرد  و کار را خیلی راحت تر کرد
+
     #region Properties
 
-    public ChatContactViewModel Contact { get => Get(); private set => Set(value); }
     public double SettingbarHeight { get => Get(); private set => Set(value); }
     public bool SelectedChat { get => Get(); private set => Set(value); }
     public bool IsSearching { get => Get(); private set => Set(value); }
     public bool IsOpenAttachmentMenu { get => Get(); private set => Set(value); }
     public bool IsOpenSettingMenu { get => Get(); private set => Set(value); }
+    public ChatContactViewModel Contact { get => Get(); private set => Set(value); }
+    public AttachmentMenuViewModel AttachmentMenu { get => Get(); private set => Set(value); }
+    public SettingMenuViewModel SettingMenu { get => Get(); private set => Set(value); }
 
     #endregion
 
@@ -23,11 +27,9 @@ public sealed class ChatViewModel : VM
 
     #endregion
 
-    public ChatViewModel()
-    {
-        Init();
-        // TODO: Load data form server (only Contats-Items Info)
-    }
+    public ChatViewModel() => Init();
+
+    #region Private Functionality
 
     void Init()
     {
@@ -43,6 +45,13 @@ public sealed class ChatViewModel : VM
         SelectedChat = true;
         IsOpenAttachmentMenu = false;
         IsOpenSettingMenu = false;
+        AttachmentMenu = new();
+
+        // TODO: Load data form server (only Contats-Items Info)
+        Contact = new();
+
+        // TODO: Laod data from server or local datastore for setting menu
+        SettingMenu = new();
     }
 
     void InitCommands()
@@ -54,7 +63,9 @@ public sealed class ChatViewModel : VM
         ToggleAttachmentMenuCommand = new Command(ToggleAttachmentMenu);
     }
 
-    #region Private Functionality
+    #endregion
+
+    #region Command Methds
 
     void ShowSearchbar() => IsSearching = true;
     void CloseSearchbar() => IsSearching = false;
@@ -88,6 +99,87 @@ public sealed class ChatContactViewModel : VM
             Selected = true,
             Pinned = false,
             UnreadMessageCount = 3
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
+        });
+        Contacts.Add(new ChatContactItemViewModel
+        {
+            Nikname = "FK",
+            Contact = "Farshid",
+            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
+            Selected = false,
+            Pinned = false,
+            UnreadMessageCount = 9
         });
         Contacts.Add(new ChatContactItemViewModel
         {

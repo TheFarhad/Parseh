@@ -25,6 +25,7 @@ internal sealed class LayoutViewModel : VM
     public bool ActivateMode { get => Get(); private set => Set(value); }
     public double CaptionHeight { get => Get(); private set => Set(value); }
     public double CornerRadius { get => NormalState() ? Get() : 0; private set => Set(value); }
+    public bool IsLayoutActivated { get => Get(); private set => Set(value); }
     public Thickness InnerContentPadding { get => Get(); private set => Set(value); }
     public Thickness OuterMargin { get => NormalState() ? Get() : new Thickness(0); private set => Set(value); }
     public Thickness ResizeBorderThickness { get => NormalState() ? Get() : new Thickness(0); private set => Set(value); }
@@ -43,7 +44,7 @@ internal sealed class LayoutViewModel : VM
     public IRelayCommand RestoreCommand { get; private set; } = default!;
     public IRelayCommand CloseCommand { get; private set; } = default!;
     public IRelayCommand CaptionMenuCommand { get; private set; } = default!;
-    public IRelayCommand CloseAttachmentMenuCommand { get; private set; } = default!;
+    public IRelayCommand LayoutActivationCommand { get; private set; } = default!;
 
     #endregion
 
@@ -73,6 +74,7 @@ internal sealed class LayoutViewModel : VM
         CaptionHeight = 27;
         CornerRadius = 6;
         OuterMargin = new(3);
+        IsLayoutActivated = false;
         InnerContentPadding = new(0);
         // TODO: اگر صفر باشد، نمی توان ویندو را ریسیز کرد
         // بوردر راش هم نیاید ترنسپزنت باشد
@@ -101,7 +103,7 @@ internal sealed class LayoutViewModel : VM
         RestoreCommand = new Command(OnRestore);
         CloseCommand = new Command(OnClose);
         CaptionMenuCommand = new Command(OnCaptionMenu);
-        CloseAttachmentMenuCommand = new Command(OnCloseAttachmentMenu);
+        LayoutActivationCommand = new Command(() => IsLayoutActivated ^= true);
     }
 
     void OnStateChanged(object? sender, EventArgs e) => OnNotifyStateChanged();
@@ -134,7 +136,6 @@ internal sealed class LayoutViewModel : VM
     void OnRestore() => _view.WindowState ^= WindowState.Maximized;
     void OnClose() => _view.Close();
     void OnCaptionMenu() => SystemCommands.ShowSystemMenu(_view, _view.PointToScreen(new Point(30, 5)));
-    void OnCloseAttachmentMenu() => Cortex.Default.Model.ToggleAttachmentMenu = false;
 
     #endregion
 }

@@ -1,5 +1,4 @@
 ﻿<local:Component x:Class="Parseh.UI.Views.Setting"
-                 x:TypeArguments="vm:SettingViewModel"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,7 +10,7 @@
                  mc:Ignorable="d"
                  d:DesignHeight="600" d:DesignWidth="800">
 
-    <local:Component.Resources>
+    <!--<local:Component.Resources>
 
         <Style x:Key="SettingMenuStyle" TargetType="{x:Type ContentControl}">
             <Setter Property="Template">
@@ -21,18 +20,19 @@
 
                         <Grid>
 
-                            <!--overlay-->
+                            overlay
                             <Border Background="{StaticResource Gray15Brush}"
-                                    Opacity="0.80">
+                                    Opacity="0.8">
 
                                 <Border.InputBindings>
                                     <MouseBinding MouseAction="LeftClick" 
-                                                  Command="{Binding Path=DataContext.ToggleSettingMenuCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"/>
+                                                  />
+                                    Command="{Binding Path=DataContext.ToggleSettingMenuCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
                                 </Border.InputBindings>
 
                             </Border>
 
-                            <!--setting menu content-->
+                            setting menu content
                             <Border Background="{StaticResource Gray13Brush}"
                                    CornerRadius="{Binding CornerRadius}"
                                     MinWidth="350"
@@ -43,33 +43,33 @@
                                     MaxHeight="{Binding Path=MinHeight, RelativeSource={RelativeSource Mode=Self}}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    res:SettingMenuAnimate.Value="{Binding Path=DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
                                     >
+                                res:SettingMenuAnimate.Value="{Binding Path=DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
 
                                 <Grid>
 
                                     <Grid.RowDefinitions>
-                                        <!--caption-->
+                                        caption
                                         <RowDefinition Height="Auto"/>
-                                        <!--profile-->
+                                        profile
                                         <RowDefinition Height="Auto"/>
-                                        <!--seprator-->
+                                        seprator
                                         <RowDefinition Height="Auto"/>
-                                        <!--content-->
+                                        content
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
-                                    <!--caption-->
+                                    caption
                                     <Grid Grid.Row="0">
                                         <Grid.ColumnDefinitions>
-                                            <!--title-->
+                                            title
                                             <ColumnDefinition Width="*"/>
-                                            <!--close button-->
+                                            close button
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock Grid.Row="0" 
-                                                   Text="Settings"
+                                                   Text="{Binding Title}"
                                                    Margin="15, 10, 0, 0"
                                                    FontSize="{StaticResource FS16}"
                                                    Foreground="{StaticResource Gray1Brush}"
@@ -89,12 +89,12 @@
 
                                     </Grid>
 
-                                    <!--profile info-->
+                                    profile info
                                     <Grid Grid.Row="1"  Height="110">
                                         <Grid.ColumnDefinitions>
-                                            <!--title-->
+                                            title
                                             <ColumnDefinition Width="Auto"/>
-                                            <!--close button-->
+                                            close button
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
@@ -144,12 +144,12 @@
 
                                     </Grid>
 
-                                    <!--seprator-->
+                                    seprator
                                     <Border Grid.Row="2" 
                                             Height="10" 
                                             Background="{StaticResource Gray10Brush}"/>
 
-                                    <!--content-->
+                                    content
                                     <ScrollViewer Grid.Row="3"
                                                   VerticalScrollBarVisibility="Auto"
                                                   HorizontalScrollBarVisibility="Disabled">
@@ -169,8 +169,153 @@
             </Setter>
         </Style>
 
-    </local:Component.Resources>
+    </local:Component.Resources>-->
 
-    <ContentControl Style="{StaticResource SettingMenuStyle}"/>
+    <!--<ContentControl Style="{StaticResource SettingMenuStyle}"/>-->
+
+    <Grid>
+
+        <!--overlay-->
+        <Border Background="{StaticResource Gray15Brush}"
+              Opacity="0.8">
+
+            <Border.InputBindings>
+                <MouseBinding MouseAction="LeftClick" 
+                              Command="{Binding Path=DataContext.ToggleSettingMenuCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                              />
+            </Border.InputBindings>
+
+        </Border>
+
+        <!--setting menu content-->
+        <Border Background="{StaticResource Gray13Brush}"
+             CornerRadius="{Binding CornerRadius}"
+              MinWidth="350"
+              MinHeight="500"
+              Width="{Binding Path=MinWidth, RelativeSource={RelativeSource Mode=Self}}"
+              Height="{Binding Path=MinHeight, RelativeSource={RelativeSource Mode=Self}}"
+              MaxWidth="{Binding Path=MinWidth, RelativeSource={RelativeSource Mode=Self}}"
+              MaxHeight="{Binding Path=MinHeight, RelativeSource={RelativeSource Mode=Self}}"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              res:SettingMenuAnimate.Value="{Binding Path=DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+              >
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <!--caption-->
+                    <RowDefinition Height="Auto"/>
+                    <!--profile-->
+                    <RowDefinition Height="Auto"/>
+                    <!--seprator-->
+                    <RowDefinition Height="Auto"/>
+                    <!--content-->
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--caption-->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <!--title-->
+                        <ColumnDefinition Width="*"/>
+                        <!--close button-->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" 
+                             Text="{Binding Title}"
+                             Margin="15, 10, 0, 0"
+                             FontSize="{StaticResource FS16}"
+                             Foreground="{StaticResource Gray1Brush}"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"/>
+
+                    <Button Grid.Column="1" 
+                          Command="{Binding Path=DataContext.ToggleSettingMenuCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                          Margin="0, 10, 10, 0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Style="{StaticResource OpacityImageButtonStyle}">
+
+                        <Image Source="/Source/Presentation/Resources/Images/Icon/Close.png"/>
+
+                    </Button>
+
+                </Grid>
+
+                <!--profile info-->
+                <Grid Grid.Row="1"  Height="110">
+                    <Grid.ColumnDefinitions>
+                        <!--title-->
+                        <ColumnDefinition Width="Auto"/>
+                        <!--close button-->
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <Border Grid.Column="0"
+                          Background="{StaticResource Gray14Brush}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Margin="15 , 0, 20, 10"
+                          Width="70"
+                          Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
+                          CornerRadius="{Binding Width, RelativeSource={RelativeSource Mode=Self}}">
+
+                        <Border.Clip>
+                            <EllipseGeometry Center="35,35"
+                                           RadiusX="35"
+                                           RadiusY="{Binding Path=RadiusX, RelativeSource={RelativeSource Mode=Self}}"/>
+                        </Border.Clip>
+
+                        <Image Source="/Source/Presentation/Resources/Images/Icon/Profile.png"/>
+
+                    </Border>
+
+                    <StackPanel Grid.Column="1"
+                              Orientation="Vertical"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center">
+
+                        <TextBlock Text="Panah" 
+                                 FontSize="{StaticResource FS15}"
+                                 Foreground="{StaticResource Gray1Brush}"
+                                 Margin="0, 3"/>
+
+                        <TextBlock Text="0913 966 69 12"
+                                 FontSize="{StaticResource FS12}"
+                                 Foreground="{StaticResource Gray1Brush}"
+                                 />
+
+                        <Button Content="Add username" 
+                              Style="{StaticResource TranparentBorderedButton}"
+                              BorderBrush="{StaticResource Gray4Brush}"
+                              FontSize="{StaticResource FS12}"
+                              Foreground="{StaticResource Gray4Brush}"
+                              Margin="0, 2"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+                <!--seprator-->
+                <Border Grid.Row="2" 
+                      Height="10" 
+                      Background="{StaticResource Gray10Brush}"/>
+
+                <!--content-->
+                <ScrollViewer Grid.Row="3"
+                            VerticalScrollBarVisibility="Auto"
+                            HorizontalScrollBarVisibility="Disabled">
+                    <Border>
+
+                    </Border>
+                </ScrollViewer>
+
+            </Grid>
+        </Border>
+
+    </Grid>
 
 </local:Component>

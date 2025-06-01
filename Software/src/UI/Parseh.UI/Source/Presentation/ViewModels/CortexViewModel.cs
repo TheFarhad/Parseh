@@ -4,11 +4,6 @@ internal sealed class CortexViewModel : VM
 {
     public PageMode Mode { get => Get(); private set => Set(value); }
     public ContentPage Page { get => Get(); private set => Set(value); }
-    public bool IsOpenSettingMenu { get => Get(); set => Set(value); }
-    public bool ToggleAttachmentMenu { get => Get(); set => Set(value); }
-    public SettingViewModel SettingModel { get => Get(); private set => Set(value); }
-
-    public string Test { get => Get(); set => Set(value); }
 
     public CortexViewModel() => Init();
 
@@ -21,12 +16,8 @@ internal sealed class CortexViewModel : VM
 
     void Init()
     {
-        Test = "Write your message";
         Mode = PageMode.Chat;
         Pager(Mode);
-        IsOpenSettingMenu = false;
-        ToggleAttachmentMenu = false;
-        SettingModel = NetIoC.Default.Get<SettingViewModel>()!;
     }
 
     void Pager(PageMode mode)
@@ -46,13 +37,13 @@ internal sealed class CortexViewModel : VM
 
 internal sealed class Cortex
 {
+    readonly NetIoC _ioc = default!;
     public static readonly Cortex Default = new();
 
     Cortex()
     {
-        var ioc = NetIoC.Default;
-        Model = ioc.GetRequired<CortexViewModel>();
+        _ioc = NetIoC.Default;
     }
 
-    public CortexViewModel Model { get; } = new();
+    public CortexViewModel Model => _ioc.CortexViewModel;
 }

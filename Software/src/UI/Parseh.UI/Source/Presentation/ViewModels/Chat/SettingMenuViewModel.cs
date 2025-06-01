@@ -1,10 +1,11 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-public sealed class SettingViewModel : VM
+public sealed class SettingMenuViewModel : VM
 {
     #region Properties
 
     public double CornerRadius { get => Get(); private set => Set(value); }
+    public string Title { get => Get(); private set => Set(value); }
 
     #endregion
 
@@ -13,7 +14,7 @@ public sealed class SettingViewModel : VM
 
     #endregion
 
-    public SettingViewModel() => Init();
+    public SettingMenuViewModel() => Init();
 
     #region Private Functionality
 
@@ -27,6 +28,7 @@ public sealed class SettingViewModel : VM
 
     void InitProperties()
     {
+        Title = "Settings";
         CornerRadius = Constant.CornerRadius;
     }
 

@@ -19,25 +19,25 @@ public sealed class Command : IRelayCommand
         if (canexecute is { }) _canexecute = canexecute;
     }
 
-    public void Execute(object? parameter) => _execute?.Invoke();
-    public bool CanExecute(object? parameter) => _canexecute!.Invoke();
     public void Notify() => CanExecuteChanged!.Invoke(this, EventArgs.Empty);
+    public bool CanExecute(object? parameter) => _canexecute!.Invoke();
+    public void Execute(object? parameter) => _execute?.Invoke();
 }
 
-public sealed class Command<Input> : IRelayCommand
+public sealed class Command<T> : IRelayCommand
 {
-    private readonly Action<Input> _execute;
-    private readonly Func<Input, bool> _canexecute = _ => true;
+    private readonly Action<T> _execute;
+    private readonly Func<T, bool> _canexecute = _ => true;
     public event EventHandler? CanExecuteChanged = (sender, eventArgs) => { };
 
-    public Command(Action<Input> execute, Func<Input, bool> canexecute = default!)
+    public Command(Action<T> execute, Func<T, bool> canexecute = default!)
     {
         _execute = execute;
         if (canexecute is { }) _canexecute = canexecute;
     }
 
     public void Notify() => CanExecuteChanged!.Invoke(this, EventArgs.Empty);
-    public void Execute(object? parameter) => _execute?.Invoke(parameter!.As<Input>());
-    public bool CanExecute(object? parameter) => _canexecute.Invoke(parameter!.As<Input>());
+    public bool CanExecute(object? parameter) => _canexecute.Invoke(parameter!.As<T>());
+    public void Execute(object? parameter) => _execute?.Invoke(parameter!.As<T>());
 }
 

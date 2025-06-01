@@ -11,4 +11,8 @@ public partial class Layout : ContentLayout
         _model = new LayoutViewModel(this);
         InitializeComponent();
     }
+
+    void OnAtcivated(object sender, EventArgs e) => _model.LayoutActivationCommand.Execute(null);
+
+    void OnDeactivated(object sender, EventArgs e) => _model.LayoutActivationCommand.Execute(null);
 }

@@ -87,10 +87,11 @@
                             <StackPanel Grid.Column="0" Orientation="Horizontal">
 
                                 <!--menu-->
+                                <!--
                                 <Button Style="{StaticResource OpacityImageButtonStyle}"
                                         Margin="3, 0, 10, 0">
                                     <Image Source="/Source/Presentation/Resources/Images/Icon/Menu.png"/>
-                                </Button>
+                                </Button>-->
 
                                 <!--lock app-->
                                 <Button Command="{Binding LockCommand}" 

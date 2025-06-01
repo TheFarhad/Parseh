@@ -4,7 +4,7 @@
 
     <FontFamily x:Key="OpensansRegular">/Source/Presentation/Resources/Fonts/#Open Sans Regular</FontFamily>
     <FontFamily x:Key="OpensansSemibold">/Source/Presentation/Resources/Fonts/#Open Sans SemiBold</FontFamily>
-    <FontFamily x:Key="FontAwesome">/Source/Presentation/Resources/Fonts/#FontAwesome</FontFamily>
+    <!--<FontFamily x:Key="FontAwesome">/Source/Presentation/Resources/Fonts/#FontAwesome</FontFamily>-->
 
     <Style TargetType="Control" x:Key="ControlFontFamilyBaseStyle">
         <Setter Property="FontFamily" Value="{StaticResource OpensansRegular}"/>
@@ -20,7 +20,7 @@
     <Style TargetType="ListView" BasedOn="{StaticResource ControlFontFamilyBaseStyle}"/>
     <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockFontFamilyBaseStyle}"/>
 
-    <sys:String x:Key="FontAwesomeChatIcon">&#xf086;</sys:String>
+    <!--<sys:String x:Key="FontAwesomeChatIcon">&#xf086;</sys:String>
     <sys:String x:Key="FontAwesomeUserIcon">&#xf007;</sys:String>
     <sys:String x:Key="FontAwesomePictureIcon">&#xf1c5;</sys:String>
     <sys:String x:Key="FontAwesomeSettingIcon">&#xf013;</sys:String>
@@ -32,6 +32,6 @@
     <sys:String x:Key="FontAwesomeArrowLeftIcon">&#xf060;</sys:String>
     <sys:String x:Key="FontAwesomeTickIcon">&#xf00c;</sys:String>
     <sys:String x:Key="FontAwesomeCloseIcon">&#xf00d;</sys:String>
-    <sys:String x:Key="FontAwesomeMinimizeIcon">&#xf2d1;</sys:String>
+    <sys:String x:Key="FontAwesomeMinimizeIcon">&#xf2d1;</sys:String>-->
 
 </ResourceDictionary>

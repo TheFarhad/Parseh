@@ -28,11 +28,11 @@ public class ContentPage : Page
 
     void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (ShouldUnload) App.Dispatch(AnimateOut);
+        if (ShouldUnload) App.DispatchAsync(AnimateOut);
         else
         {
             Visibility = Visibility.Collapsed;
-            App.Dispatch(AnimateIn);
+            App.DispatchAsync(AnimateIn);
         }
 
         /* Why Dispatcher?
