@@ -29,6 +29,8 @@
 		<None Remove="Source\Presentation\Resources\Images\Icon\Contact.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Document.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\DoubleTick.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Error.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Information.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Location.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Lock.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Maximize.png" />
@@ -46,6 +48,7 @@
 		<None Remove="Source\Presentation\Resources\Images\Icon\Sticker.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\telegram.ico" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Tick.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Warning.png" />
 		<None Remove="Source\Presentation\Resources\Images\Logo\logo.png" />
 	</ItemGroup>
 
@@ -95,6 +98,8 @@
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Contact.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Document.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\DoubleTick.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Error.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Information.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Location.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Lock.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Maximize.png" />
@@ -115,6 +120,7 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Tick.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Warning.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\smalllogo.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\logo.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\textlogo.png" />

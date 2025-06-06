@@ -15,16 +15,18 @@
     <Grid>
 
         <!--setting menu-->
-        <local:Setting DataContext="{Binding SettingMenu}" Panel.ZIndex="0"
+        <local:SettingMenu DataContext="{Binding SettingMenuModel}" 
+                       Panel.ZIndex="0"
                        Visibility="Collapsed"
                        Opacity="0"
                        res:SettingMenuAnimatedVisibility.Value="{Binding DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"/>
 
-        <!--attachment menu-->
-        <local:Attachment DataContext="{Binding AttachmentMenu}"
-                          Panel.ZIndex="0"
-                          res:AttachmentMenuVisibility.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
-                          />
+        <local:PopupMenu DataContext="{Binding AttachmentMenuModel}"
+                         Panel.ZIndex="0"
+                         res:AttachmentMenuVisibility.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                         >
+            <local:AttachmentMenu DataContext="{Binding}"/>
+        </local:PopupMenu>
 
         <!--chat main content-->
         <Border Background="Transparent">

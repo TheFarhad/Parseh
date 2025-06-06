@@ -1,8 +1,8 @@
 ﻿namespace Parseh.UI.Views;
 
-public partial class Attachment : Component
+public partial class SettingMenu : Component
 {
-    public Attachment() => Init();
+    public SettingMenu() => Init();
 
     void Init()
     {

@@ -1,4 +1,4 @@
-﻿<local:ContentLayout x:Class="Parseh.UI.Views.Layout"
+﻿<local:ContentLayout x:Class="Parseh.UI.Views.Notifier"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,21 +8,22 @@
         xmlns:converters="clr-namespace:Parseh.UI.BindingConverters"
         xmlns:res="clr-namespace:Parseh.UI.Resources"
         mc:Ignorable="d"
-        x:Name="AppShell"
-        Title="Parseh"
+        x:Name="Messenger"
+        MinWidth="{Binding MinWidth}"
+        MinHeight="{Binding MinHeight}"
         WindowStyle="None"
         AllowsTransparency="True"
-        WindowStartupLocation="CenterScreen"
-        MinWidth="{Binding MinWidth}" MinHeight="{Binding MinHeight}"
-        Width="{Binding Width}" Height="{Binding Height}"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
         Activated="OnAtcivated"
         Deactivated="OnDeactivated"
         d:Width="900" d:Height="506"
-         >
+        >
 
     <local:ContentLayout.Resources>
 
-        <Style TargetType="{x:Type local:Layout}">
+        <Style TargetType="{x:Type local:Notifier}">
             <Setter Property="Template">
                 <Setter.Value>
 
@@ -37,7 +38,7 @@
                             <Grid Margin="{Binding OuterMargin, FallbackValue=3}">
 
                                 <!--overlay for deactive window-->
-                                <Border Panel.ZIndex="10" 
+                                <Border Panel.ZIndex="2" 
                                         Opacity="0.8" 
                                         Background="{StaticResource Gray15Brush}"
                                         CornerRadius="{Binding CornerRadius, FallbackValue=6}"
@@ -71,7 +72,9 @@
                                     </Grid.OpacityMask>
 
                                     <!--Caption Content-->
-                                    <Grid Grid.Row="0" Panel.ZIndex="1" Background="{StaticResource Gray13Brush}">
+                                    <Grid Grid.Row="0" 
+                                          Panel.ZIndex="1" 
+                                          Background="{StaticResource Gray13Brush}">
 
                                         <Grid.ColumnDefinitions>
                                             <!--Caption Icon-->
@@ -82,58 +85,37 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <!--<Button Grid.Column="0"
-                                                Command="{Binding CaptionMenuCommand}" 
-                                                Style="{StaticResource CaptionMenuButtonStyle}">
-                                            <Image Source="/Source/Presentation/Resources/Images/Logo/smalllogo.png"/>
-                                        </Button>-->
+                                        <!--icon-->
+                                        <Button Grid.Column="0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Margin="3, 0 , 0 , 0"
+                                                Style="{StaticResource DialogIconButtonStyle}">
+                                            <Image Source="{Binding Type, Converter={converters:MessageTypeToIcon}}"/>
+                                        </Button>
 
-                                        <!--<Viewbox Grid.Column="1" Grid.ColumnSpan="3">
-                                            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, FallbackValue='Parseh'}"
-                                                        Style="{StaticResource CaptionTitleStyle}"/>
-                                        </Viewbox>-->
+                                        <!--title-->
+                                        <Viewbox Grid.Column="1"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Center"
+                                                 Margin="2, 0 , 0 , 0">
+                                            <TextBlock Text="{Binding Type, Converter={converters:MessageTypeToTitle} ,FallbackValue='Information'}"
+                                                       Style="{StaticResource CaptionTitleStyle}"/>
+                                        </Viewbox>
 
-                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
-
-                                            <Button 
-                                                Grid.Column="0"
-                                                Command="{Binding MinimizeCommand}" 
-                                                Style="{StaticResource LayoutButtonsStyle}">
-                                                <Image Source="/Source/Presentation/Resources/Images/Icon/Minimize.png"/>
-                                            </Button>
-
-                                            <Button Grid.Column="0"
-                                                    Command="{Binding RestoreCommand}" 
-                                                    Style="{StaticResource LayoutButtonsStyle}">
-                                                <Image Source="{Binding RestoreButtonImage}"/>
-                                            </Button>
-
-                                            <Button 
-                                                Grid.Column="0"
+                                        <Button Grid.Column="2"
                                                 Command="{Binding CloseCommand}" 
                                                 Style="{StaticResource LayoutCloseButtonStyle}">
-                                                <Image Source="/Source/Presentation/Resources/Images/Icon/Close.png"/>
-                                            </Button>
-                                        </StackPanel>
+                                            <Image Source="/Source/Presentation/Resources/Images/Icon/Close.png"/>
+                                        </Button>
 
                                     </Grid>
 
-                                    <!--Shadow Zone-->
-                                    <!--<Border Grid.Row="1" Height="0.2" BorderThickness="0, 0.2, 0, 0" Margin="0 ,0 , 0, 0.2">
-                                        <Border.BorderBrush>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                <GradientStop Color="{StaticResource Gray15}" Offset="0.0"/>
-                                                <GradientStop Color="White" Offset="0.5"/>
-                                                <GradientStop Color="{StaticResource Gray15}" Offset="1.0"/>
-                                            </LinearGradientBrush>
-                                        </Border.BorderBrush>
-                                    </Border>-->
-
-                                    <!--page content-->
+                                    <!--content-->
                                     <Border Grid.Row="2" 
-                                                Padding="{Binding InnerContentPadding}"
-                                                Background="{StaticResource Gray15Brush}"
-                                                ClipToBounds="True">
+                                            Padding="{Binding InnerContentPadding}"
+                                            Background="{StaticResource Gray15Brush}"
+                                            ClipToBounds="True">
 
                                         <ContentPresenter Content="{TemplateBinding Content}"/>
 
@@ -161,6 +143,6 @@
                       />
     </WindowChrome.WindowChrome>
 
-    <local:Pager Page="{Binding Path=Model.Page, Source={x:Static vm:Cortex.Default}}"/>
+    <ContentControl Content="{Binding Path=DialogContnet, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Notifier}}}"/>
 
 </local:ContentLayout>

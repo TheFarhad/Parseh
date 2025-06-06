@@ -26,6 +26,7 @@ public sealed class NetIoC
     }
 
     internal CortexViewModel CortexViewModel => GetRequired<CortexViewModel>();
+    internal INotifierService Notifier => GetRequired<INotifierService>();
 
     NetIoC()
     {
@@ -45,6 +46,7 @@ public sealed class NetIoC
     {
         services.AddSingleton<CortexViewModel>();
         services.AddSingleton<Layout>();
+        services.AddSingleton<INotifierService, NotifierService>();
     }
 
     #endregion

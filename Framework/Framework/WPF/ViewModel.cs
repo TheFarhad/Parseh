@@ -24,7 +24,7 @@ public class Reference : Dictionary<string, object>
 public abstract class ViewModel : Atom, INotify
 {
     readonly Reference _reference;
-    protected Type Type => GetType();
+    protected Type OwnerType => GetType();
     public event PropertyChangedEventHandler? PropertyChanged = (seder, e) => { };
 
     protected ViewModel()
@@ -110,7 +110,7 @@ public abstract class ViewModel : Atom, INotify
 
     void InitDefaults()
     {
-        var ownerType = Type;
+        var ownerType = OwnerType;
         var membersInfo = ownerType.GetProperties().Where(_ => _.ShoudSet());
 
         foreach (var memberInfo in membersInfo)
@@ -149,7 +149,7 @@ public abstract class ViewModel : Atom, INotify
     object Verify(string property, object? value)
     {
         var result = value;
-        var ownerType = Type;
+        var ownerType = OwnerType;
         if (value is null)
         {
             var propInfo = ownerType.GetPropertyInfo(property)!;

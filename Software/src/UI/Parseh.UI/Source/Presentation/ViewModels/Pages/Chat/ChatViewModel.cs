@@ -12,8 +12,8 @@ public sealed class ChatViewModel : VM
     public bool IsOpenAttachmentMenu { get => Get(); private set => Set(value); }
     public bool IsOpenSettingMenu { get => Get(); private set => Set(value); }
     public ChatContactViewModel Contact { get => Get(); private set => Set(value); }
-    public AttachmentMenuViewModel AttachmentMenu { get => Get(); private set => Set(value); }
-    public SettingMenuViewModel SettingMenu { get => Get(); private set => Set(value); }
+    public AttachmentMenuViewModel AttachmentMenuModel { get => Get(); private set => Set(value); }
+    public SettingMenuViewModel SettingMenuModel { get => Get(); private set => Set(value); }
 
     #endregion
 
@@ -45,13 +45,13 @@ public sealed class ChatViewModel : VM
         SelectedChat = true;
         IsOpenAttachmentMenu = false;
         IsOpenSettingMenu = false;
-        AttachmentMenu = new();
+        AttachmentMenuModel = new();
 
         // TODO: Load data form server (only Contats-Items Info)
         Contact = new();
 
         // TODO: Laod data from server or local datastore for setting menu
-        SettingMenu = new();
+        SettingMenuModel = new();
     }
 
     void InitCommands()

@@ -4,6 +4,7 @@ public sealed partial class App : Application
 {
     static Dispatcher _dispatcher => Application.Current.Dispatcher;
     public static App Default { get; private set; } = default!;
+    public static Window Layout => Default.MainWindow;
 
     private App() { }
 

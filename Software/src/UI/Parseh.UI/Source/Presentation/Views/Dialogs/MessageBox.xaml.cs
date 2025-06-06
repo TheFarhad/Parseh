@@ -1,8 +1,8 @@
 ﻿namespace Parseh.UI.Views;
 
-public partial class Setting : Component
+public partial class MessageBox : Dialog
 {
-    public Setting() => Init();
+    public MessageBox() => Init();
 
     void Init()
     {

@@ -2,7 +2,6 @@
 
 using System.Windows;
 using System.Windows.Navigation;
-using System.Xml.Linq;
 using Views;
 
 internal sealed class PasscodeHasPlaceholder : AttachedProperty<PasscodeHasPlaceholder, bool>
@@ -176,7 +175,7 @@ internal sealed class SettingMenuAnimatedVisibility : AttachedProperty<SettingMe
         if (uielement.IsNull())
             return;
 
-        uielement.Is<Setting>(async setting =>
+        uielement.Is<SettingMenu>(async setting =>
         {
             var value = e.NewValue.As<bool>();
             if (value)
@@ -221,10 +220,10 @@ internal sealed class AttachmentMenuVisibility : AttachedProperty<AttachmentMenu
         if (uielement.IsNull())
             return;
 
-        uielement.Is<Attachment>(attachment =>
+        uielement.Is<PopupMenu>(popup =>
         {
-            if (e.NewValue.As<bool>()) Panel.SetZIndex(attachment, 1);
-            else Panel.SetZIndex(attachment, 0);
+            if (e.NewValue.As<bool>()) Panel.SetZIndex(popup, 1);
+            else Panel.SetZIndex(popup, 0);
         });
     }
 }
