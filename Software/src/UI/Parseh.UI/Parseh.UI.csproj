@@ -27,6 +27,9 @@
 		<None Remove="Source\Presentation\Resources\Images\Icon\Close.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\ClosePlus.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Contact.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\CustomeCancel.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\CustomeEdit.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\CustomeSave.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Document.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\DoubleTick.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Error.png" />
@@ -96,6 +99,9 @@
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Close.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\ClosePlus.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Contact.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\CustomeCancel.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\CustomeEdit.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\CustomeSave.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Document.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\DoubleTick.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Error.png" />

@@ -100,13 +100,13 @@ internal sealed class MessageTypeToIcon : BindConverter<MessageTypeToIcon>
         if (value is null)
             return null!;
 
-        value.Is<MessageType>(type =>
+        value.Is<DialogMessageType>(type =>
         {
             result = type switch
             {
-                MessageType.Information => ToIcon("Information"),
-                MessageType.Warning => ToIcon("Warning"),
-                MessageType.Error => ToIcon("Error"),
+                DialogMessageType.Information => ToIcon("Information"),
+                DialogMessageType.Warning => ToIcon("Warning"),
+                DialogMessageType.Error => ToIcon("Error"),
                 _ => null!
             };
         });
@@ -127,7 +127,7 @@ internal sealed class MessageTypeToTitle : BindConverter<MessageTypeToTitle>
     public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         var result = "Information";
-        value?.Is<MessageType>(type => result = type.ToString());
+        value?.Is<DialogMessageType>(type => result = type.ToString());
         return result;
     }
 

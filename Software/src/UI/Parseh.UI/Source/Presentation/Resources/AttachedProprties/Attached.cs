@@ -1,6 +1,9 @@
 ﻿namespace Parseh.UI.Resources;
 
+using System.Net.Mail;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
 using Views;
 
@@ -137,12 +140,54 @@ internal sealed class CloseSearchbarButtonRotateAnimate : AttachedProperty<Close
 
 #endregion
 
+#region Focus
+
+internal sealed class Focus : AttachedProperty<Focus, bool>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        uielement.Is<Control>(control =>
+        {
+            if (e.NewValue.As<bool>())
+                control.Focus();
+        });
+    }
+}
 
 internal sealed class FocusOnLoad : AttachedProperty<FocusOnLoad, bool>
 {
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
-        => uielement?.As<TextBox>().Focus();
+    {
+        uielement.Is<Control>(control =>
+        {
+            if (e.NewValue.As<bool>())
+                control.Loaded += (sender, ee) => control.Focus();
+        });
+    }
 }
+
+internal sealed class FocusAndSelectText : AttachedProperty<FocusAndSelectText, bool>
+{
+    public override void OnCoerceValue(DependencyObject uielement, object value)
+    {
+        if (value.As<bool>())
+        {
+            uielement.Is<TextBoxBase>(textbox =>
+            {
+                textbox.Focus();
+                textbox.SelectAll();
+            });
+            uielement.Is<PasswordBox>(passcode =>
+            {
+                passcode.Focus();
+                passcode.SelectAll();
+            });
+        }
+    }
+}
+
+#endregion
+
 
 #region Setting Menu
 
@@ -213,20 +258,92 @@ internal sealed class ShowAttachmentMenu : AttachedProperty<ShowAttachmentMenu, 
     }
 }
 
-internal sealed class AttachmentMenuVisibility : AttachedProperty<AttachmentMenuVisibility, bool>
+internal sealed class ZIndexVisibility : AttachedProperty<ZIndexVisibility, bool>
 {
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
-        if (uielement.IsNull())
-            return;
-
-        uielement.Is<PopupMenu>(popup =>
+        uielement?.Is<FrameworkElement>(element =>
         {
-            if (e.NewValue.As<bool>()) Panel.SetZIndex(popup, 1);
-            else Panel.SetZIndex(popup, 0);
+            if (e.NewValue.As<bool>()) Panel.SetZIndex(element, 1);
+            else Panel.SetZIndex(element, 0);
         });
     }
 }
+
+internal sealed class ZIndexFadeAnimateVisibility : AttachedProperty<ZIndexFadeAnimateVisibility, bool>
+{
+    double Duration = 0.3;
+
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        uielement?.Is<FrameworkElement>(async element =>
+        {
+            var val = e.NewValue.As<bool>();
+            if (val)
+            {
+                element.Visibility = Visibility.Visible;
+                ZIndexVisibility.SetValue(element, val);
+                await element.FadeToAsync(0, 1, Duration);
+            }
+            else
+            {
+                await element.FadeToAsync(1, 0, Duration);
+                ZIndexVisibility.SetValue(element, val);
+                element.Visibility = Visibility.Collapsed;
+            }
+        });
+    }
+}
+
+#region Custome Controls
+
+internal sealed class EntryEditingVisibility : AttachedProperty<EntryEditingVisibility, bool>
+{
+    double _duration;
+    bool _firstload = true;
+
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        if (_firstload)
+        {
+            _firstload = false;
+            _duration = 0;
+        }
+        else _duration = 0.2;
+        uielement.Is<FrameworkElement>(/*async*/ element =>
+        {
+            if (e.NewValue.As<bool>())
+            {
+                element.Visibility = Visibility.Visible;
+                App.DispatchAsync(() => element.FadeToAsync(0, 1, _duration));
+                //await element.FadeToAsync(0, 1, _duration);
+            }
+            else
+            {
+                //await element.FadeToAsync(1, 0, _duration);
+                App.DispatchAsync(() => element.FadeToAsync(1, 0, _duration));
+                element.Visibility = Visibility.Collapsed;
+            }
+        });
+    }
+}
+
+internal sealed class EntryEditMode : AttachedProperty<EntryEditMode, bool>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        uielement.Is<TextBox>(element =>
+        {
+            if (e.NewValue.As<bool>())
+            {
+                element.Focus();
+                element.SelectAll();
+            }
+        });
+    }
+}
+
+#endregion
 
 
 

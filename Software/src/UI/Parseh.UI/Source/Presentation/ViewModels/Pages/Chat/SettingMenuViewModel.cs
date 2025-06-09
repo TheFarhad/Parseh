@@ -7,9 +7,12 @@ public sealed class SettingMenuViewModel : VM
     public double CornerRadius { get => Get(); private set => Set(value); }
     public string Title { get => Get(); private set => Set(value); }
 
+    public EntryViewModel Name { get => Get(); set => Set(value); }
+    public EntryViewModel Email { get => Get(); set => Set(value); }
+
     #endregion
 
-    #region Properties
+    #region Commands
 
 
     #endregion
@@ -30,6 +33,16 @@ public sealed class SettingMenuViewModel : VM
     {
         Title = "Settings";
         CornerRadius = Constant.CornerRadius;
+        Name = new()
+        {
+            Label = "Nickname",
+            Text = "Farhad k"
+        };
+        Email = new()
+        {
+            Label = "Email",
+            Text = "Farhadk.Dev@outlook.com"
+        };
     }
 
     void InitCommands()

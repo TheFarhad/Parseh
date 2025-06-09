@@ -34,6 +34,7 @@
                             HorizontalAlignment="Stretch"
                             Visibility="{Binding Type, Converter={convert:PopupMenuItemTypeToVisibility}, ConverterParameter=Divider}"/>
 
+                    <!--icon and text-->
                     <Border Background="{StaticResource Gray14Brush}"
                             Visibility="{Binding Type, Converter={convert:PopupMenuItemTypeToVisibility}, ConverterParameter=TextAndIcon}"
                             Padding="3"
@@ -78,13 +79,11 @@
                             </EventTrigger>
                         </Border.Triggers>
 
-                        <!--icon and text-->
                         <Grid >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-
 
                             <Image Source="{Binding Icon, Converter={convert:PopupMenuIconTypeToImageSource}}"
                                    Grid.Column="0"

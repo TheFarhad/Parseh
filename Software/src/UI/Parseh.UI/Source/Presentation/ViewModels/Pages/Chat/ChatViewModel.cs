@@ -70,8 +70,19 @@ public sealed class ChatViewModel : VM
     void ShowSearchbar() => IsSearching = true;
     void CloseSearchbar() => IsSearching = false;
     void Lock() => Cortex.Default.Model.ToPage(PageMode.Signin);
-    void ToggleSettingMenu() => IsOpenSettingMenu ^= true;
+    void ToggleSettingMenu()
+    {
+        IsOpenSettingMenu ^= true;
+        SettingMenuUnedittedMode();
+
+    }
     void ToggleAttachmentMenu() => IsOpenAttachmentMenu ^= true;
+
+    void SettingMenuUnedittedMode()
+    {
+        SettingMenuModel.Name.IsEditing = false;
+        SettingMenuModel.Email.IsEditing = false;
+    }
 
     #endregion
 }
