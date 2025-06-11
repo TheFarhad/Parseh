@@ -20,6 +20,7 @@
 		<None Remove="Source\Presentation\Resources\Fonts\fontawesome-webfont.ttf" />
 		<None Remove="Source\Presentation\Resources\Fonts\OpenSans-Regular.ttf" />
 		<None Remove="Source\Presentation\Resources\Fonts\OpenSans-Semibold.ttf" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Arrow.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Attachment.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Call.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Chat.png" />
@@ -92,6 +93,7 @@
 		<Resource Include="Source\Presentation\Resources\Fonts\fontawesome-webfont.ttf" />
 		<Resource Include="Source\Presentation\Resources\Fonts\OpenSans-Regular.ttf" />
 		<Resource Include="Source\Presentation\Resources\Fonts\OpenSans-Semibold.ttf" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Arrow.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Attachment.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Call.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Chat.png" />
@@ -130,6 +132,12 @@
 		<Resource Include="Source\Presentation\Resources\Images\Logo\smalllogo.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\logo.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\textlogo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Source\Presentation\Views\Controls\Passcode.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

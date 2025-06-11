@@ -16,14 +16,11 @@
 
         <!--setting menu-->
         <local:SettingMenu DataContext="{Binding SettingMenuModel}" 
-                       Panel.ZIndex="0"
-                       Visibility="Collapsed"
-                       Opacity="0"
-                       res:SettingMenuAnimatedVisibility.Value="{Binding DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"/>
+                           res:ZIndexFadeVisibilityAnimate.Value="{Binding DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"/>
 
+        <!--attachment menu-->
         <local:PopupMenu DataContext="{Binding AttachmentMenuModel}"
-                         Panel.ZIndex="0"
-                         res:ZIndexVisibility.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                         res:ZIndex.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
                          >
             <local:AttachmentMenu DataContext="{Binding}"/>
         </local:PopupMenu>

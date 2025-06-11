@@ -1,10 +1,9 @@
 ﻿namespace Parseh.UI.Resources;
 
-using System.Net.Mail;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
+using System.Windows.Controls.Primitives;
 using Views;
 
 internal sealed class PasscodeHasPlaceholder : AttachedProperty<PasscodeHasPlaceholder, bool>
@@ -37,12 +36,15 @@ internal sealed class NoFrameHistory : AttachedProperty<NoFrameHistory, bool>
 {
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
-        if (!e.NewValue.As<bool>()) return;
-
-        var frame = uielement.As<Frame>();
-        frame.JournalOwnership = JournalOwnership.OwnsJournal;
-        frame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
-        frame.Navigated += (sender, _) => sender.As<Frame>().RemoveBackEntry();
+        if (e.NewValue.As<bool>())
+        {
+            uielement?.Is<Frame>(frame =>
+            {
+                frame.JournalOwnership = JournalOwnership.OwnsJournal;
+                frame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+                frame.Navigated += (sender, _) => frame.RemoveBackEntry();
+            });
+        }
     }
 }
 
@@ -146,7 +148,7 @@ internal sealed class Focus : AttachedProperty<Focus, bool>
 {
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
-        uielement.Is<Control>(control =>
+        uielement?.Is<Control>(control =>
         {
             if (e.NewValue.As<bool>())
                 control.Focus();
@@ -188,7 +190,6 @@ internal sealed class FocusAndSelectText : AttachedProperty<FocusAndSelectText, 
 
 #endregion
 
-
 #region Setting Menu
 
 internal sealed class SettingMenuAnimate : AttachedProperty<SettingMenuAnimate, bool>
@@ -211,54 +212,35 @@ internal sealed class SettingMenuAnimate : AttachedProperty<SettingMenuAnimate, 
     }
 }
 
-internal sealed class SettingMenuAnimatedVisibility : AttachedProperty<SettingMenuAnimatedVisibility, bool>
-{
-    const double Duration = 0.3;
-
-    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
-    {
-        if (uielement.IsNull())
-            return;
-
-        uielement.Is<SettingMenu>(async setting =>
-        {
-            var value = e.NewValue.As<bool>();
-            if (value)
-            {
-                setting.Visibility = Visibility.Visible;
-                Panel.SetZIndex(setting, 1);
-                await setting.FadeToAsync(0, 1, Duration);
-            }
-            else
-            {
-                await setting.FadeToAsync(1, 0, Duration);
-                Panel.SetZIndex(setting, 0);
-                setting.Visibility = Visibility.Collapsed;
-            }
-        });
-    }
-}
-
 #endregion
 
-internal sealed class ShowAttachmentMenu : AttachedProperty<ShowAttachmentMenu, bool>
+internal sealed class ChangeVisibility : AttachedProperty<ChangeVisibility, bool>
 {
-    const double Duration = 0.4;
-
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
-        if (uielement.IsNull())
-            return;
-
-        uielement.Is<Border>(async attachment =>
+        uielement?.Is<FrameworkElement>(element =>
         {
-            if (e.NewValue.As<bool>()) await attachment.FadeToAsync(0, 1, Duration);
-            else await attachment.FadeToAsync(1, 0, Duration);
+            if (e.NewValue.As<bool>()) element.Visibility = Visibility.Visible;
+            else element.Visibility = Visibility.Collapsed;
         });
     }
 }
 
-internal sealed class ZIndexVisibility : AttachedProperty<ZIndexVisibility, bool>
+internal sealed class FadeAnimate : AttachedProperty<FadeAnimate, bool>
+{
+    const double Duration = 0.3; // TODO: 0.3
+
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        uielement?.Is<FrameworkElement>(async element =>
+        {
+            if (e.NewValue.As<bool>()) await element.FadeToAsync(0, 1, Duration);
+            else await element.FadeToAsync(1, 0, Duration);
+        });
+    }
+}
+
+internal sealed class ZIndex : AttachedProperty<ZIndex, bool>
 {
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
@@ -270,26 +252,27 @@ internal sealed class ZIndexVisibility : AttachedProperty<ZIndexVisibility, bool
     }
 }
 
-internal sealed class ZIndexFadeAnimateVisibility : AttachedProperty<ZIndexFadeAnimateVisibility, bool>
+internal sealed class ZIndexFadeVisibilityAnimate : AttachedProperty<ZIndexFadeVisibilityAnimate, bool>
 {
-    double Duration = 0.3;
-
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
-        uielement?.Is<FrameworkElement>(async element =>
+        uielement?.Is<FrameworkElement>(element =>
         {
             var val = e.NewValue.As<bool>();
             if (val)
             {
-                element.Visibility = Visibility.Visible;
-                ZIndexVisibility.SetValue(element, val);
-                await element.FadeToAsync(0, 1, Duration);
+                ChangeVisibility.SetValue(element, val);
+                ZIndex.SetValue(element, val);
+                FadeAnimate.SetValue(element, val);
             }
             else
             {
-                await element.FadeToAsync(1, 0, Duration);
-                ZIndexVisibility.SetValue(element, val);
-                element.Visibility = Visibility.Collapsed;
+                // TODO: برای المانهای پسکود، در حالت فیداوت کار نمیکند
+                // انیمیشن در این حالت کار نمی کند
+
+                FadeAnimate.SetValue(element, val);
+                ZIndex.SetValue(element, val);
+                ChangeVisibility.SetValue(element, val);
             }
         });
     }
@@ -332,7 +315,22 @@ internal sealed class EntryEditMode : AttachedProperty<EntryEditMode, bool>
 {
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
-        uielement.Is<TextBox>(element =>
+        uielement?.Is<TextBox>(element =>
+        {
+            if (e.NewValue.As<bool>())
+            {
+                element.Focus();
+                element.SelectAll();
+            }
+        });
+    }
+}
+
+internal sealed class PasscodeEditMode : AttachedProperty<PasscodeEditMode, bool>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        uielement?.Is<PasswordBox>(element =>
         {
             if (e.NewValue.As<bool>())
             {
@@ -345,6 +343,47 @@ internal sealed class EntryEditMode : AttachedProperty<EntryEditMode, bool>
 
 #endregion
 
+
+internal sealed class PanelMatchChildWidth : AttachedProperty<PanelMatchChildWidth, bool>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        uielement?.Is<Panel>(panel =>
+        {
+            RoutedEventHandler onLoaded = null!;
+            onLoaded = (s, ee) =>
+            {
+                panel.Loaded -= onLoaded;
+
+                SetEqualWidth(panel);
+
+                foreach (var item in panel.Children)
+                {
+                    //item.Is<Entry>(entry => entry.Label.SizeChanged += (ss, eee) => SetEqualWidth(panel));
+                    //item.Is<Passcode>(passcode => entry.Label.SizeChanged += (ss, eee) => SetEqualWidth(panel));
+                }
+            };
+            panel.Loaded += onLoaded;
+        });
+    }
+
+    void SetEqualWidth(Panel panel)
+    {
+        var maxsize = 0.0;
+        foreach (var item in panel.Children)
+        {
+            //var labelColumnWidth = entry.Label.RenderSize.Width + entry.Label.Margin.Left + entry.Label.Margin.Right;
+            item.Is<Entry>(entry => maxsize = Math.Max(maxsize, entry.LabelColumn.ActualWidth));
+            item.Is<Passcode>(passcode => maxsize = Math.Max(maxsize, passcode.LabelColumn.ActualWidth));
+        }
+        foreach (var item in panel.Children)
+        {
+            item.Is<Entry>(entry => entry.LabelColumn.Width = new GridLength(maxsize));
+            item.Is<Passcode>(passcode => passcode.LabelColumn.Width = new GridLength(maxsize));
+        }
+
+    }
+}
 
 
 

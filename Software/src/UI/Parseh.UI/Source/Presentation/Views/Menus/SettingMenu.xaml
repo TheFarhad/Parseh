@@ -13,8 +13,8 @@
     <Grid>
 
         <!--overlay-->
-        <Border Background="{StaticResource Gray15Brush}"
-              Opacity="0.8">
+        <Border Background="{StaticResource Gray10Brush}"
+              Opacity="0.6">
 
             <Border.InputBindings>
                 <MouseBinding MouseAction="LeftClick" 
@@ -27,8 +27,8 @@
         <!--content-->
         <Border Background="{StaticResource Gray14Brush}"
              CornerRadius="{Binding CornerRadius}"
-              MinWidth="350"
-              MinHeight="500"
+              MinWidth="400"
+              MinHeight="550"
               Width="{Binding Path=MinWidth, RelativeSource={RelativeSource Mode=Self}}"
               Height="{Binding Path=MinHeight, RelativeSource={RelativeSource Mode=Self}}"
               MaxWidth="{Binding Path=MinWidth, RelativeSource={RelativeSource Mode=Self}}"
@@ -78,7 +78,7 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource OpacityImageButtonStyle}">
 
-                        <Image Source="/Source/Presentation/Resources/Images/Icon/Close.png"/>
+                        <Image Source="/Source/Presentation/Resources/Images/Icon/Arrow.png"/>
 
                     </Button>
 
@@ -150,14 +150,15 @@
                               Foreground="{StaticResource Gray6Brush}"
                               Margin="0, 2"/>
 
+
                     </StackPanel>
 
                 </Grid>
 
                 <!--seprator-->
                 <Border Grid.Row="2" 
-                      Height="10" 
-                      Background="{StaticResource Gray10Brush}"/>
+                      Height="6" 
+                      Background="{StaticResource Gray13Brush}"/>
 
                 <!--content-->
                 <ScrollViewer Grid.Row="3"
@@ -166,10 +167,20 @@
 
                     <Border Padding="30"
                             VerticalAlignment="Top">
-                        <StackPanel Orientation="Vertical">
+
+                        <StackPanel Orientation="Vertical"
+                                    res:PanelMatchChildWidth.Value ="True">
 
                             <local:Entry DataContext="{Binding Name}"/>
+                            <local:Entry DataContext="{Binding Username}"/>
+                            <local:Passcode DataContext="{Binding Passcode}"/>
                             <local:Entry DataContext="{Binding Email}"/>
+
+
+                            <Button Content="{Binding LogoutButton}"
+                                    Command="{Binding LogoutCommand}"
+                                    Style="{StaticResource Submit}"
+                                    Margin="20 , 15, 20 , 0"/>
 
                         </StackPanel>
                     </Border>

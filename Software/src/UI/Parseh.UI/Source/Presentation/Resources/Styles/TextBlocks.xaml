@@ -233,6 +233,56 @@
         </Setter>
     </Style>
 
+    <Style TargetType="PasswordBox" x:Key="SimpleMarkPasscodeBox" BasedOn="{StaticResource ControlFontFamilyBaseStyle}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{StaticResource Gray5Brush}"/>
+        <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource OpensansRegular}"/>
+        <Setter Property="FontSize" Value="{StaticResource FS14}"/>
+        <Setter Property="ap:PasscodeHasText.Value" Value="False"/>
+        <Setter Property="ap:PasscodeHasPlaceholder.Value" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+
+                    <Grid>
+
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Opacity="{TemplateBinding Opacity}"
+                                SnapsToDevicePixels="True">
+
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Focusable="false" 
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"/>
+
+                        </Border>
+
+                        <TextBlock x:Name="Placeholder"
+                                   Text="{TemplateBinding Tag}" 
+                                   IsHitTestVisible="False"
+                                   FontSize="{StaticResource FS14}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   Background="{TemplateBinding Background}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Padding="{TemplateBinding Padding}"
+                                   IsEnabled="False"
+                                   Visibility="{TemplateBinding ap:PasscodeHasText.Value, Converter={converters:BooleanToVisibilityRevert}}"
+                                   >
+                        </TextBlock>
+
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
     
     

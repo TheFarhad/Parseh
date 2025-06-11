@@ -1,0 +1,199 @@
+﻿<local:Component x:Class="Parseh.UI.Views.Passcode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
+             xmlns:local="clr-namespace:Parseh.UI.Views"
+             xmlns:res="clr-namespace:Parseh.UI.Resources"
+             xmlns:convert="clr-namespace:Parseh.UI.BindingConverters"
+             mc:Ignorable="d"
+             d:DataContext="{Binding Path=Model, Source={x:Static vm:PasscodeDesignModel.Defualt}}">
+
+    <local:Component.Resources>
+        <sys:Double x:Key="ImageOpacity">0.4</sys:Double>
+    </local:Component.Resources>
+
+    <Border BorderThickness="0, 0 , 0, 0.4"
+            Margin="0, 2"
+            Padding="{Binding BorderThickness, RelativeSource={RelativeSource Mode=Self}}"
+            Background="Transparent"
+            BorderBrush="{StaticResource Gray8Brush}">
+
+        <Border.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation To="1" Duration="0:0:0.2" Storyboard.TargetName="EditButton" Storyboard.TargetProperty="Opacity"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="EditButton" Storyboard.TargetProperty="Opacity"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Border.Triggers>
+
+        <Border.InputBindings>
+            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditCommand}"/>
+        </Border.InputBindings>
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <!--original password-->
+                <RowDefinition Height="Auto"/>
+                <!--new password-->
+                <RowDefinition Height="Auto"/>
+                <!--confirm password-->
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <!--label-->
+                <ColumnDefinition Width="Auto" Name="LabelColumn"/>
+                <!--textbox-->
+                <ColumnDefinition Width="*"/>
+                <!--buttons-->
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!--label-->
+            <TextBlock Text="{Binding Label}"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Name="Label"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Margin="5, 10"
+                       Foreground="{StaticResource Gray4Brush}"
+                       FontSize="{StaticResource FS14}"/>
+
+            <Border Background="{StaticResource Gray14Brush}"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    res:ZIndex.Value="{Binding IsEditing}"
+                    >
+
+                <!--current password-->
+                <PasswordBox Name="PasscodeBox"
+                             Tag="{Binding PasscodeHint}"
+                             Style="{StaticResource SimpleMarkPasscodeBox}"
+                             Background="Transparent"
+                             FontSize="{Binding FontSize, ElementName=Label}"
+                             IsEnabled="{Binding IsEditing}"
+                             Padding="2"
+                             Margin="10, 5"
+                             res:Focus.Value="{Binding IsEditing}"
+                             res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing}"
+                             VerticalAlignment="Center"
+                             Foreground="{StaticResource Gray5Brush}"
+                             CaretBrush="{Binding Foreground,RelativeSource={RelativeSource Mode=Self}}"
+                             PasswordChanged="OnCurrentPasscodeChanged"
+                             />
+            </Border>
+
+            <Border Background="{StaticResource Gray14Brush}"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    res:ZIndex.Value="{Binding IsEditing, Converter={convert:RevertBoolean}}"
+                    >
+
+                <!--fake password-->
+                <TextBlock Text="{Binding Fake}"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Padding="0, 7, 0, 0"
+                           Margin="14, 5"
+                           IsEnabled="False"
+                           Background="Transparent"
+                           Foreground="{Binding Foreground, ElementName=PasscodeBox}"
+                           FontSize="{Binding FontSize, ElementName=Label}"
+                           />
+            </Border>
+
+
+            <!--save and cancel buttons-->
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Background="{Binding Background, ElementName=EditButtonContainer}"
+                        Panel.ZIndex="0"
+                        res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing}"
+                        >
+
+                <!--save button-->
+                <Button Command="{Binding SaveCommand}"
+                        Name="SaveButon"
+                        IsDefault="True"
+                        Style="{StaticResource CustomeControlButtonStyle}">
+                    <Image Source="/Source/Presentation/Resources/Images/Icon/CustomeSave.png"
+                           Opacity="{StaticResource ImageOpacity}"/>
+                </Button>
+
+                <!--cancel button-->
+                <Button Command="{Binding CancelCommand}"
+                        Name="CancelButon"
+                        Style="{StaticResource CustomeControlButtonStyle}"
+                        Margin="3, 0 ,0, 0">
+                    <Image Source="/Source/Presentation/Resources/Images/Icon/CustomeCancel.png"
+                           Opacity="{StaticResource ImageOpacity}"/>
+                </Button>
+
+            </StackPanel>
+
+            <!--edit button-->
+            <Border Background="{StaticResource Gray14Brush}"
+                    Name="EditButtonContainer"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Padding="2"
+                    res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing, Converter={convert:RevertBoolean}}"
+                    >
+                <Button Command="{Binding EditCommand}"
+                        Style="{StaticResource CustomeControlButtonStyle}"
+                        Opacity="0"
+                        Name="EditButton"
+                        HorizontalAlignment="Right">
+                    <Image Source="/Source/Presentation/Resources/Images/Icon/CustomeEdit.png"
+                           Opacity="{StaticResource ImageOpacity}"/>
+                </Button>
+            </Border>
+
+            <!--new password-->
+            <PasswordBox Grid.Row="1"
+                         Grid.Column="1"
+                         Name="New"
+                         Tag="{Binding NewHint}"
+                         Style="{StaticResource SimpleMarkPasscodeBox}"
+                         Margin="10, 5"
+                         Padding="2"
+                         FontSize="{Binding FontSize, ElementName=Label}"
+                         VerticalAlignment="Center"
+                         Visibility="Collapsed"
+                         res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing}"
+                         PasswordChanged="OnNewPasscodeChanged"
+                         />
+
+            <!--confirm password-->
+            <PasswordBox Grid.Row="2"
+                         Grid.Column="1"
+                         Name="Confirm"
+                         Tag="{Binding ConfirmHint}"
+                         Style="{StaticResource SimpleMarkPasscodeBox}"
+                         Margin="10, 5"
+                         Padding="{Binding Padding, ElementName=New}"
+                         FontSize="{Binding FontSize, ElementName=Label}"
+                         Visibility="Collapsed"
+                         res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing}"
+                         PasswordChanged="OnConfirmPasscodeChanged"
+                         />
+        </Grid>
+
+    </Border>
+
+</local:Component>

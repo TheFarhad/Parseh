@@ -2,9 +2,9 @@
 
 using System.Security;
 using System.Reflection;
+using System.Windows.Media;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
-using System.Windows.Media;
 
 internal static partial class Extension
 {
@@ -12,7 +12,6 @@ internal static partial class Extension
     {
         if (source is null)
             return String.Empty;
-
 
         var ptr = IntPtr.Zero;
         try

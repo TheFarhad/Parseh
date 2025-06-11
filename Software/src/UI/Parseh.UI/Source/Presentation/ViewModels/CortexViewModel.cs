@@ -4,6 +4,7 @@ internal sealed class CortexViewModel : VM
 {
     public PageMode Mode { get => Get(); private set => Set(value); }
     public ContentPage Page { get => Get(); private set => Set(value); }
+    public SettingMenuViewModel SettingMenuModel { get => Get(); set => Set(value); }
 
     public CortexViewModel() => Init();
 
@@ -18,6 +19,7 @@ internal sealed class CortexViewModel : VM
     {
         Mode = PageMode.Chat;
         Pager(Mode);
+        SettingMenuModel = new();
     }
 
     void Pager(PageMode mode)

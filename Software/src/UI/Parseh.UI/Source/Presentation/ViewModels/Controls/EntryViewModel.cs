@@ -19,9 +19,9 @@ public sealed class EntryViewModel : VM
 
     #region Commands
 
-    public IRelayCommand EditCommand { get; private set; }
-    public IRelayCommand CancelCommand { get; private set; }
-    public IRelayCommand SaveCommand { get; private set; }
+    public IRelayCommand EditCommand { get; private set; } = default!;
+    public IRelayCommand CancelCommand { get; private set; } = default!;
+    public IRelayCommand SaveCommand { get; private set; } = default!;
 
     #endregion
 
@@ -31,8 +31,18 @@ public sealed class EntryViewModel : VM
 
     void Init()
     {
+        InitProperties();
+        InitCommands();
+    }
+
+    void InitProperties()
+    {
         IsEditing = false;
         IsWorking = false;
+    }
+
+    void InitCommands()
+    {
         EditCommand = new Command(Edit);
         CancelCommand = new Command(Cancel);
         SaveCommand = new Command(Save);
@@ -58,6 +68,7 @@ public sealed class EntryViewModel : VM
     void Save()
     {
         IsWorking = true; // TODO: for async operation and create pogressbar while operation complete.
+        IsEditing = false;
     }
 
     #endregion

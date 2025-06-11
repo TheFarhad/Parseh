@@ -50,7 +50,7 @@ public sealed class ChatViewModel : VM
         // TODO: Load data form server (only Contats-Items Info)
         Contact = new();
 
-        // TODO: Laod data from server or local datastore for setting menu
+        // TODO:  SettingMenuModel = Cortex.Default.Model.SettingMenuModel;
         SettingMenuModel = new();
     }
 
@@ -82,6 +82,7 @@ public sealed class ChatViewModel : VM
     {
         SettingMenuModel.Name.IsEditing = false;
         SettingMenuModel.Email.IsEditing = false;
+        SettingMenuModel.Passcode.IsEditing = false;
     }
 
     #endregion
@@ -110,87 +111,6 @@ public sealed class ChatContactViewModel : VM
             Selected = true,
             Pinned = false,
             UnreadMessageCount = 3
-        });
-        Contacts.Add(new ChatContactItemViewModel
-        {
-            Nikname = "FK",
-            Contact = "Farshid",
-            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
-            Selected = false,
-            Pinned = false,
-            UnreadMessageCount = 9
-        });
-        Contacts.Add(new ChatContactItemViewModel
-        {
-            Nikname = "FK",
-            Contact = "Farshid",
-            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
-            Selected = false,
-            Pinned = false,
-            UnreadMessageCount = 9
-        });
-        Contacts.Add(new ChatContactItemViewModel
-        {
-            Nikname = "FK",
-            Contact = "Farshid",
-            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
-            Selected = false,
-            Pinned = false,
-            UnreadMessageCount = 9
-        });
-        Contacts.Add(new ChatContactItemViewModel
-        {
-            Nikname = "FK",
-            Contact = "Farshid",
-            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
-            Selected = false,
-            Pinned = false,
-            UnreadMessageCount = 9
-        });
-        Contacts.Add(new ChatContactItemViewModel
-        {
-            Nikname = "FK",
-            Contact = "Farshid",
-            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
-            Selected = false,
-            Pinned = false,
-            UnreadMessageCount = 9
-        });
-        Contacts.Add(new ChatContactItemViewModel
-        {
-            Nikname = "FK",
-            Contact = "Farshid",
-            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
-            Selected = false,
-            Pinned = false,
-            UnreadMessageCount = 9
-        });
-        Contacts.Add(new ChatContactItemViewModel
-        {
-            Nikname = "FK",
-            Contact = "Farshid",
-            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
-            Selected = false,
-            Pinned = false,
-            UnreadMessageCount = 9
-        });
-        Contacts.Add(new ChatContactItemViewModel
-        {
-            Nikname = "FK",
-            Contact = "Farshid",
-            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
-            Selected = false,
-            Pinned = false,
-            UnreadMessageCount = 9
-        });
-        Contacts.Add(new ChatContactItemViewModel
-        {
-            Nikname = "FK",
-            Contact = "Farshid",
-            Message = "Hi, Where are you?!! Where are you?!! Where are you?!!",
-            Selected = false,
-            Pinned = false,
-            UnreadMessageCount = 9
         });
         Contacts.Add(new ChatContactItemViewModel
         {

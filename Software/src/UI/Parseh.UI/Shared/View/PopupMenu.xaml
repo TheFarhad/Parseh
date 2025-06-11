@@ -36,7 +36,7 @@
                                     HorizontalAlignment="{Binding HorizontalAlignment}"
                                     VerticalAlignment="{Binding VerticalAlignment}"
                                     Margin="{Binding Margin}"
-                                    res:ShowAttachmentMenu.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                                    res:FadeAnimate.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
                                     >
 
                                 <ContentPresenter Content="{TemplateBinding Content}"

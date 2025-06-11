@@ -67,7 +67,11 @@ public sealed class SigninViewModel : VM
             Passcode = signinPage.SecurePasscode.Unsecure();
 
             await Task.Delay(20);
+
             Cortex.Default.Model.ToPage(PageMode.Chat);
+            // TODO:
+            // get user-data from server and init setting-viewmodel
+            //Cortex.Default.Model.SettingMenuModel = ;
 
             IsSigning = false;
         });
