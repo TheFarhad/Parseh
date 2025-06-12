@@ -32,6 +32,8 @@ public sealed partial class Pager : Component
         var pager = sender.As<Pager>();
         var currentpage = e.NewValue.As<ContentPage>();
 
+
+
         var prevFrame = pager.Previous;
         var currFrame = pager.Current;
 

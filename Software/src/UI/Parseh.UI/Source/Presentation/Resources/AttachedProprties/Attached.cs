@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using System.Windows.Controls.Primitives;
 using Views;
+using System.Xml.Linq;
 
 internal sealed class PasscodeHasPlaceholder : AttachedProperty<PasscodeHasPlaceholder, bool>
 {
@@ -228,7 +229,7 @@ internal sealed class ChangeVisibility : AttachedProperty<ChangeVisibility, bool
 
 internal sealed class FadeAnimate : AttachedProperty<FadeAnimate, bool>
 {
-    const double Duration = 0.3; // TODO: 0.3
+    const double Duration = 0.3;
 
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
     {
@@ -385,6 +386,17 @@ internal sealed class PanelMatchChildWidth : AttachedProperty<PanelMatchChildWid
     }
 }
 
+
+internal sealed class DataContextChanged : AttachedProperty<DataContextChanged, bool>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        uielement?.Is<FrameworkElement>(element => element.DataContextChanged += OnDataContextChanged);
+    }
+
+    async void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        => await sender.As<FrameworkElement>().FadeToAsync(duration: 0.3);
+}
 
 
 

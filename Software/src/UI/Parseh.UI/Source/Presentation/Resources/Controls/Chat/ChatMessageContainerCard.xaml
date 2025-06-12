@@ -8,13 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
-             d:DataContext="{x:Static vm:ChatMessagesDesignModel.Defualt}"
-             DataContext="{x:Static vm:ChatMessagesDesignModel.Defualt}">
+             >
 
     <Border Background="{StaticResource Gray15Brush}" Padding="15, 4">
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
-            <ItemsControl ItemsSource="{Binding Model.Messages}">
+            <ItemsControl ItemsSource="{Binding Messages}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <local:ChatMessageCard/>

@@ -37,12 +37,12 @@
                     <StackPanel Grid.Column="0" 
                                 Orientation="Vertical"
                                 VerticalAlignment="Center">
-                        <TextBlock Text="Farhad" 
+                        <TextBlock Text="{Binding SelectedContact.Contact}" 
                                    FontSize="{StaticResource FS13}"
                                    Foreground="{StaticResource Gray1Brush}"
                                    FontWeight="Bold"/>
-                        <TextBlock Text="Last Seen Recently" 
-                                   FontSize="{StaticResource FS12}"
+                        <TextBlock Text="{Binding SelectedContact.LastSeen, StringFormat=dd-MM-yyyy}" 
+                                   FontSize="{StaticResource FS11}"
                                    Foreground="{StaticResource Gray6Brush}"/>
 
                     </StackPanel>
@@ -69,7 +69,12 @@
             </Border>
 
             <!--message container-->
-            <local:ChatMessageContainerCard Grid.Row="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
+            <local:ChatMessageContainerCard Grid.Row="1" 
+                                            Grid.RowSpan="2"
+                                            DataContext="{Binding SelectedContact}"
+                                            Margin="0,0,0,9" 
+                                            res:DataContextChanged.Value="True"
+                                            />
 
             <!--message send bar-->
             <Border Grid.Row="2" 

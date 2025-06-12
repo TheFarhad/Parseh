@@ -23,6 +23,15 @@ internal sealed class BooleanToVisibility : BindConverter<BooleanToVisibility>
         => value.As<Visibility>() == Visibility.Visible;
 }
 
+internal sealed class BooleanToOpacity : BindConverter<BooleanToOpacity>
+{
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value.As<bool>() ? 1 : 0;
+
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => value.As<double>() == 1 ? true : false;
+}
+
 internal sealed class BooleanToVisibilityRevert : BindConverter<BooleanToVisibilityRevert>
 {
     public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -39,6 +48,19 @@ internal sealed class BooleanToHAlignment : BindConverter<BooleanToHAlignment>
 
     public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => value.As<HorizontalAlignment>() == HorizontalAlignment.Right;
+}
+
+internal sealed class UnreadMessages : BindConverter<UnreadMessages>
+{
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value?.As<int>() <= 9 ? "9" : "9+";
+    }
+
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 internal sealed class BooleanToHAlignmentRevert : BindConverter<BooleanToHAlignmentRevert>

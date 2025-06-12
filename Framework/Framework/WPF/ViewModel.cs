@@ -54,7 +54,6 @@ public abstract class ViewModel : Atom, INotify
             Notify(property);
             return;
         }
-
         Set(property, value);
     }
 

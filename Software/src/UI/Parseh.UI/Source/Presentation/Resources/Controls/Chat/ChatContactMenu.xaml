@@ -14,36 +14,34 @@
              MinWidth="{Binding Path=Width, RelativeSource={RelativeSource Mode=Self}}"
              MaxWidth="{Binding Path=Width, RelativeSource={RelativeSource Mode=Self}}">
 
-    <local:Component.Template>
-        <ControlTemplate TargetType="{x:Type UserControl}">
 
-            <Grid Grid.Column="0" Background="{StaticResource Gray15Brush}">
-                <Grid.RowDefinitions>
-                    <!--menu and searchbar-->
-                    <RowDefinition Height="Auto"/>
-                    <!--contacts chat list-->
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+    <Grid Grid.Column="0" Background="{StaticResource Gray15Brush}">
+        <Grid.RowDefinitions>
+            <!--menu and searchbar-->
+            <RowDefinition Height="Auto"/>
+            <!--contacts chat list-->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <!--searchbar-->
-                <Border Grid.Row="0"
+        <!--searchbar-->
+        <Border Grid.Row="0"
                         Background="Transparent"
                         Padding="4"
                         Height="45"
                         res:HideSearchbar.Value="{Binding IsSearching}"
                         >
 
-                    <Border CornerRadius="5" 
+            <Border CornerRadius="5" 
                             Background="{StaticResource Gray14Brush}"
                            >
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                            <TextBox Grid.Column="0" 
+                    <TextBox Grid.Column="0" 
                                      Tag="Search your title" 
                                      FontSize="{StaticResource FS12}"
                                      Margin="15, 2"
@@ -52,101 +50,255 @@
                                      TabIndex="0"
                                      x:Name="searchtext"/>
 
-                            <Button Grid.Column="1" 
+                    <Button Grid.Column="1" 
                                     Command="{Binding CloseSearchbarCommand}"
                                     Style="{StaticResource OpacityImageButtonStyle}"
                                     Padding="5"
                                     res:CloseSearchbarButtonRotateAnimate.Value="{Binding IsSearching}">
 
-                                <Image Source="/Source/Presentation/Resources/Images/Icon/ClosePlus.png"/>
+                        <Image Source="/Source/Presentation/Resources/Images/Icon/ClosePlus.png"/>
 
-                            </Button>
-                        </Grid>
-                    </Border>
+                    </Button>
+                </Grid>
+            </Border>
 
-                </Border>
+        </Border>
 
-                <!--Menu-->
-                <Border Grid.Row="0"
+        <!--Menu-->
+        <Border Grid.Row="0"
                         Background="Transparent"
                         Padding="4"
                         Height="45"
                         res:ShowSearchbar.Value="{Binding IsSearching}">
 
-                    <!--menu buttons-->
-                    <Border Background="{StaticResource Gray14Brush}"
+            <!--menu buttons-->
+            <Border Background="{StaticResource Gray14Brush}"
                             CornerRadius="5">
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
 
-                                <!--menu-->
-                                <!--
+                        <!--menu-->
+                        <!--
                                 <Button Style="{StaticResource OpacityImageButtonStyle}"
                                         Margin="3, 0, 10, 0">
                                     <Image Source="/Source/Presentation/Resources/Images/Icon/Menu.png"/>
                                 </Button>-->
 
-                                <!--lock app-->
-                                <Button Command="{Binding LockCommand}" 
+                        <!--lock app-->
+                        <Button Command="{Binding LockCommand}" 
                                         Style="{StaticResource OpacityImageButtonStyle}"
 >
-                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Lock.png"/>
-                                </Button>
+                            <Image Source="/Source/Presentation/Resources/Images/Icon/Lock.png"/>
+                        </Button>
 
-                            </StackPanel>
+                    </StackPanel>
 
-                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
 
-                                <!--search bar-->
-                                <Button Command="{Binding ShowSearchbarCommand}" 
+                        <!--search bar-->
+                        <Button Command="{Binding ShowSearchbarCommand}" 
                                         Style="{StaticResource OpacityImageButtonStyle}">
-                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Search.png"/>
-                                </Button>
+                            <Image Source="/Source/Presentation/Resources/Images/Icon/Search.png"/>
+                        </Button>
 
-                                <!--setting-->
-                                <Button Style="{StaticResource OpacityImageButtonStyle}"
+                        <!--setting-->
+                        <Button Style="{StaticResource OpacityImageButtonStyle}"
                                         Command="{Binding ToggleSettingMenuCommand}"
                                         >
-                                    <!--Click="Button_Click"-->
+                            <!--Click="Button_Click"-->
 
-                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Setting.png"/>
-                                </Button>
+                            <Image Source="/Source/Presentation/Resources/Images/Icon/Setting.png"/>
+                        </Button>
 
-                            </StackPanel>
-                        </Grid>
+                    </StackPanel>
+                </Grid>
 
-                    </Border>
+            </Border>
 
-                </Border>
+        </Border>
 
-                <!--contact chat list-->
-                <Border Grid.Row="1" 
+        <!--contact chat list-->
+        <Border Grid.Row="1" 
                         Background="{StaticResource Gray14Brush}">
 
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                   VerticalScrollBarVisibility="Auto">
 
-                        <ItemsControl ItemsSource="{Binding Contact.Contacts}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <local:ChatContactItemCard/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                <ItemsControl ItemsSource="{Binding Contacts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <local:ChatContactItemCard/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
-                    </ScrollViewer>
+            </ScrollViewer>
+
+        </Border>
+
+    </Grid>
+
+</local:Component>
+
+
+<!--<local:Component.Template>
+    <ControlTemplate TargetType="{x:Type UserControl}">
+
+        <Grid Grid.Column="0" Background="{StaticResource Gray15Brush}">
+            <Grid.RowDefinitions>
+                -->
+<!--menu and searchbar-->
+<!--
+                <RowDefinition Height="Auto"/>
+                -->
+<!--contacts chat list-->
+<!--
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            -->
+<!--searchbar-->
+<!--
+            <Border Grid.Row="0"
+                        Background="Transparent"
+                        Padding="4"
+                        Height="45"
+                        res:HideSearchbar.Value="{Binding IsSearching}"
+                        >
+
+                <Border CornerRadius="5" 
+                            Background="{StaticResource Gray14Brush}"
+                           >
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" 
+                                     Tag="Search your title" 
+                                     FontSize="{StaticResource FS12}"
+                                     Margin="15, 2"
+                                     Style="{StaticResource SendMessageMarkTextBox}"
+                                     res:FocusOnLoad.Value="{Binding IsSearching}"
+                                     TabIndex="0"
+                                     x:Name="searchtext"/>
+
+                        <Button Grid.Column="1" 
+                                    Command="{Binding CloseSearchbarCommand}"
+                                    Style="{StaticResource OpacityImageButtonStyle}"
+                                    Padding="5"
+                                    res:CloseSearchbarButtonRotateAnimate.Value="{Binding IsSearching}">
+
+                            <Image Source="/Source/Presentation/Resources/Images/Icon/ClosePlus.png"/>
+
+                        </Button>
+                    </Grid>
+                </Border>
+
+            </Border>
+
+            -->
+<!--Menu-->
+<!--
+            <Border Grid.Row="0"
+                        Background="Transparent"
+                        Padding="4"
+                        Height="45"
+                        res:ShowSearchbar.Value="{Binding IsSearching}">
+
+                -->
+<!--menu buttons-->
+<!--
+                <Border Background="{StaticResource Gray14Brush}"
+                            CornerRadius="5">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+
+                            -->
+<!--menu-->
+<!--
+                                <Button Style="{StaticResource OpacityImageButtonStyle}"
+                                        Margin="3, 0, 10, 0">
+                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Menu.png"/>
+                                </Button>-->
+
+<!--lock app-->
+<!--
+                            <Button Command="{Binding LockCommand}" 
+                                        Style="{StaticResource OpacityImageButtonStyle}"
+>
+                                <Image Source="/Source/Presentation/Resources/Images/Icon/Lock.png"/>
+                            </Button>
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+
+                            -->
+<!--search bar-->
+<!--
+                            <Button Command="{Binding ShowSearchbarCommand}" 
+                                        Style="{StaticResource OpacityImageButtonStyle}">
+                                <Image Source="/Source/Presentation/Resources/Images/Icon/Search.png"/>
+                            </Button>
+
+                            -->
+<!--setting-->
+<!--
+                            <Button Style="{StaticResource OpacityImageButtonStyle}"
+                                        Command="{Binding ToggleSettingMenuCommand}"
+                                        >
+                                -->
+<!--Click="Button_Click"-->
+<!--
+
+                                <Image Source="/Source/Presentation/Resources/Images/Icon/Setting.png"/>
+                            </Button>
+
+                        </StackPanel>
+                    </Grid>
 
                 </Border>
 
-            </Grid>
-        </ControlTemplate>
-    </local:Component.Template>
+            </Border>
 
-</local:Component>
+            -->
+<!--contact chat list-->
+<!--
+            <Border Grid.Row="1" 
+                        Background="{StaticResource Gray14Brush}">
+
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto">
+
+                    <ItemsControl ItemsSource="{Binding Contacts}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <local:ChatContactItemCard/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </ScrollViewer>
+
+            </Border>
+
+        </Grid>
+    </ControlTemplate>
+</local:Component.Template>-->
