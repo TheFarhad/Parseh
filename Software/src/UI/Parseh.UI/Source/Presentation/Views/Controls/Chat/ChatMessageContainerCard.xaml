@@ -10,9 +10,11 @@
              d:DesignWidth="800"
              >
 
-    <Border Background="{StaticResource Gray15Brush}" Padding="15, 4">
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <Border Background="{StaticResource Gray15Brush}" 
+                Padding="12, 4">
+
             <ItemsControl ItemsSource="{Binding Messages}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -20,7 +22,9 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </ScrollViewer>
-    </Border>
+
+        </Border>
+
+    </ScrollViewer>
 
 </local:Component>

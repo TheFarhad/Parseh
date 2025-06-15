@@ -123,7 +123,7 @@
                     Name="EditButtonContainer"
                     Grid.Column="2"
                     Padding="2"
-                    res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing, Converter={convert:RevertBoolean}}"
+                    res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing, Converter={convert:BooleanInvert}}"
                     >
                 <Button Command="{Binding EditCommand}"
                         Style="{StaticResource CustomeControlButtonStyle}"

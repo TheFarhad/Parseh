@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
+﻿namespace Parseh.UI.BindingConverters;
+
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace Parseh.UI.BindingConverters;
-
-internal sealed class RevertBoolean : BindConverter<RevertBoolean>
+internal sealed class BooleanInvert : BindConverter<BooleanInvert>
 {
     public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         => !value.As<bool>();
@@ -32,7 +34,7 @@ internal sealed class BooleanToOpacity : BindConverter<BooleanToOpacity>
         => value.As<double>() == 1 ? true : false;
 }
 
-internal sealed class BooleanToVisibilityRevert : BindConverter<BooleanToVisibilityRevert>
+internal sealed class BooleanToVisibilityInvert : BindConverter<BooleanToVisibilityInvert>
 {
     public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         => value.As<bool>() ? Visibility.Collapsed : Visibility.Visible;
@@ -158,3 +160,73 @@ internal sealed class MessageTypeToTitle : BindConverter<MessageTypeToTitle>
         throw new NotImplementedException();
     }
 }
+
+#region Message Bubble
+
+internal sealed class ChatBubblePath : BindConverter<ChatBubblePath>
+{
+    Path _leftBubble = default!;
+    Path _rightBubble = default!;
+
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => ToPath(value.As<bool>());
+
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+
+    Path ToPath(bool value)
+    {
+        // TODO: چرا فقط برای دو المان اول کار میکند؟؟
+
+
+        // right bubble (send by me)
+        if (value)
+        {
+            if (_rightBubble is null)
+            {
+                _rightBubble = new()
+                {
+                    StrokeThickness = 0,
+                    Fill = App.Resource<Brush>("Gray14Brush"),
+                    Data = Geometry.Parse("M 40 0 C 28 20 37 0 0 0 Z"),
+                    Margin = new(0, -2, 6, 0),
+                    HorizontalAlignment = HorizontalAlignment.Right
+                };
+            }
+            return _rightBubble;
+        }
+        // left bubble (send by contact)
+        else
+        {
+            if (_leftBubble is null)
+            {
+                _leftBubble = new()
+                {
+                    StrokeThickness = 0,
+                    Fill = App.Resource<Brush>("Gray14Brush"),
+                    Data = Geometry.Parse("M 0 0 C 9 20 1 0 40 0Z"),
+                    Margin = new(6, -2, 0, 0),
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
+            }
+            return _leftBubble;
+        }
+    }
+}
+
+internal sealed class ChatBubblePath1 : BindConverter<ChatBubblePath1>
+{
+    // TODO: چرا فقط برای دو المان اول کار میکند
+
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value.As<bool>() ? App.Resource<Path>("BubbleSendByMe") : App.Resource<Path>("BubbleSendByContact");
+
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+#endregion

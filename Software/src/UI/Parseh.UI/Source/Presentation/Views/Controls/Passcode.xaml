@@ -100,7 +100,7 @@
             <Border Background="{StaticResource Gray14Brush}"
                     Grid.Row="0"
                     Grid.Column="1"
-                    res:ZIndex.Value="{Binding IsEditing, Converter={convert:RevertBoolean}}"
+                    res:ZIndex.Value="{Binding IsEditing, Converter={convert:BooleanInvert}}"
                     >
 
                 <!--fake password-->
@@ -152,7 +152,7 @@
                     Grid.Row="0"
                     Grid.Column="2"
                     Padding="2"
-                    res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing, Converter={convert:RevertBoolean}}"
+                    res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing, Converter={convert:BooleanInvert}}"
                     >
                 <Button Command="{Binding EditCommand}"
                         Style="{StaticResource CustomeControlButtonStyle}"

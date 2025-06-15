@@ -198,7 +198,7 @@
                                  Foreground="{TemplateBinding Foreground}"
                                  Padding="{TemplateBinding Padding}"
                                  Opacity="0.8"
-                                 Visibility="{TemplateBinding ap:PasscodeHasText.Value, Converter={converters:BooleanToVisibilityRevert}}"
+                                 Visibility="{TemplateBinding ap:PasscodeHasText.Value, Converter={converters:BooleanToVisibilityInvert}}"
                                  >
                         </TextBlock>
 
@@ -272,7 +272,7 @@
                                    Foreground="{TemplateBinding Foreground}"
                                    Padding="{TemplateBinding Padding}"
                                    IsEnabled="False"
-                                   Visibility="{TemplateBinding ap:PasscodeHasText.Value, Converter={converters:BooleanToVisibilityRevert}}"
+                                   Visibility="{TemplateBinding ap:PasscodeHasText.Value, Converter={converters:BooleanToVisibilityInvert}}"
                                    >
                         </TextBlock>
 

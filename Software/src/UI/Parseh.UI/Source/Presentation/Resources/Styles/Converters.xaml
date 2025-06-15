@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:convert="clr-namespace:Parseh.UI.BindingConverters">
+
+    <convert:BooleanInvert x:Key="BooleanInvert"/>
+    <convert:BooleanToVisibility x:Key="BoolToVisibility"/>
+    <convert:BooleanToVisibilityInvert x:Key="BooleanToVisibilityInvert"/>
+
+</ResourceDictionary>

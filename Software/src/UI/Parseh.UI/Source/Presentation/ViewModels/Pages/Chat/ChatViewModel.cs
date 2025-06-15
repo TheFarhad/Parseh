@@ -1,8 +1,6 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-using Microsoft.VisualBasic;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 
 public sealed class ChatViewModel : VM
 {
@@ -16,6 +14,7 @@ public sealed class ChatViewModel : VM
     public ObservableSet<ChatContactViewModel> Contacts { get => Get(); private set => Set(value); }
     public AttachmentMenuViewModel AttachmentMenuModel { get => Get(); private set => Set(value); }
     public SettingMenuViewModel SettingMenuModel { get => Get(); private set => Set(value); }
+    public string NewMessage { get => Get(); set => Set(value); }
 
     // TODO: دیتاکانتکست مربوط پیام ها هم از این آیتم گرفته می شود و به یوزرکنترل زیر داده می شود
     // ChatMessageContainerCard
@@ -32,6 +31,7 @@ public sealed class ChatViewModel : VM
     public IRelayCommand LockCommand { get; private set; } = default!;
     public IRelayCommand ToggleSettingMenuCommand { get; private set; } = default!;
     public IRelayCommand ToggleAttachmentMenuCommand { get; private set; } = default!;
+    public IRelayCommand SendMessageCommand { get; private set; } = default!;
 
     #endregion
 
@@ -66,12 +66,27 @@ public sealed class ChatViewModel : VM
             UnreadMessageCount = 1007,
             Messages = [
                 new ()
-            {
+                {
                 SendByMe = true,
                 Sender = "Ali",
                 Message = "Binding Path=Width, RelativeSource={RelativeSource Mode=Self =Width, RelativeSource={RelativeSource Mode=Se =Width, RelativeSource={RelativeSource Mode=Se",
                 SendAt = DateTime.UtcNow,
-                ReadAt = DateTime.UtcNow.AddMinutes(10)
+                ReadAt = DateTime.UtcNow.AddMinutes(2)
+                },
+                new ()
+                {
+                SendByMe = true,
+                Sender = "Ali",
+                Message = "Binding Path=Width, RelativeSource={RelativeSource Mode=Self =Width, RelativeSource={RelativeSource Mode=Se =Width, RelativeSource={RelativeSource Mode=Se",
+                SendAt = DateTime.UtcNow,
+                ReadAt = DateTime.UtcNow.AddMinutes(2)
+                },
+            new() {
+                SendByMe = false,
+                Sender = "Panah",
+                Message = "Hi Ali. How are you?",
+                SendAt = DateTime.UtcNow.AddMinutes(1),
+                ReadAt = DateTime.UtcNow.AddMinutes(3)
             },
             new() {
                 SendByMe = false,
@@ -85,18 +100,19 @@ public sealed class ChatViewModel : VM
                 Sender = "Panah",
                 Message = "Hi Ali. How are you?",
                 SendAt = DateTime.UtcNow.AddMinutes(1),
-                ReadAt = DateTime.UtcNow.AddMinutes(5)
+                ReadAt = DateTime.UtcNow.AddMinutes(15)
             },
-            new() {
-                SendByMe = false,
-                Sender = "Panah",
-                Message = "Hi Ali. How are you?",
-                SendAt = DateTime.UtcNow.AddMinutes(1),
-                ReadAt = DateTime.UtcNow.AddMinutes(5)
-            }
+            new ()
+                {
+                SendByMe = true,
+                Sender = "Ali",
+                Message = "Binding Path=Width, RelativeSource={RelativeSource Mode=Self =Width, RelativeSource={RelativeSource Mode=Se =Width, RelativeSource={RelativeSource Mode=Se",
+                SendAt = DateTime.UtcNow,
+                ReadAt = DateTime.UtcNow.AddMinutes(2)
+                }
                 ]
         },
-        new ChatContactViewModel
+            new ChatContactViewModel
         {
             Id= 2,
             Nikname = "FK",
@@ -123,7 +139,7 @@ public sealed class ChatViewModel : VM
             }
             ]
         },
-        new ChatContactViewModel
+            new ChatContactViewModel
         {
             Id= 3,
             Nikname = "FK",
@@ -150,6 +166,16 @@ public sealed class ChatViewModel : VM
 
         // TODO:  SettingMenuModel = Cortex.Default.Model.SettingMenuModel;
         SettingMenuModel = new();
+    }
+
+    void InitCommands()
+    {
+        ShowSearchbarCommand = new Command(ShowSearchbar);
+        CloseSearchbarCommand = new Command(CloseSearchbar);
+        LockCommand = new Command(Lock);
+        ToggleSettingMenuCommand = new Command(ToggleSettingMenu);
+        ToggleAttachmentMenuCommand = new Command(ToggleAttachmentMenu);
+        SendMessageCommand = new Command(SendMessage);
     }
 
     void MonitorContacts()
@@ -179,14 +205,6 @@ public sealed class ChatViewModel : VM
         }
     }
 
-    void InitCommands()
-    {
-        ShowSearchbarCommand = new Command(ShowSearchbar);
-        CloseSearchbarCommand = new Command(CloseSearchbar);
-        LockCommand = new Command(Lock);
-        ToggleSettingMenuCommand = new Command(ToggleSettingMenu);
-        ToggleAttachmentMenuCommand = new Command(ToggleAttachmentMenu);
-    }
 
     #endregion
 
@@ -210,112 +228,22 @@ public sealed class ChatViewModel : VM
         SettingMenuModel.Passcode.IsEditing = false;
     }
 
-    #endregion
-}
-
-public sealed class ChatContactViewModel : VM
-{
-    #region Properties
-
-    public int Id { get => Get(); set => Set(value); }
-    public string Nikname { get => Get(); set => Set(value); }
-    public string Contact { get => Get(); set => Set(value); }
-    public string Message { get => Get(); set => Set(value); }
-    public bool Selected { get => Get(); set => Set(value); }
-    public bool Pinned { get => Get(); set => Set(value); }
-    public DateTime LastSeen { get => Get(); set => Set(value); } // TODO: یک کانورتر برای نمایش دلخواه زمان آخرین بازدید نوشته شود
-    public int UnreadMessageCount
+    void SendMessage()
     {
-        get => Get();
-        set
+        if (SelectedContact is null) return;
+        if (NewMessage.IsEmpty()) return;
+
+        var message = new ChatMessageViewModel
         {
-            Set(value);
-            Notify(nameof(HaveUnreadMessages));
-        }
+            SendByMe = true,
+            Sender = "Ali",
+            Message = NewMessage,
+            SendAt = DateTime.UtcNow
+        };
+        SelectedContact.Messages.Add(message);
+        NewMessage = Empty;
     }
-    public bool HaveUnreadMessages => UnreadMessageCount > 0;
-    public ObservableSet<ChatMessageViewModel> Messages { get => Get(); set => Set(value); }
 
     #endregion
-
-    #region Properties
-
-    public IRelayCommand SelectCommand { get; private set; } = default!;
-
-    #endregion
-
-    public ChatContactViewModel() => Init();
-
-    void Init()
-    {
-        InitProperties();
-        InitComands();
-    }
-
-    void InitProperties()
-    {
-        Messages = [
-             new ()
-            {
-                SendByMe = true,
-                Sender = "Ali",
-                Message = "Binding Path=Width, RelativeSource={RelativeSource Mode=Self =Width, RelativeSource={RelativeSource Mode=Se =Width, RelativeSource={RelativeSource Mode=Se",
-                SendAt = DateTime.UtcNow,
-                ReadAt = DateTime.UtcNow.AddMinutes(10)
-            },
-            new() {
-                SendByMe = false,
-                Sender = "Panah",
-                Message = "Hi Ali. How are you?",
-                SendAt = DateTime.UtcNow.AddMinutes(1),
-                ReadAt = DateTime.UtcNow.AddMinutes(5)
-            },
-            new() {
-                SendByMe = false,
-                Sender = "Panah",
-                Message = "Hi Ali. How are you?",
-                SendAt = DateTime.UtcNow.AddMinutes(1),
-                ReadAt = DateTime.UtcNow.AddMinutes(5)
-            },
-            new() {
-                SendByMe = false,
-                Sender = "Panah",
-                Message = "Hi Ali. How are you?",
-                SendAt = DateTime.UtcNow.AddMinutes(1),
-                ReadAt = DateTime.UtcNow.AddMinutes(5)
-            }
-            ];
-        LastSeen = DateTime.Now;
-    }
-
-    void InitComands()
-    {
-        SelectCommand = new Command(Select);
-    }
-
-    void Select()
-    {
-        Selected = true;
-
-        // TODO: لود کردن تعداد مشخصی از پیامها از آخر
-        // مثلا 20 پیام آخر لود شود 
-        // سپس با هر بال اسکرول کرن به بالا، همین دعداد مجددا لود شود
-    }
 }
 
-#region Design Models
-
-public sealed class ChatContactItemDesignModel1 : DesignModel<ChatContactItemDesignModel1, ChatContactViewModel>
-{
-    public ChatContactItemDesignModel1()
-    {
-        Model.Nikname = "P";
-        Model.Contact = "Panah";
-        Model.Message = "Hi, Where are you?!!";
-        Model.Selected = true;
-        Model.UnreadMessageCount = 7;
-        Model.Pinned = true;
-    }
-}
-
-#endregion

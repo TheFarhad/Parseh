@@ -14,8 +14,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="8.73"/>
-                <RowDefinition Height="40.337"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <!--contact info-->
@@ -70,7 +69,6 @@
 
             <!--message container-->
             <local:ChatMessageContainerCard Grid.Row="1" 
-                                            Grid.RowSpan="2"
                                             DataContext="{Binding SelectedContact}"
                                             Margin="0,0,0,9" 
                                             res:DataContextChanged.Value="True"
@@ -102,6 +100,7 @@
                     </Button>
 
                     <TextBox Grid.Column="1" 
+                             Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}"
                              Tag="Write your message" 
                              FontSize="{StaticResource FS14}"
                              Margin="10, 5, 30, 5"
@@ -110,7 +109,7 @@
                              AcceptsReturn="True"
                              AcceptsTab="True"
                              Style="{StaticResource SendMessageMarkTextBox}"
-                             res:FocusOnLoad.Value="{Binding SelectedChat}"
+                             res:Focus.Value="{Binding SelectedChat}"
                              VerticalScrollBarVisibility="Auto"
                              />
 
@@ -121,7 +120,8 @@
                             <Image Source="/Source/Presentation/Resources/Images/Icon/Sticker.png"/>
                         </Button>
 
-                        <Button Style="{StaticResource OpacityImageButtonStyle}">
+                        <Button Command="{Binding SendMessageCommand}"
+                                Style="{StaticResource OpacityImageButtonStyle}">
                             <Image Source="/Source/Presentation/Resources/Images/Icon/Send.png"/>
                         </Button>
 

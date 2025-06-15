@@ -10,6 +10,43 @@
         <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Buttons.xaml"/>
         <ResourceDictionary Source="/Source/Presentation/Resources/Styles/TextBlocks.xaml"/>
         <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Scroll.xaml"/>
+        <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Converters.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="MessageBubbleStyle" TargetType="{x:Type Path}">
+        <Setter  Property="StrokeThickness" Value="0"/>
+        <Setter  Property="Panel.ZIndex" Value="1"/>
+        <Setter  Property="Fill" Value="{StaticResource Gray14Brush}"/>
+    </Style>
+
+    <Style x:Key="MessageBubbleSendByMe" TargetType="{x:Type Path}" BasedOn="{StaticResource MessageBubbleStyle}">
+        <Setter  Property="Data" Value="M 40 0 C 28 20 37 0 0 0 Z"/>
+        <Setter  Property="HorizontalAlignment" Value="Right"/>
+        <Setter  Property="Margin" Value="0, -2, 6, 0"/>
+    </Style>
+
+    <Style x:Key="MessageBubbleSendByContact" TargetType="{x:Type Path}" BasedOn="{StaticResource MessageBubbleStyle}">
+        <Setter  Property="Data" Value="M 0 0 C 9 20 1 0 40 0Z"/>
+        <Setter  Property="HorizontalAlignment" Value="Left"/>
+        <Setter  Property="Margin" Value="6, -2, 0, 0"/>
+    </Style>
+
+    <Path x:Key="BubbleSendByMe"
+          HorizontalAlignment="Right"
+          StrokeThickness="0" 
+          Fill="{StaticResource Gray14Brush}" 
+          Margin="0, -2, 6, 0"
+          Data="M 40 0 C 28 20 37 0 0 0 Z"
+          Panel.ZIndex="1"
+          />
+
+    <Path x:Key="BubbleSendByContact"
+          HorizontalAlignment="Left"
+          StrokeThickness="0" 
+          Fill="{StaticResource Gray14Brush}" 
+          Margin="6, -2, 0, 0"
+          Data="M 0 0 C 9 20 1 0 40 0Z"  
+          Panel.ZIndex="1"
+          />
 
 </ResourceDictionary>

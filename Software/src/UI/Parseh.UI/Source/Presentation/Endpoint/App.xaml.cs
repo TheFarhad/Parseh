@@ -1,4 +1,6 @@
-﻿namespace Parseh.UI;
+﻿using Parseh.UI.BindingConverters;
+
+namespace Parseh.UI;
 
 public sealed partial class App : Application
 {
@@ -26,7 +28,6 @@ public sealed partial class App : Application
 
     static void Test()
     {
-
     }
 
     #endregion

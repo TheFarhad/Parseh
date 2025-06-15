@@ -42,7 +42,7 @@
                                         Opacity="0.8" 
                                         Background="{StaticResource Gray15Brush}"
                                         CornerRadius="{Binding CornerRadius, FallbackValue=6}"
-                                        Visibility="{Binding IsLayoutActivated, Converter={converters:BooleanToVisibilityRevert}}"/>
+                                        Visibility="{Binding IsLayoutActivated, Converter={converters:BooleanToVisibilityInvert}}"/>
 
                                 <!--Only For Mask Grid[Layout Content]-->
                                 <Border x:Name="MaskBorder" 
