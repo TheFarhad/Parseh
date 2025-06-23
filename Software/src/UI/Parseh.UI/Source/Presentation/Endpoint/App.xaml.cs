@@ -1,6 +1,4 @@
-﻿using Parseh.UI.BindingConverters;
-
-namespace Parseh.UI;
+﻿namespace Parseh.UI;
 
 public sealed partial class App : Application
 {
@@ -12,10 +10,10 @@ public sealed partial class App : Application
 
     public static void Start()
     {
-        var ioc = NetIoC.Default;
+        var ioc = Ioc.Default;
         if (Default is null) Default = new();
         Default.InitializeComponent();
-        Default.MainWindow = ioc.GetRequired<Layout>();
+        Default.MainWindow = ioc.RequiredService<Layout>();
         Test();
         Default.Run(Default.MainWindow);
     }

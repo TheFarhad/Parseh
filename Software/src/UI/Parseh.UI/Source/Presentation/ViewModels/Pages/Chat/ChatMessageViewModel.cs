@@ -2,76 +2,76 @@
 
 public sealed class ChatMessageViewModel : VM
 {
+    #region Properties
+
+    public string Message
+    {
+        get => Get();
+        set
+        {
+            Set(value);
+            Notify(nameof(HasMessage));
+        }
+    }
     public string Sender { get => Get(); set => Set(value); }
-    public string Message { get => Get(); set => Set(value); }
     public DateTimeOffset SendAt { get => Get(); set => Set(value); }
     public DateTimeOffset ReadAt { get => Get(); set => Set(value); }
     public bool SendByMe { get => Get(); set => Set(value); }
-
-    public ChatMessageViewModel()
+    public bool IsNewMessage { get => Get(); set => Set(value); }
+    public ContactMessageImageAttachment Image
     {
-        SendByMe = true;
-        Sender = "Ali";
-        Message = "Hi everybody. Chat Message Desig";
-        SendAt = DateTime.UtcNow;
-        ReadAt = DateTime.UtcNow.AddMinutes(10);
-    }
-}
-
-public sealed class ChatMessagesViewModel : VM
-{
-    public ObservableSet<ChatMessageViewModel> Messages { get => Get(); set => Set(value); }
-}
-
-
-public sealed class ChatMessagesDesignModel : DesignModel<ChatMessagesDesignModel, ChatMessagesViewModel>
-{
-    public ChatMessagesDesignModel()
-    {
-        Model.Messages = new ObservableSet<ChatMessageViewModel>
+        get => Get();
+        set
         {
-            new ()
-            {
-                SendByMe = true,
-                Sender = "Ali",
-                Message = "Binding Path=Width, RelativeSource={RelativeSource Mode=Self =Width, RelativeSource={RelativeSource Mode=Se =Width, RelativeSource={RelativeSource Mode=Se",
-                SendAt = DateTime.UtcNow,
-                ReadAt = DateTime.UtcNow.AddMinutes(10)
-            },
-            new() {
-                SendByMe = false,
-                Sender = "Panah",
-                Message = "Hi Ali. How are you?",
-                SendAt = DateTime.UtcNow.AddMinutes(1),
-                ReadAt = DateTime.UtcNow.AddMinutes(5)
-            },
-            new() {
-                SendByMe = false,
-                Sender = "Panah",
-                Message = "Hi Ali. How are you?",
-                SendAt = DateTime.UtcNow.AddMinutes(1),
-                ReadAt = DateTime.UtcNow.AddMinutes(5)
-            },
-            new() {
-                SendByMe = false,
-                Sender = "Panah",
-                Message = "Hi Ali. How are you?",
-                SendAt = DateTime.UtcNow.AddMinutes(1),
-                ReadAt = DateTime.UtcNow.AddMinutes(5)
-            }
-        };
+            Set(value);
+            Notify(nameof(HasImage));
+        }
     }
+    public bool HasMessage => Message.IsNotEmpty();
+    public bool HasImage => Image.IsNotNull();
+
+    #endregion
+
+    public ChatMessageViewModel() => Init();
+
+    #region Private Functionality
+
+    void Init()
+    {
+        InitProperties();
+        InitCommands();
+    }
+
+    void InitProperties()
+    {
+        IsNewMessage = false;
+    }
+
+    void InitCommands()
+    {
+
+    }
+
+    #endregion
+
+    #region Command Methods
+
+    #endregion
 }
 
-
-public sealed class ChatMessageDesignModel : DesignModel<ChatMessageDesignModel, ChatMessageViewModel>
+public sealed class ContactMessageImageAttachment : VM
 {
-    public ChatMessageDesignModel()
+    public string Title { get => Get(); set => Set(value); }
+    public string FileName { get => Get(); set => Set(value); }
+    public long Size { get => Get(); set => Set(value); }
+    public string ThumbnailUrl
     {
-        Model.SendByMe = true;
-        Model.Sender = "Ali";
-        Model.Message = "Hi everybody. Chat Message Designodel";
-        Model.SendAt = DateTime.UtcNow;
-        Model.ReadAt = DateTime.UtcNow.AddMinutes(10);
+        get => Get();
+        set
+        {
+            Set(value);
+            LocalPath = "/Source/Presentation/Resources/Images/1.png";
+        }
     }
+    public string LocalPath { get => Get(); set => Set(value); }
 }

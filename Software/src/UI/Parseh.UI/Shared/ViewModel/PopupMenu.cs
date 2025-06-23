@@ -17,18 +17,18 @@ public sealed class PopupMenuItemViewModel : VM
 
 public class PopupMenuViewModel : VM
 {
-    public double CornerRadius { get => Get(); private set => Set(value); }
-    public Thickness Padding { get => Get(); set => Set(value); }
-    public HorizontalAlignment HorizontalAlignment { get => Get(); set => Set(value); }
-    public VerticalAlignment VerticalAlignment { get => Get(); set => Set(value); }
-    public Thickness Margin { get => Get(); set => Set(value); }
+    public CornerRadius CornerRadius { get => Get(); protected set => Set(value); }
+    public Thickness Padding { get => Get(); protected set => Set(value); }
+    public HorizontalAlignment HorizontalAlignment { get => Get(); protected set => Set(value); }
+    public VerticalAlignment VerticalAlignment { get => Get(); protected set => Set(value); }
+    public Thickness Margin { get => Get(); protected set => Set(value); }
     public ObservableSet<PopupMenuItemViewModel> Items { get => Get(); protected set => Set(value); }
 
     public PopupMenuViewModel() => Init();
 
     void Init()
     {
-        CornerRadius = Constant.CornerRadius;
+        CornerRadius = new(Constant.CornerRadius, 0, Constant.CornerRadius, 0);
         Padding = new(5);
         Items = [];
     }

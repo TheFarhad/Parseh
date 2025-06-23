@@ -3,13 +3,15 @@
 using System.Data;
 using System.Text;
 using System.Net.Http;
+using System.Data.Common;
 using System.Globalization;
 using System.Net.Http.Json;
 using System.ComponentModel;
 using System.Linq.Expressions;
-using System.Data.Common;
+using System.Runtime.InteropServices;
 
 #region OBJECT
+
 public static partial class Extention
 {
     public static Type Type(this object source) => source.GetType();
@@ -182,6 +184,15 @@ public static partial class Extention
          .Replace(ArabicYeChar, PersianYeChar)
          .Replace(ArabicKeChar, PersianKeChar)
          .Trim();
+
+    public static string VerifyPath(string path)
+        => path = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+        ?
+        path.Replace('/', '\\').Trim()
+        :
+        path.Replace('\\', '/').Trim();
+
+    public static string FullPath(string path) => Path.GetFullPath(path);
 }
 #endregion
 

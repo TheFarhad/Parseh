@@ -20,11 +20,14 @@
 		<None Remove="Source\Presentation\Resources\Fonts\fontawesome-webfont.ttf" />
 		<None Remove="Source\Presentation\Resources\Fonts\OpenSans-Regular.ttf" />
 		<None Remove="Source\Presentation\Resources\Fonts\OpenSans-Semibold.ttf" />
+		<None Remove="Source\Presentation\Resources\Images\1.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\ApplySearch.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Arrow.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Attachment.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Call.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Chat.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\ChatMessageContainerMenu.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\ChevronDown.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Close.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\ClosePlus.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Contact.png" />
@@ -39,6 +42,7 @@
 		<None Remove="Source\Presentation\Resources\Images\Icon\Lock.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Maximize.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Menu.png" />
+		<None Remove="Source\Presentation\Resources\Images\Icon\Mic.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Minimize.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Person.png" />
 		<None Remove="Source\Presentation\Resources\Images\Icon\Picture.png" />
@@ -62,6 +66,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Source\Presentation\Resources\Controls\" />
 		<Folder Include="Source\Presentation\Resources\Documents\" />
 		<Folder Include="Source\Presentation\Resources\Animations\" />
 		<Folder Include="Source\Infra\" />
@@ -93,11 +98,14 @@
 		<Resource Include="Source\Presentation\Resources\Fonts\fontawesome-webfont.ttf" />
 		<Resource Include="Source\Presentation\Resources\Fonts\OpenSans-Regular.ttf" />
 		<Resource Include="Source\Presentation\Resources\Fonts\OpenSans-Semibold.ttf" />
+		<Resource Include="Source\Presentation\Resources\Images\1.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\ApplySearch.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Arrow.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Attachment.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Call.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Chat.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\ChatMessageContainerMenu.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\ChevronDown.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Close.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\ClosePlus.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Contact.png" />
@@ -112,6 +120,7 @@
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Lock.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Maximize.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Menu.png" />
+		<Resource Include="Source\Presentation\Resources\Images\Icon\Mic.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Minimize.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Person.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Media.png" />
@@ -135,7 +144,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Source\Presentation\Views\Controls\Passcode.xaml.cs">
+	  <Compile Update="Source\Presentation\Views\Controls\Custome\Passcode.xaml.cs">
 	    <SubType>Code</SubType>
 	  </Compile>
 	</ItemGroup>

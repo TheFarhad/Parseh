@@ -1,7 +1,11 @@
 ﻿<Application x:Class="Parseh.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Parseh.UI">
+             xmlns:local="clr-namespace:Parseh.UI"
+             xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
+             xmlns:convert="clr-namespace:Parseh.UI.BindingConverters"
+             xmlns:res="clr-namespace:Parseh.UI.Resources"
+             >
 
     <Application.Resources>
         <ResourceDictionary Source="/Source/Presentation/Resources/Styles/Generic.xaml"/>

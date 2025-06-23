@@ -6,9 +6,10 @@ public sealed class AttachmentMenuViewModel : PopupMenuViewModel
 
     void Init()
     {
+        CornerRadius = new(0, 10, 0, 0);
         HorizontalAlignment = HorizontalAlignment.Left;
         VerticalAlignment = VerticalAlignment.Bottom;
-        Margin = new Thickness(310, 0, 0, 60);
+        Margin = new Thickness(3, 0, 0, 52);
         Items = [
              new PopupMenuItemViewModel
             {

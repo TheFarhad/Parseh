@@ -46,7 +46,8 @@ public abstract class ViewModel : Atom, INotify
     {
         if (HasProp(property))
         {
-            // TODO: اگر برای اتچ پراپرتی ها و برای متود مربوط به کوئرس آنها مشکل ایجاد میکند،این خط حذف شود
+            // TODO: ممکن است برای کوئرس ولیو در اتچ پراپرتی ها مشکل ایجاد کند
+            // چون کوئرس ولیو حتی اگر مقدار تکراری به یک اتچ پراپرتی داده شود هم فراخوانی می شود
             if (ProprtyNotChanged(value, property))
                 return;
 

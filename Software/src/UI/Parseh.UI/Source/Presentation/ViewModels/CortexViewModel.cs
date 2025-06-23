@@ -39,13 +39,19 @@ internal sealed class CortexViewModel : VM
 
 internal sealed class Cortex
 {
-    readonly NetIoC _ioc = default!;
+    readonly Ioc _ioc = default!;
     public static readonly Cortex Default = new();
 
     Cortex()
     {
-        _ioc = NetIoC.Default;
+        _ioc = Ioc.Default;
     }
 
     public CortexViewModel Model => _ioc.CortexViewModel;
 }
+
+//internal sealed class Cortex
+//{
+//    public CortexViewModel Model => NetIoC.Default.GetRequired<CortexViewModel>();
+//    public INotifierService Notifier => NetIoC.Default.GetRequired<INotifierService>();
+//}

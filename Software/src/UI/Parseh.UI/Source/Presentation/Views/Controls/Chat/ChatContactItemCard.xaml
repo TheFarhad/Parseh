@@ -22,7 +22,7 @@
                                 <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCommand}"/>
                             </Border.InputBindings>
 
-                            <Grid x:Name="ContactCard" 
+                            <Grid Name="ContactCard" 
                                   Background="{StaticResource Gray14Brush}">
 
                                 <Grid.ColumnDefinitions>
@@ -115,38 +115,45 @@
                                                        TextTrimming="WordEllipsis"
                                                        />
 
-                                            <StackPanel Grid.Column="1" 
-                                                        Orientation="Horizontal"
-                                                        VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center">
 
-                                                <!--un-read message-->
-                                                <Border Width="20"
-                                                        Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                                                        CornerRadius="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                                                        Margin="4, 2"
-                                                        Padding="1"
-                                                        Background="{StaticResource Gray12Brush}"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center" >
+                                            <!--pib icon-->
+                                            <Border Grid.Column="1"
+                                                    Width="{Binding Path=Width, ElementName=UnreadMessagesBorder}"
+                                                    Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
+                                                    Background="{Binding Path=Background, ElementName=ContactCard}"
+                                                    Visibility="{Binding Pinned, Converter={converter:BooleanToVisibility}}">
 
-                                                    <TextBlock Text="{Binding UnreadMessageCount, Converter={converter:UnreadMessages}}" 
-                                                               HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"
-                                                               Background="Transparent"
-                                                               FontSize="{StaticResource FS10}"/>
-
-                                                </Border>
-
-                                                <!--pib icon-->
                                                 <Image Source="/Source/Presentation/Resources/Images/Icon/Pin.png"
-                                                       Width="14"
+                                                       Width="15"
+                                                       Opacity="0.4"
                                                        Height="{Binding Path=Width, RelativeSource={RelativeSource Mode=Self}}"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Center"
-                                                       Visibility="{Binding Pinned, Converter={converter:BooleanToVisibility}}"/>
+                                                       />
 
-                                            </StackPanel>
+                                            </Border>
+
+                                            <!--un-read message-->
+                                            <Border Grid.Column="1" 
+                                                    Name="UnreadMessagesBorder"
+                                                    Width="20"
+                                                    Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
+                                                    CornerRadius="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
+                                                    Padding="1"
+                                                    Background="{StaticResource Gray17Brush}"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Visibility="{Binding UnreadMessageCount, Converter={converter:UnreadMessageBadgeVisisbility}}">
+
+                                                <TextBlock Text="{Binding UnreadMessageCount, Converter={converter:UnreadMessages}}" 
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Background="Transparent"
+                                                           Foreground="{StaticResource Gray8Brush}"
+                                                           FontSize="{StaticResource FS10}"/>
+
+                                            </Border>
+
 
                                         </Grid>
 
@@ -163,16 +170,6 @@
 
                             <DataTrigger Binding="{Binding Selected}" Value="True">
                                 <Setter Property="Background" TargetName="ContactCard" Value="{StaticResource Gray13Brush}"/>
-                                <!--<Setter Property="BorderThickness" TargetName="Container" Value="0, 0.6, 0, 0"/>-->
-                                <!--<Setter Property="BorderBrush" TargetName="Container">
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
-                                            <GradientStop Color="{StaticResource Gray13}" Offset="0"/>
-                                            <GradientStop Color="{StaticResource White}" Offset="0.5"/>
-                                            <GradientStop Color="{StaticResource Gray13}" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>-->
                             </DataTrigger>
 
                             <MultiDataTrigger>

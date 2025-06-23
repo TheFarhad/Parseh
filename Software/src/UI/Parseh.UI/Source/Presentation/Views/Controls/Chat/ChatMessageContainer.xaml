@@ -6,131 +6,191 @@
              xmlns:local="clr-namespace:Parseh.UI.Views"
              xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
              xmlns:res="clr-namespace:Parseh.UI.Resources"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:convert="clr-namespace:Parseh.UI.BindingConverters"
+             mc:Ignorable="d">
 
-    <Border Background="Transparent" Margin="0.1, 0, 0, 0">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <Grid>
 
-            <!--contact info-->
-            <Border Grid.Row="0" 
-                    Height="45" 
-                    Background="{StaticResource Gray14Brush}"
-                    Padding="15, 5, 10, 5"
-                    >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <!--conatact and last seen-->
-                        <ColumnDefinition Width="Auto"/>
-                        <!--empty space-->
-                        <ColumnDefinition Width="*"/>
-                        <!--setting buttons-->
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+        <!--attahment menu-->
+        <local:AttachmentMenu DataContext="{Binding AttachmentMenuModel}" 
+                              Panel.ZIndex="0"
+                              Opacity="0"
+                              res:AttachmentMenuMouseOver.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                              />
 
-                    <StackPanel Grid.Column="0" 
-                                Orientation="Vertical"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="{Binding SelectedContact.Contact}" 
-                                   FontSize="{StaticResource FS13}"
-                                   Foreground="{StaticResource Gray1Brush}"
-                                   FontWeight="Bold"/>
-                        <TextBlock Text="{Binding SelectedContact.LastSeen, StringFormat=dd-MM-yyyy}" 
-                                   FontSize="{StaticResource FS11}"
-                                   Foreground="{StaticResource Gray6Brush}"/>
+        <!--chat message container-->
+        <Border Background="Transparent">
 
-                    </StackPanel>
+            <Grid>
 
-                    <StackPanel Grid.Column="2"
-                                Orientation="Horizontal">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                        <Button Style="{StaticResource OpacityImageButtonStyle}">
-                            <Image Source="/Source/Presentation/Resources/Images/Icon/Call.png"/>
-                        </Button>
+                <!--contact info-->
+                <Border Grid.Row="0" 
+                        Height="45" 
+                        Background="{StaticResource Gray14Brush}"
+                        Padding="15, 5, 10, 5"
+                        >
 
-                        <Button Style="{StaticResource OpacityImageButtonStyle}">
-                            <Image Source="/Source/Presentation/Resources/Images/Icon/ChatMessageContainerMenu.png"/>
-                        </Button>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <!--conatact and last seen-->
+                            <ColumnDefinition Width="Auto"/>
+                            <!--empty space-->
+                            <ColumnDefinition Width="*"/>
+                            <!--setting buttons-->
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                        <Button Style="{StaticResource OpacityImageButtonStyle}"
-                                Margin="5, 0, 0, 0">
-                            <Image Source="/Source/Presentation/Resources/Images/Icon/SideRight.png"/>
-                        </Button>
+                        <StackPanel Grid.Column="0" 
+                                    Orientation="Vertical"
+                                    VerticalAlignment="Center">
 
-                    </StackPanel>
+                            <TextBlock Text="{Binding SelectedContact.Contact}" 
+                                       FontSize="{StaticResource FS13}"
+                                       Foreground="{StaticResource Gray1Brush}"
+                                       FontWeight="Bold"/>
 
-                </Grid>
-            </Border>
+                            <TextBlock Text="{Binding SelectedContact.LastSeen, StringFormat=dd-MM-yyyy}" 
+                                       FontSize="{StaticResource FS11}"
+                                       Foreground="{StaticResource Gray6Brush}"/>
 
-            <!--message container-->
-            <local:ChatMessageContainerCard Grid.Row="1" 
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2"
+                                    Orientation="Horizontal">
+
+                            <Button Style="{StaticResource OpacityImageButtonStyle}">
+                                <Image Source="/Source/Presentation/Resources/Images/Icon/Call.png"/>
+                            </Button>
+
+                            <Button Style="{StaticResource OpacityImageButtonStyle}">
+                                <Image Source="/Source/Presentation/Resources/Images/Icon/ChatMessageContainerMenu.png"/>
+                            </Button>
+
+                            <Button Style="{StaticResource OpacityImageButtonStyle}"
+                                    Margin="5, 0, 0, 0">
+                                <Image Source="/Source/Presentation/Resources/Images/Icon/SideRight.png"/>
+                            </Button>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                </Border>
+
+                <!--message container-->
+                <local:ChatMessageContainerCard Grid.Row="1" 
                                             DataContext="{Binding SelectedContact}"
-                                            Margin="0,0,0,9" 
                                             res:DataContextChanged.Value="True"
                                             />
 
-            <!--message send bar-->
-            <Border Grid.Row="2" 
-                    Background="{StaticResource Gray14Brush}"
-                    Padding="15, 5, 10, 5" Grid.RowSpan="2"
-                    >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <!--conatact and last seen-->
-                        <ColumnDefinition Width="Auto"/>
-                        <!--empty space-->
-                        <ColumnDefinition Width="*"/>
-                        <!--setting buttons-->
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <!--message send bar-->
+                <Border Grid.Row="2" 
+                        Background="{StaticResource Gray14Brush}"
+                        Padding="10, 5, 10, 5" 
+                        >
 
-                    <Button Grid.Column="0"
-                            Command="{Binding ToggleAttachmentMenuCommand}"
-                            Style="{StaticResource OpacityImageButtonStyle}">
-                        <!--res:MouseEnterCommand.Value="{Binding ToggleAttachmentMenuCommand}"
-                            res:MouseLeaveCommand.Value="{Binding ToggleAttachmentMenuCommand}"-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <!--conatact and last seen-->
+                            <ColumnDefinition Width="Auto"/>
+                            <!--empty space-->
+                            <ColumnDefinition Width="*"/>
+                            <!--setting buttons-->
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                        <Image Source="/Source/Presentation/Resources/Images/Icon/Attachment.png"/>
+                        <!--attachment menu button-->
+                        <Border Grid.Column="0"
+                                res:AttachmentButtonMousOver.Value ="True">
 
-                    </Button>
+                            <Button Grid.Column="0"
+                                    Command="{Binding ToggleAttachmentMenuCommand}"
+                                    Style="{StaticResource OpacityImageButtonStyle}"
+                                    VerticalAlignment="Bottom"
+                                    >
 
-                    <TextBox Grid.Column="1" 
-                             Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}"
-                             Tag="Write your message" 
-                             FontSize="{StaticResource FS14}"
-                             Margin="10, 5, 30, 5"
-                             MaxHeight="120"
-                             TextWrapping="Wrap"
-                             AcceptsReturn="True"
-                             AcceptsTab="True"
-                             Style="{StaticResource SendMessageMarkTextBox}"
-                             res:Focus.Value="{Binding SelectedChat}"
-                             VerticalScrollBarVisibility="Auto"
-                             />
+                                <Image Source="/Source/Presentation/Resources/Images/Icon/Attachment.png"/>
 
-                    <StackPanel Grid.Column="2"
-                                Orientation="Horizontal">
+                            </Button>
 
-                        <Button Style="{StaticResource OpacityImageButtonStyle}">
-                            <Image Source="/Source/Presentation/Resources/Images/Icon/Sticker.png"/>
-                        </Button>
+                        </Border>
 
-                        <Button Command="{Binding SendMessageCommand}"
-                                Style="{StaticResource OpacityImageButtonStyle}">
-                            <Image Source="/Source/Presentation/Resources/Images/Icon/Send.png"/>
-                        </Button>
+                        <!--new message box-->
+                        <TextBox Grid.Column="1" 
+                                 Name ="Message" 
+                                 Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"
+                                 Tag="Write your message" 
+                                 FontSize="{StaticResource FS14}"
+                                 Margin="10, 5, 30, 5"
+                                 MaxHeight="120"
+                                 TextWrapping="Wrap"
+                                 AcceptsTab="True"
+                                 Style="{StaticResource SendMessageMarkTextBox}"
+                                 res:Focus.Value="{Binding SelectedChat}"
+                                 VerticalScrollBarVisibility="Auto"
+                                 PreviewKeyDown="OnPreviewKeyDown"
+                                 />
 
-                    </StackPanel>
+                        <StackPanel Grid.Column="2"
+                                    Orientation="Horizontal">
 
-                </Grid>
-            </Border>
+                            <!--sticker button-->
+                            <Button Style="{StaticResource OpacityImageButtonStyle}"
+                                    VerticalAlignment="Bottom"
+                                    >
+                                <Image Source="/Source/Presentation/Resources/Images/Icon/Sticker.png"/>
+                            </Button>
 
-        </Grid>
-    </Border>
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--send new message button-->
+                                <Button Grid.Row="0"
+                                        Command="{Binding SendMessageCommand}"
+                                        Style="{StaticResource OpacityImageButtonStyle}"
+                                        VerticalAlignment="Bottom"
+                                        Visibility="Collapsed"
+                                        Click="OnSendButton"
+                                        IsDefault="True"
+                                        res:MicAndSendButtonVisibility.Value="{Binding Path=Text.Length ,ElementName=Message, Converter={convert:SendMessageButtonVisibility}}">
+
+                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Send.png"/>
+
+                                </Button>
+
+                                <!--microphone button-->
+                                <Button Grid.Row="0"
+                                        Style="{StaticResource OpacityImageButtonStyle}"
+                                        VerticalAlignment="Bottom"
+                                        res:MicAndSendButtonVisibility.Value="{Binding Path=Text.Length ,ElementName=Message, Converter={convert:MicVisibility}}"
+                                        >
+
+                                    <Image Source="/Source/Presentation/Resources/Images/Icon/Mic.png"/>
+
+                                </Button>
+
+                            </Grid>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
 
 </local:Component>

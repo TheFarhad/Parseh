@@ -73,7 +73,7 @@ public abstract class BaseLayoutViewModel : VM
         // بوردر راش هم نیاید ترنسپزنت باشد
         // چرا؟
         OuterBorderThickness = new(0);
-        ResizeBorderThickness = new(3);
+        ResizeBorderThickness = new(5);
         InnerContentPadding = new(0);
     }
 
@@ -146,15 +146,10 @@ public sealed class LayoutViewModel : BaseLayoutViewModel
 
     void InitProperties()
     {
-        MinWidth = 700;
-        MinHeight = 394;
-        // TODO:
-        //Width = 900;
-        //Height = 506;
         Width = 1068;
         Height = 600;
-
-
+        MinWidth = 712;
+        MinHeight = 400;
         RestoreButtonImage = ImageSource("Maximize");
     }
 

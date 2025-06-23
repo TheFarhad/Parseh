@@ -16,7 +16,7 @@ public sealed class Command : IRelayCommand
     public Command(Action execute, Func<bool> canexecute = default!)
     {
         _execute = execute;
-        if (canexecute is { }) _canexecute = canexecute;
+        if (canexecute is not null) _canexecute = canexecute;
     }
 
     public void Notify() => CanExecuteChanged!.Invoke(this, EventArgs.Empty);

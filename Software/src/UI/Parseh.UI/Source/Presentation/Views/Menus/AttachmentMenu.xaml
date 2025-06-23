@@ -13,103 +13,115 @@
              >
     <!--DataContext: AttachmentMenuViewModel-->
 
-    <ItemsControl ItemsSource="{Binding Items}">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
+    <Border Background="{StaticResource Gray14Brush}"
+            BorderBrush="{StaticResource Gray15Brush}"
+            BorderThickness="1"
+            CornerRadius="{Binding CornerRadius}"
+            Padding="{Binding Padding}"
+            HorizontalAlignment="{Binding HorizontalAlignment}"
+            VerticalAlignment="{Binding VerticalAlignment}"
+            Margin="{Binding Margin}"
+            >
 
-                <Grid>
+        <ItemsControl ItemsSource="{Binding Items}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
 
-                    <!--header-->
-                    <TextBlock Text="{Binding Title}"
-                               Visibility="{Binding Type, Converter={convert:PopupMenuItemTypeToVisibility}, ConverterParameter=Header}"
-                               FontSize="{StaticResource FS14}"
-                               Foreground="{StaticResource Gray5Brush}"
-                               Padding="2, 3"
-                               />
+                    <Grid>
 
-                    <!--divider-->
-                    <Border BorderBrush="{StaticResource Gray10Brush}"
-                            BorderThickness="0, 1 , 0, 0"
-                            Margin="2, 4"
-                            HorizontalAlignment="Stretch"
-                            Visibility="{Binding Type, Converter={convert:PopupMenuItemTypeToVisibility}, ConverterParameter=Divider}"/>
+                        <!--header-->
+                        <TextBlock Text="{Binding Title}"
+                                   Visibility="{Binding Type, Converter={convert:PopupMenuItemTypeToVisibility}, ConverterParameter=Header}"
+                                   FontSize="{StaticResource FS14}"
+                                   Foreground="{StaticResource Gray5Brush}"
+                                   Padding="2, 3"
+                                   />
 
-                    <!--icon and text-->
-                    <Border Background="{StaticResource Gray14Brush}"
-                            Visibility="{Binding Type, Converter={convert:PopupMenuItemTypeToVisibility}, ConverterParameter=TextAndIcon}"
-                            Padding="3"
-                            CornerRadius="2">
+                        <!--divider-->
+                        <Border BorderBrush="{StaticResource Gray10Brush}"
+                                BorderThickness="0, 1 , 0, 0"
+                                Margin="2, 4"
+                                HorizontalAlignment="Stretch"
+                                Visibility="{Binding Type, Converter={convert:PopupMenuItemTypeToVisibility}, ConverterParameter=Divider}"/>
 
-                        <Border.Triggers>
-                            <!-- Hover over blue -->
-                            <EventTrigger RoutedEvent="MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard>
+                        <!--icon and text-->
+                        <Border Background="{StaticResource Gray14Brush}"
+                                Visibility="{Binding Type, Converter={convert:PopupMenuItemTypeToVisibility}, ConverterParameter=TextAndIcon}"
+                                Padding="3"
+                                CornerRadius="2">
 
-                                        <ColorAnimation To="{StaticResource Gray12}" 
-                                                        Duration="0:0:0" 
-                                                        Storyboard.TargetProperty="Background.Color" />
+                            <Border.Triggers>
+                                <!-- Hover over blue -->
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
 
-                                        <ColorAnimation To="{StaticResource Gray14}" 
-                                                        Duration="0:0:0" 
-                                                        Storyboard.TargetProperty="Foreground.Color" 
-                                                        Storyboard.TargetName="ItemText"
-                                                        />
+                                            <ColorAnimation To="{StaticResource Gray12}" 
+                                                            Duration="0:0:0" 
+                                                            Storyboard.TargetProperty="Background.Color" />
 
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <!-- Hover out revert -->
-                            <EventTrigger RoutedEvent="MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard>
+                                            <ColorAnimation To="{StaticResource Gray14}" 
+                                                            Duration="0:0:0" 
+                                                            Storyboard.TargetProperty="Foreground.Color" 
+                                                            Storyboard.TargetName="ItemText"
+                                                            />
 
-                                        <ColorAnimation To="{StaticResource Gray14}" 
-                                                        Duration="0:0:0" 
-                                                        Storyboard.TargetProperty="Background.Color" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <!-- Hover out revert -->
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
 
-                                        <ColorAnimation To="{StaticResource Gray5}" 
-                                                        Duration="0:0:0" 
-                                                        Storyboard.TargetProperty="Foreground.Color" 
-                                                        Storyboard.TargetName="ItemText"
-                                                        />
+                                            <ColorAnimation To="{StaticResource Gray14}" 
+                                                            Duration="0:0:0" 
+                                                            Storyboard.TargetProperty="Background.Color" />
 
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
+                                            <ColorAnimation To="{StaticResource Gray5}" 
+                                                            Duration="0:0:0" 
+                                                            Storyboard.TargetProperty="Foreground.Color" 
+                                                            Storyboard.TargetName="ItemText"
+                                                            />
 
-                        <Grid >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
 
-                            <Image Source="{Binding Icon, Converter={convert:PopupMenuIconTypeToImageSource}}"
-                                   Grid.Column="0"
-                                   Margin="4, 3"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Width="20"
-                                   Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"/>
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding Title}"
-                                       x:Name="ItemText"
-                                       Grid.Column="1"
-                                       Margin="0, 3"
-                                       FontSize="{StaticResource FS13}"
-                                       Foreground="{StaticResource Gray5Brush}"
+                                <Image Source="{Binding Icon, Converter={convert:PopupMenuIconTypeToImageSource}}"
+                                       Grid.Column="0"
+                                       Margin="4, 3"
                                        VerticalAlignment="Center"
-                                       HorizontalAlignment="Left"/>
+                                       HorizontalAlignment="Center"
+                                       Width="20"
+                                       Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"/>
 
-                        </Grid>
+                                <TextBlock Text="{Binding Title}"
+                                           x:Name="ItemText"
+                                           Grid.Column="1"
+                                           Margin="0, 3"
+                                           FontSize="{StaticResource FS13}"
+                                           Foreground="{StaticResource Gray5Brush}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"/>
 
-                    </Border>
+                            </Grid>
 
-                </Grid>
+                        </Border>
 
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+                    </Grid>
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+    </Border>
 
 </local:Component>

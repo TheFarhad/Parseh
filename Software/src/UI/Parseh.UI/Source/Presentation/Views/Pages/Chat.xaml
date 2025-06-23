@@ -16,14 +16,8 @@
 
         <!--setting menu-->
         <local:SettingMenu DataContext="{Binding SettingMenuModel}" 
-                           res:ZIndexFadeVisibilityAnimate.Value="{Binding DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"/>
-
-        <!--attachment menu-->
-        <local:PopupMenu DataContext="{Binding AttachmentMenuModel}"
-                         res:ZIndex.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
-                         >
-            <local:AttachmentMenu DataContext="{Binding}"/>
-        </local:PopupMenu>
+                           res:SettingMenuZIndexAnimate.Value="{Binding DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                           />
 
         <!--chat main content-->
         <Border Background="{StaticResource Gray15Brush}">

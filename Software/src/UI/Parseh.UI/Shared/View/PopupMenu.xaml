@@ -19,6 +19,7 @@
 
                         <Grid>
 
+                            <!--overlay-->
                             <Border Background="Transparent"
                                     Opacity="0">
 

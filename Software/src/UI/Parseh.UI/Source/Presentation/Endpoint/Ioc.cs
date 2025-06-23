@@ -1,16 +1,17 @@
 ﻿namespace Parseh.UI;
 
 using System.Threading;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using static Microsoft.Extensions.Hosting.Host;
 
-public sealed class NetIoC
+public sealed class Ioc
 {
     readonly IHost _host;
-    static NetIoC _default = default!;
+    static Ioc _default = default!;
     readonly static Lock _lock = new();
-    readonly IServiceProvider _sp;
-    public static NetIoC Default
+    readonly IServiceProvider _serviceProvider;
+    public static Ioc Default
     {
         get
         {
@@ -25,18 +26,19 @@ public sealed class NetIoC
         }
     }
 
-    internal CortexViewModel CortexViewModel => GetRequired<CortexViewModel>();
-    internal INotifierService Notifier => GetRequired<INotifierService>();
+    internal CortexViewModel CortexViewModel => RequiredService<CortexViewModel>();
+    internal INotifierService Notifier => RequiredService<INotifierService>();
+    internal IConfiguration Configuration => RequiredService<IConfiguration>();
 
-    NetIoC()
+    Ioc()
     {
         _host = Build();
-        _sp = _host.Services;
+        _serviceProvider = _host.Services;
     }
 
-    public T? Get<T>() where T : notnull => _sp.GetService<T>();
-    public T GetRequired<T>() where T : notnull => _sp.GetRequiredService<T>();
-    public IEnumerable<T> GetAll<T>() where T : notnull => _sp.GetServices<T>();
+    public T? Service<T>() where T : notnull => _serviceProvider.GetService<T>();
+    public T RequiredService<T>() where T : notnull => _serviceProvider.GetRequiredService<T>();
+    public IEnumerable<T> Services<T>() where T : notnull => _serviceProvider.GetServices<T>();
 
     #region Services
 
@@ -46,7 +48,7 @@ public sealed class NetIoC
     {
         services.AddSingleton<CortexViewModel>();
         services.AddSingleton<Layout>();
-        services.AddSingleton<INotifierService, NotifierService>();
+        services.AddTransient<INotifierService, NotifierService>();
     }
 
     #endregion

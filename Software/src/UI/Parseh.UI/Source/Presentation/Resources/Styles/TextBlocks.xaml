@@ -108,11 +108,12 @@
         <Setter Property="Foreground" Value="{StaticResource Gray1Brush}"/>
         <Setter Property="CaretBrush" Value="{StaticResource Gray1Brush}"/>
         <Setter Property="FontFamily" Value="{StaticResource OpensansRegular}"/>
-        <!--<Setter Property="FontSize" Value="{StaticResource FS13}"/>-->
         <Setter Property="Opacity" Value="0.8"/>
+
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="TextBoxBase">
+
                     <Grid>
                         <Border x:Name="Border" 
                                 Background="{TemplateBinding Background}" 

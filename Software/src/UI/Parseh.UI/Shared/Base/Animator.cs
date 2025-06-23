@@ -104,6 +104,7 @@ internal static class Animator
         animations?.Invoke(board);
         board.Begin(element);
         element.Visibility = Visibility.Visible;
+
         // TODO: کاربرد ؟؟
         // صفر هم باشد تغییری نمیکند
         await Task.Delay(TimeSpan.FromSeconds(duration));

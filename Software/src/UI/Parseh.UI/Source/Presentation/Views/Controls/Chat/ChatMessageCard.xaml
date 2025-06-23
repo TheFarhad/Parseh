@@ -5,20 +5,40 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                  xmlns:local="clr-namespace:Parseh.UI.Views"
                  xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
+                 xmlns:res="clr-namespace:Parseh.UI.Resources"
                  xmlns:convert="clr-namespace:Parseh.UI.BindingConverters"
                  mc:Ignorable="d" 
-                 d:DesignHeight="60"
-                 d:DesignWidth="200">
+               >
 
-    <Border Margin="0, 5">
+    <Border Background="Transparent"
+            MinWidth="300"
+            MaxWidth="450"
+            HorizontalAlignment="{Binding SendByMe, Converter={convert:BooleanToHAlignment}}">
 
-        <Grid MaxWidth="350"
-              HorizontalAlignment="{Binding SendByMe, Converter={convert:BooleanToHAlignment}}">
+        <Border.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation To="1" 
+                                    Duration="0:0:0.2"
+                                    Storyboard.TargetProperty="Opacity"
+                                    Storyboard.Target="{Binding ElementName=SendTime}" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation To="0" 
+                                    Duration="0:0:0.2"
+                                    Storyboard.TargetProperty="Opacity"
+                                    Storyboard.Target="{Binding ElementName=SendTime}" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Border.Triggers>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <Grid>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -28,22 +48,16 @@
             <!--prfile picture-->
             <Border Grid.Row ="0"
                     Grid.Column="0"
-                    Width="26"
                     x:Name="ImageBoreder"
-                    Background="{StaticResource Gray3Brush}"
+                    Background="{StaticResource Gray14Brush}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
+                    Width="20"
                     Height="{Binding Path=Width, RelativeSource={RelativeSource Mode=Self}}"
-                    CornerRadius="{Binding Path=Width, RelativeSource={RelativeSource Mode=Self}}"
+                    CornerRadius="4"
                     ClipToBounds="True"
-                    Margin="0, 0, 4, -3"
+                    Margin="0, 0, 2, 0"
                     Visibility="{Binding SendByMe, Converter={StaticResource BooleanToVisibilityInvert}}">
-
-                <Border.Clip>
-                    <EllipseGeometry Center="13,13"
-                                     RadiusX="13"
-                                     RadiusY="{Binding Path=RadiusX, RelativeSource={RelativeSource Mode=Self}}"/>
-                </Border.Clip>
 
                 <Image Source="/Source/Presentation/Resources/Images/Icon/Person.png"
                        HorizontalAlignment="Center"
@@ -55,71 +69,81 @@
             <!--message container-->
             <Border Grid.Row ="0"
                     Grid.Column="1"
-                    MinHeight="40"
+                    Name="MessageContainer"
                     HorizontalAlignment="{Binding SendByMe, Converter={convert:BooleanToHAlignment}}"
                     VerticalAlignment="Center"
                     Background="{StaticResource Gray14Brush}"
-                    CornerRadius="5"
-                    Padding="10, 5"
+                    CornerRadius="4"
+                    Padding="0"
+                    MinWidth="100"
+                    MaxWidth="500"
                     >
 
-                <Border.Triggers>
-                    <EventTrigger RoutedEvent="MouseEnter">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation To="1" 
-                                                 Duration="0:0:0.2"
-                                                 Storyboard.TargetProperty="Opacity"
-                                                 Storyboard.Target="{Binding ElementName=SendTime}" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                    <EventTrigger RoutedEvent="MouseLeave">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation To="0" 
-                                                 Duration="0:0:0.2"
-                                                 Storyboard.TargetProperty="Opacity"
-                                                 Storyboard.Target="{Binding ElementName=SendTime}" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </Border.Triggers>
+                <Grid>
 
-                <StackPanel Orientation="Vertical" 
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                    <!--message zone-->
-                    <TextBlock Text="{Binding Message}"
-                               Foreground="{StaticResource Gray4Brush}"
-                               TextWrapping="Wrap"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Top"/>
+                    <!--progress bar for wating to load image-->
+                    <Border Grid.Row="0">
 
-                    <!--send time zone-->
-                    <TextBlock x:Name="SendTime" 
-                               Opacity="0"
-                               Text="{Binding SendAt, StringFormat={}{0:hh}:{0:mm}}" 
-                               HorizontalAlignment="{Binding SendByMe, Converter={convert:BooleanToHAlignmentRevert}}"
-                               FontSize="{StaticResource FS11}"
-                               Foreground="{StaticResource Gray7Brush}"
-                               Margin="0, 4, 0, 2"
+                    </Border>
+
+                    <!--image container-->
+                    <Border Grid.Row="0" 
+                            Visibility="{Binding HasImage, Converter={convert:BooleanToVisibility}}">
+
+                        <Image DataContext="{Binding Image}" 
+                               Source="{Binding LocalPath}"
+                               res:ClipImageInBorder.Value ="True"
                                />
 
-                </StackPanel>
+                    </Border>
+
+
+                    <!--message and time zone-->
+                    <StackPanel Grid.Row="1" Orientation="Vertical" 
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="7, 10, 7, 2">
+
+                        <!--message zone-->
+                        <TextBlock Text="{Binding Message}"
+                                   Foreground="{StaticResource Gray4Brush}"
+                                   Margin="0, 0, 0 , 2"
+                                   TextWrapping="Wrap"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   Visibility="{Binding HasMessage, Converter={convert:BooleanToVisibility}}"/>
+
+                        <!--send time zone-->
+                        <TextBlock x:Name="SendTime" 
+                                   Opacity="0"
+                                   Text="{Binding SendAt, StringFormat={}{0:hh}:{0:mm}}" 
+                                   HorizontalAlignment="{Binding SendByMe, Converter={convert:BooleanToHAlignmentRevert}}"
+                                   FontSize="{StaticResource FS11}"
+                                   Foreground="{StaticResource Gray7Brush}"
+                                   Margin="0, 2, 0 , 2"
+                                   />
+
+                    </StackPanel>
+
+                </Grid>
+
 
             </Border>
 
             <!--send by contact bubble-->
-            <Path Grid.Row="1"
+            <Path Grid.Row="0"
                   Grid.Column="1"
                   Style="{StaticResource MessageBubbleSendByContact}"
                   Visibility="{Binding Path=SendByMe, Converter={convert:BooleanToVisibilityInvert}}"
                   />
 
             <!--send by me bubble-->
-            <Path Grid.Row="1"
+            <Path Grid.Row="0"
                   Grid.Column="1"
                   Style="{StaticResource MessageBubbleSendByMe}"
                   Visibility="{Binding Path=SendByMe, Converter={convert:BooleanToVisibility}}"
@@ -127,7 +151,7 @@
 
             <!--bubble-->
             <!--<ContentControl Content="{Binding SendByMe, Converter={convert:ChatBubblePath1}}"
-                            Grid.Row="1"
+                            Grid.Row="0"
                             Grid.Column="1"
                             Panel.ZIndex="1"/>-->
 

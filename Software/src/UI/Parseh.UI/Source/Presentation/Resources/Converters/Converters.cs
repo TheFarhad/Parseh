@@ -2,8 +2,9 @@
 
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows;
+using Newtonsoft.Json.Linq;
 
 internal sealed class BooleanInvert : BindConverter<BooleanInvert>
 {
@@ -56,7 +57,20 @@ internal sealed class UnreadMessages : BindConverter<UnreadMessages>
 {
     public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value?.As<int>() <= 9 ? "9" : "9+";
+        return value?.As<int>() <= 9 ? value.ToString()! : "9+";
+    }
+
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+internal sealed class UnreadMessageBadgeVisisbility : BindConverter<UnreadMessageBadgeVisisbility>
+{
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value?.As<int>() <= 0 ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -230,3 +244,26 @@ internal sealed class ChatBubblePath1 : BindConverter<ChatBubblePath1>
 }
 
 #endregion
+
+internal sealed class MicVisibility : BindConverter<MicVisibility>
+{
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value.As<int>() > 0 ? false : true;
+
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+
+internal sealed class SendMessageButtonVisibility : BindConverter<SendMessageButtonVisibility>
+{
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value.As<int>() > 0 ? true : false;
+
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}

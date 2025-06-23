@@ -1,6 +1,7 @@
 ﻿// SYSTEM
 global using System;
 global using System.Windows;
+global using System.Windows.Media;
 global using System.Windows.Data;
 global using System.Windows.Input;
 global using System.Globalization;
@@ -17,4 +18,5 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Framework;
 global using Parseh.UI.Views;
 global using Parseh.UI.ViewModels;
+global using static Parseh.UI.Ioc;
 global using VM = Framework.ViewModel;

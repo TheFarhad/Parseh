@@ -5,26 +5,58 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Parseh.UI.Views"
              xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
+             xmlns:res="clr-namespace:Parseh.UI.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
              >
+    <!--DataContext: [ChatContactViewModel]-->
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto"
-                  HorizontalScrollBarVisibility="Disabled">
-        <Border Background="{StaticResource Gray15Brush}" 
-                Padding="12, 4">
+    <Border Padding="0, 6"
+            Name="MessagesContainer"
+            Background="{StaticResource Gray15Brush}">
 
-            <ItemsControl ItemsSource="{Binding Messages}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <local:ChatMessageCard/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+        <Grid>
 
-        </Border>
+            <!--chevron down [go to bottom button]-->
+            <Button Command="{Binding ScrollToBottomCommand}"
+                    Style="{StaticResource ChevronDownButtonStyle}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="0 , 0, 16, 10"
+                    res:ChveronDownButtonVisisbility.Value="{Binding ShowChevronDownButton}">
 
-    </ScrollViewer>
+                <Image Source="/Source/Presentation/Resources/Images/Icon/ChevronDown.png"/>
+
+            </Button>
+
+            <!--messages container-->
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Background="{Binding Path=Background, ElementName=MessagesContainer}"
+                          res:ScrollToBottomOnDataContextChanged.Value="True"
+                          res:ScrollToBottom.Value="{Binding ScrollToLastMessage}"
+                          res:ScrollChanged.Value="True"
+                          >
+
+                <ItemsControl ItemsSource="{Binding SearchMessages}"
+                              Margin="9, 0">
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+
+                            <local:ChatMessageCard Margin="0, 10"
+                                                   res:NewMessageAnimation.Value="{Binding IsNewMessage}"/>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+
+            </ScrollViewer>
+
+        </Grid>
+    </Border>
+
 
 </local:Component>

@@ -13,8 +13,10 @@
     <Grid>
 
         <!--overlay-->
-        <Border Background="{StaticResource Gray10Brush}"
-              Opacity="0.6">
+        <Border Background="{StaticResource Gray13Brush}"
+                Opacity="0"
+                res:SettingMenuOverlayFadeAnimate.Value="{Binding DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                >
 
             <Border.InputBindings>
                 <MouseBinding MouseAction="LeftClick" 
@@ -26,17 +28,17 @@
 
         <!--content-->
         <Border Background="{StaticResource Gray14Brush}"
-             CornerRadius="{Binding CornerRadius}"
-              MinWidth="400"
-              MinHeight="550"
-              Width="{Binding Path=MinWidth, RelativeSource={RelativeSource Mode=Self}}"
-              Height="{Binding Path=MinHeight, RelativeSource={RelativeSource Mode=Self}}"
-              MaxWidth="{Binding Path=MinWidth, RelativeSource={RelativeSource Mode=Self}}"
-              MaxHeight="{Binding Path=MinHeight, RelativeSource={RelativeSource Mode=Self}}"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              res:SettingMenuAnimate.Value="{Binding Path=DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
-              >
+                CornerRadius="{Binding CornerRadius}"
+                MinWidth="400"
+                MinHeight="550"
+                Width="{Binding Path=MinWidth, RelativeSource={RelativeSource Mode=Self}}"
+                Height="{Binding Path=MinHeight, RelativeSource={RelativeSource Mode=Self}}"
+                MaxWidth="{Binding Path=MinWidth, RelativeSource={RelativeSource Mode=Self}}"
+                MaxHeight="{Binding Path=MinHeight, RelativeSource={RelativeSource Mode=Self}}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                res:SettingMenuAnimate.Value="{Binding Path=DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+                >
 
             <Grid>
 
@@ -95,38 +97,23 @@
 
 
                     <Border Grid.Column="0"
-                          Background="{StaticResource Gray14Brush}"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          Margin="15 , 0, 20, 10"
-                          Width="70"
-                          Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                          CornerRadius="{Binding Width, RelativeSource={RelativeSource Mode=Self}}">
+                            Background="{StaticResource Gray14Brush}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="15 , 0, 20, 10"
+                            Width="70"
+                            Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
+                            CornerRadius="{Binding Width, RelativeSource={RelativeSource Mode=Self}}">
 
                         <Border.Clip>
                             <EllipseGeometry Center="35,35"
-                                           RadiusX="35"
-                                           RadiusY="{Binding Path=RadiusX, RelativeSource={RelativeSource Mode=Self}}"/>
+                                             RadiusX="35"
+                                             RadiusY="{Binding Path=RadiusX, RelativeSource={RelativeSource Mode=Self}}"/>
                         </Border.Clip>
 
                         <Image Source="/Source/Presentation/Resources/Images/Icon/Profile.png"/>
 
                     </Border>
-
-                    <!--<Border Grid.Column="0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Margin="15 , 0, 20, 10"
-                                Width="70"
-                                Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                                CornerRadius="{Binding Width, RelativeSource={RelativeSource Mode=Self}}">
-
-                        <Border.Background>
-                            <ImageBrush ImageSource="/Source/Presentation/Resources/Images/Icon/Profile.png"
-                                        Stretch="UniformToFill"/>
-                        </Border.Background>
-
-                    </Border>-->
 
                     <StackPanel Grid.Column="1"
                               Orientation="Vertical"
@@ -188,6 +175,7 @@
                 </ScrollViewer>
 
             </Grid>
+
         </Border>
 
     </Grid>
