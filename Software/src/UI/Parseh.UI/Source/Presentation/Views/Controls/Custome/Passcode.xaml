@@ -73,6 +73,7 @@
                        Foreground="{StaticResource Gray4Brush}"
                        FontSize="{StaticResource FS14}"/>
 
+            <!--current password-->
             <Border Background="{StaticResource Gray14Brush}"
                     Grid.Row="0"
                     Grid.Column="1"
@@ -97,6 +98,7 @@
                              />
             </Border>
 
+            <!--fake password-->
             <Border Background="{StaticResource Gray14Brush}"
                     Grid.Row="0"
                     Grid.Column="1"
@@ -192,6 +194,7 @@
                          res:ZIndexFadeVisibilityAnimate.Value="{Binding IsEditing}"
                          PasswordChanged="OnConfirmPasscodeChanged"
                          />
+
         </Grid>
 
     </Border>

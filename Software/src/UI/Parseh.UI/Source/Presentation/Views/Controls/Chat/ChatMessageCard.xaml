@@ -93,11 +93,13 @@
 
                     <!--image container-->
                     <Border Grid.Row="0" 
-                            Visibility="{Binding HasImage, Converter={convert:BooleanToVisibility}}">
+                            Visibility="{Binding HasImage, Converter={convert:BooleanToVisibility}}"
+                            >
 
-                        <Image DataContext="{Binding Image}" 
-                               Source="{Binding LocalPath}"
+                        <Image DataContext="{Binding Image}"
+                               Source="{Binding LocalPath, NotifyOnTargetUpdated=True}"
                                res:ClipImageInBorder.Value ="True"
+                               res:ImageMassageFadeInOnLoad.Value="True"
                                />
 
                     </Border>
@@ -107,7 +109,8 @@
                     <StackPanel Grid.Row="1" Orientation="Vertical" 
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Margin="7, 10, 7, 2">
+                                Margin="7, 10, 7, 2"
+                                >
 
                         <!--message zone-->
                         <TextBlock Text="{Binding Message}"
@@ -116,7 +119,8 @@
                                    TextWrapping="Wrap"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   Visibility="{Binding HasMessage, Converter={convert:BooleanToVisibility}}"/>
+                                   Visibility="{Binding HasMessage, Converter={convert:BooleanToVisibility}}"
+                                   />
 
                         <!--send time zone-->
                         <TextBlock x:Name="SendTime" 

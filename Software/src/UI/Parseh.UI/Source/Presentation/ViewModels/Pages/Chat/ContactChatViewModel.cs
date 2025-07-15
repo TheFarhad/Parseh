@@ -1,6 +1,6 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-public sealed class ChatContactViewModel : VM
+public sealed class ContactChatViewModel : VM
 {
     #region Properties
 
@@ -20,7 +20,7 @@ public sealed class ChatContactViewModel : VM
         }
     }
     public bool HaveUnreadMessages => UnreadMessageCount > 0;
-    public ObservableSet<ChatMessageViewModel> Messages
+    public ObservableSet<ContactChatMessageViewModel> Messages
     {
         get => Get(); set
         {
@@ -28,22 +28,8 @@ public sealed class ChatContactViewModel : VM
             Notify(nameof(Message));
         }
     }
-
-    public ObservableSet<ChatMessageViewModel> SearchMessages { get => Get(); private set => Set(value); }
-
-    public string Message
-    {
-        get
-        {
-            var result = Empty;
-            if (Messages?.Any() is true)
-            {
-                result = Messages.Last().Message;
-            }
-            return result;
-        }
-    }
-
+    public ObservableSet<ContactChatMessageViewModel> SearchMessages { get => Get(); private set => Set(value); }
+    public string Message => Messages?.Any() is true ? Messages.Last().Message : Empty;
     public bool ShowChevronDownButton { get => Get(); set => Set(value); }
     public bool ScrollToLastMessage { get => Get(); set => Set(value); }
 
@@ -53,11 +39,32 @@ public sealed class ChatContactViewModel : VM
 
     public IRelayCommand SelectCommand { get; private set; } = default!;
     public IRelayCommand ScrollToBottomCommand { get; private set; } = default!;
-    public IRelayCommand SearchCommand { get; private set; } = default!;
 
     #endregion
 
-    public ChatContactViewModel() => Init();
+    public ContactChatViewModel() => Init();
+
+    #region Public Functionality
+
+    public void Select()
+    {
+        Selected = true;
+        SearchMessages = new ObservableSet<ContactChatMessageViewModel>(Messages);
+
+        // TODO: لود کردن تعداد مشخصی از پیامها از آخر
+        // مثلا 20 پیام آخر لود شود 
+        // سپس با هر بال اسکرول کرن به بالا، همین دعداد مجددا لود شود
+    }
+
+    public void Search(string filter)
+    {
+        var filterdMessages = Messages.Where(_ => _.Message.Contains(filter));
+        SearchMessages = new ObservableSet<ContactChatMessageViewModel>(filterdMessages);
+    }
+
+    #endregion
+
+    #region Private Functionality
 
     void Init()
     {
@@ -73,38 +80,24 @@ public sealed class ChatContactViewModel : VM
         LastSeen = DateTime.Now;
         ShowChevronDownButton = false;
         ScrollToLastMessage = false;
+        Selected = false;
     }
 
     void InitComands()
     {
         SelectCommand = new Command(Select);
         ScrollToBottomCommand = new Command(ScrollToBottom);
-        SearchCommand = new Command<string>(Search);
-    }
-
-    void Select()
-    {
-        Selected = true;
-        SearchMessages = new ObservableSet<ChatMessageViewModel>(Messages);
-
-        // TODO: لود کردن تعداد مشخصی از پیامها از آخر
-        // مثلا 20 پیام آخر لود شود 
-        // سپس با هر بال اسکرول کرن به بالا، همین دعداد مجددا لود شود
     }
 
     void ScrollToBottom() => ScrollToLastMessage = true;
 
-    void Search(string filter)
-    {
-        var filterdMessages = Messages.Where(_ => _.Message.Contains(filter));
-        SearchMessages = new ObservableSet<ChatMessageViewModel>(filterdMessages);
-    }
+    #endregion
 }
 
 
 #region Design Models
 
-public sealed class ChatContactItemDesignModel1 : DesignModel<ChatContactItemDesignModel1, ChatContactViewModel>
+public sealed class ChatContactItemDesignModel1 : DesignModel<ChatContactItemDesignModel1, ContactChatViewModel>
 {
     public ChatContactItemDesignModel1()
     {

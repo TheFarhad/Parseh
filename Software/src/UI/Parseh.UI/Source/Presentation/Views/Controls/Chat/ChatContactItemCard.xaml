@@ -18,10 +18,6 @@
 
                         <Border x:Name="Container">
 
-                            <Border.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCommand}"/>
-                            </Border.InputBindings>
-
                             <Grid Name="ContactCard" 
                                   Background="{StaticResource Gray14Brush}">
 

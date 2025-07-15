@@ -1,0 +1,6 @@
+@Parseh.Server_HostAddress = http://localhost:5117
+
+GET {{Parseh.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

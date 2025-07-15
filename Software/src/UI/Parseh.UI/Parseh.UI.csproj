@@ -86,8 +86,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.4" />
+		<!--old 9.0.4-->
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -144,9 +146,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Source\Presentation\Views\Controls\Custome\Passcode.xaml.cs">
-	    <SubType>Code</SubType>
-	  </Compile>
+		<Compile Update="Source\Presentation\Views\Controls\Custome\Passcode.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
 	</ItemGroup>
 
 </Project>

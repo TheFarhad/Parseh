@@ -32,9 +32,7 @@ public static class EndpointDependencies
                 _.Providers.Add<GzipCompressionProvider>();
                 _.Providers.Add<BrotliCompressionProvider>();
             })
-           //.AddExceptionHandler<GlobalExceptionHandler>()
-
-
+           //.AddExceptionHandler<ExceptionManager>()
 
            //.AddHostedService<RegistryHostedService>()
 
@@ -43,9 +41,11 @@ public static class EndpointDependencies
            .AddControllers()
            .AddJsonOptions(_ =>
            {
-               _.JsonSerializerOptions
-                   .Converters
-                   .Add(new JsonStringEnumConverter());
+               var options = _.JsonSerializerOptions;
+               options.Converters.Add(new JsonStringEnumConverter());
+               options.PropertyNameCaseInsensitive = false; // case insensitive
+               options.PropertyNamingPolicy = null; // set proerty in Pascal Case mode
+               options.WriteIndented = true;
            });
 
         // OR => to config json http response 

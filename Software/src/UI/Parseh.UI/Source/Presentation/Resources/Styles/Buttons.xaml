@@ -298,16 +298,21 @@
                              CornerRadius="{TemplateBinding Width}">
 
                         <Border.Clip>
+
                             <EllipseGeometry Center="18,18"
                                              RadiusX="18"
                                              RadiusY="{Binding Path=RadiusX, RelativeSource={RelativeSource Mode=Self}}"/>
+
                         </Border.Clip>
 
                         <Viewbox Stretch="Uniform">
-                            <ContentPresenter x:Name="ImageContent" Content="{TemplateBinding Content}"
+
+                            <ContentPresenter x:Name="ImageContent"
+                                              Content="{TemplateBinding Content}"
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Center"
                                               Opacity="0.2"/>
+
                         </Viewbox>
                     </Border>
 

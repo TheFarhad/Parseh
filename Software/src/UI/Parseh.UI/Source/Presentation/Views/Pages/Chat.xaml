@@ -21,7 +21,9 @@
 
         <!--chat main content-->
         <Border Background="{StaticResource Gray15Brush}">
+
             <Grid>
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -33,12 +35,15 @@
 
                 <!--selected chat messages-->
                 <local:ChatMessageContainer Grid.Column="1" 
-                                            Opacity="{Binding SelectedChat, Converter={convert:BooleanToOpacity}}"
-                                            res:FadeAnimate.Value="{Binding SelectedChat}"/>
+                                            Opacity="0"
+                                            res:FadeAnimate.Value="{Binding SelectedChat}"
+                                            />
 
                 <!--profile info-->
                 <Border Grid.Column="2"/>
+
             </Grid>
+
         </Border>
 
     </Grid>

@@ -1,6 +1,6 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-public sealed class ChatMessageViewModel : VM
+public sealed class ContactChatMessageViewModel : VM
 {
     #region Properties
 
@@ -18,7 +18,7 @@ public sealed class ChatMessageViewModel : VM
     public DateTimeOffset ReadAt { get => Get(); set => Set(value); }
     public bool SendByMe { get => Get(); set => Set(value); }
     public bool IsNewMessage { get => Get(); set => Set(value); }
-    public ContactMessageImageAttachment Image
+    public ContactChatMessageImage Image
     {
         get => Get();
         set
@@ -32,7 +32,7 @@ public sealed class ChatMessageViewModel : VM
 
     #endregion
 
-    public ChatMessageViewModel() => Init();
+    public ContactChatMessageViewModel() => Init();
 
     #region Private Functionality
 
@@ -59,7 +59,7 @@ public sealed class ChatMessageViewModel : VM
     #endregion
 }
 
-public sealed class ContactMessageImageAttachment : VM
+public sealed class ContactChatMessageImage : VM
 {
     public string Title { get => Get(); set => Set(value); }
     public string FileName { get => Get(); set => Set(value); }
@@ -70,8 +70,14 @@ public sealed class ContactMessageImageAttachment : VM
         set
         {
             Set(value);
-            LocalPath = "/Source/Presentation/Resources/Images/1.png";
         }
     }
-    public string LocalPath { get => Get(); set => Set(value); }
+    public string LocalPath
+    {
+        get => Get(); set
+        {
+            Task.Delay(2000).ContinueWith(_ => Set(value));
+            // Set(value);
+        }
+    }
 }

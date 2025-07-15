@@ -503,7 +503,7 @@ internal sealed class ScrollChanged : AttachedProperty<ScrollChanged, bool>
         {
             element.ScrollChanged += (ss, ee) =>
             {
-                element.DataContext?.Is<ChatContactViewModel>(viewmodel =>
+                element.DataContext?.Is<ContactChatViewModel>(viewmodel =>
                 {
                     if (element.ScrollableHeight - element.VerticalOffset > 80)
                         viewmodel.ShowChevronDownButton = true;
@@ -628,11 +628,11 @@ internal sealed class ClipImageInBorder : AttachedProperty<ClipImageInBorder, bo
     {
         var border = sender.As<Border>();
 
-        if (border.ActualWidth == 0 && border.ActualHeight == 0)
+        if (border is { ActualWidth: 0, ActualHeight: 0 })
             return;
 
         var rg = new RectangleGeometry();
-        rg.RadiusX = rg.RadiusY = 10;
+        rg.RadiusX = rg.RadiusY = 4;
         rg.Rect = new Rect(border.RenderSize);
         element.Clip = rg;
     }
@@ -712,5 +712,23 @@ internal sealed class AttachmentMenuMouseOver : AttachedProperty<AttachmentMenuM
 }
 
 #endregion
+
+internal sealed class ImageMassageFadeInOnLoad : AttachedProperty<ImageMassageFadeInOnLoad, bool>
+{
+    public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)
+    {
+        uielement?.Is<Image>(element =>
+        {
+            if (e.NewValue.As<bool>())
+                // در اینجا یعنی وقتی که مقدار پراپرتی سورس از ایمیج تغییر میکند
+                element.TargetUpdated += OnTargetUpdated;
+            else
+                element.TargetUpdated -= OnTargetUpdated;
+        });
+    }
+
+    async void OnTargetUpdated(object? sender, DataTransferEventArgs e)
+        => await sender!.As<Image>().FadeToAsync();
+}
 
 

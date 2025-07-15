@@ -5,7 +5,7 @@ public readonly record struct Response<TData>
     public readonly TData? Data = default!;
     public readonly List<Error> Errors = [];
     public bool HasError => Errors.Count > 0;
-    public bool EmptyData => Errors.Count <= 0 && Data is null;
+    public bool Success => Errors.Count <= 0 && Data is null;
 
     public Response() { }
     public Response(TData data)
