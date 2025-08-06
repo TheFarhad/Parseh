@@ -2,8 +2,9 @@
 
 // ENTITY
 public interface IEntity { }
+public abstract class Entity : IEntity { }
 
-public abstract class Entity<TId> : IEntity, IEquatable<Entity<TId>>
+public abstract class Entity<TId> : Entity, /*IEntity,*/ IEquatable<Entity<TId>>
     where TId : Identity
 {
     public TId Id { get; private set; }
@@ -39,6 +40,13 @@ public interface IAggregateRoot : IEntity
     int Version { get; }
     IReadOnlyCollection<IDomainEvent> Events { get; }
     void ClearEvents();
+}
+
+public abstract class AggregateRoot : IAggregateRoot
+{
+    public abstract int Version { get; }
+    public abstract IReadOnlyCollection<IDomainEvent> Events { get; }
+    public abstract void ClearEvents();
 }
 
 public abstract class AggregateRoot<TId> : Entity<TId>, IAggregateRoot

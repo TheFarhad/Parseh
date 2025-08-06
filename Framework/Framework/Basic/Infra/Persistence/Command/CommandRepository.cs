@@ -3,17 +3,18 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-public abstract class CommandRepository<TAggregateRoot, TId, TStoreContext> : ICommandRepository<TAggregateRoot, TId>
+public abstract class CommandRepository<TAggregateRoot, TId, TDbStore> : ICommandRepository<TAggregateRoot, TId>
     where TId : Identity
     where TAggregateRoot : AggregateRoot<TId>
-    where TStoreContext : CommandStoreContext<TStoreContext>
+    where TDbStore : CommandDbStore<TDbStore>
 {
-    protected readonly TStoreContext Context;
+    protected readonly TDbStore Context;
     protected readonly DatabaseFacade Database;
     protected readonly DbSet<TAggregateRoot> Table;
 
-    protected CommandRepository(TStoreContext context)
+    protected CommandRepository(TDbStore context)
     {
         Context = context;
         Database = context.Database;
@@ -44,16 +45,28 @@ public abstract class CommandRepository<TAggregateRoot, TId, TStoreContext> : IC
     public async ValueTask<TAggregateRoot?> FindByIdAsync(TId id, CancellationToken token = default)
         => await Table.FindAsync(id, token);
 
+    public async Task<TAggregateRoot?> SingleOrDefaultAsync(Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
+       => await Table.SingleOrDefaultAsync(predicate, token);
+
+    public async Task<TAggregateRoot?> SingleOrDefaultAsync(IEnumerable<string> includes, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
+        => await IncludeGraph(includes).SingleOrDefaultAsync(predicate, token);
+
+    public async Task<TAggregateRoot?> SingleOrDefaultAsync(IEnumerable<Expression<Func<TAggregateRoot, object>>> includes, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
+       => await IncludeGraph(includes).SingleOrDefaultAsync(predicate, token);
+
     public async Task<TAggregateRoot?> FirstOrDefaultAsync(Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
         => await Table.FirstOrDefaultAsync(predicate, token);
+
+    public async Task<TAggregateRoot?> FirstOrDefaultAsync(IEnumerable<string> includes, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
+        => await IncludeGraph(includes).FirstOrDefaultAsync(predicate, token);
+
+    public async Task<TAggregateRoot?> FirstOrDefaultAsync(IEnumerable<Expression<Func<TAggregateRoot, object>>> includes, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
+        => await IncludeGraph(includes).FirstOrDefaultAsync(predicate, token);
 
     // To bulk insert and update
     public async Task<List<TAggregateRoot>?> ListAsync(Expression<Func<TAggregateRoot, bool>> predicate = default!, CancellationToken token = default) =>
         predicate is not null ? await Table.Where(predicate).ToListAsync(token)
         : await Table.ToListAsync(token);
-
-    public async Task<TAggregateRoot?> GetGraphAsync(Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
-        => await IncludeGraph().FirstOrDefaultAsync(predicate, token);
 
     public void Remove(TAggregateRoot source)
         => Table.Remove(source);
@@ -68,18 +81,89 @@ public abstract class CommandRepository<TAggregateRoot, TId, TStoreContext> : IC
     {
         //var entity = await GetGraphAsync(_ => _.Id == id);
         //Delete(entity);
+        await Task.Delay(1);
     }
 
-    IQueryable<TAggregateRoot> IncludeGraph()
+    IQueryable<TAggregateRoot> IncludeGraph(IEnumerable<string> includes)
+      => Table.AsQueryable().ApplyIncludes(includes);
+
+    IQueryable<TAggregateRoot> IncludeGraph(IEnumerable<Expression<Func<TAggregateRoot, object>>> includes)
+        => Table.AsQueryable().ApplyIncludes<TAggregateRoot>(includes);
+
+    IQueryable<TAggregateRoot> IncludeAll()
     {
         var result = Table.AsQueryable();
         Context
-         .RelationsGraph(typeof(TAggregateRoot))
+         .ApplyAllIncludes(Context.Model, typeof(TAggregateRoot))
          .ToList()
-         .ForEach(_ =>
-         {
-             result.Include(_);
-         });
+         .ForEach(_ => result.Include(_));
+
         return result;
     }
 }
+
+public static class IQueryableExtensions
+{
+    public static IQueryable<T> ApplyIncludes<T>(
+        this IQueryable<T> query,
+        IEnumerable<Expression<Func<T, object>>> includes)
+        where T : class
+    {
+        foreach (var include in includes)
+            query = query.Include(include);
+
+        return query;
+    }
+
+    public static IQueryable<T> ApplyIncludes<T>(
+        this IQueryable<T> query,
+        IEnumerable<string> includes)
+        where T : class
+    {
+        foreach (var include in includes)
+            query = query.Include(include);
+
+        return query;
+    }
+
+    public static IEnumerable<string> ApplyAllIncludes(this DbContext context, IModel model, Type clrType)
+    {
+        var entityType = model.FindEntityType(clrType);
+        var includedNavigations = new HashSet<INavigation>();
+        var stack = new Stack<IEnumerator<INavigation>>();
+        while (true)
+        {
+            var navigations = new List<INavigation>();
+            var entityNavigations = entityType.GetNavigations();
+            foreach (var item in entityNavigations)
+            {
+                if (includedNavigations.Add(item))
+                    navigations.Add(item);
+            }
+            if (navigations.Count == 0)
+            {
+                if (stack.Count > 0)
+                    yield return string.Join(".", stack.Reverse().Select(e => e.Current.Name));
+            }
+            else
+            {
+                foreach (var navigation in navigations)
+                {
+                    var inverseNavigation = navigation.Inverse;
+                    if (inverseNavigation is { })
+                        includedNavigations.Add(inverseNavigation);
+                }
+                stack.Push(navigations.GetEnumerator());
+            }
+
+            while (stack.Count > 0 && !stack.Peek().MoveNext())
+                stack.Pop();
+
+            if (stack.Count is 0)
+                break;
+
+            entityType = stack.Peek().Current.TargetEntityType;
+        }
+    }
+}
+

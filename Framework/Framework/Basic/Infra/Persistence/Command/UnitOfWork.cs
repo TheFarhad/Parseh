@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore.Storage;
 
 public abstract class UnitOfWork<TStoreContext>(TStoreContext storeContext) : IUnitOfWork
-    where TStoreContext : CommandStoreContext<TStoreContext>
+    where TStoreContext : CommandDbStore<TStoreContext>
 {
     private readonly TStoreContext _context = storeContext;
 

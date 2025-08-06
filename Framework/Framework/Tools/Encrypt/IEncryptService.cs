@@ -30,4 +30,4 @@ public readonly record struct EncryptResult
     public static EncryptResult New(string hashed, string salt) => new(hashed, salt);
 }
 
-public enum EncryptFlag : byte { Rfc, Bcrypt, Script }
+public enum EncryptFlag : byte { Argon2, Rfc, Bcrypt, Script }

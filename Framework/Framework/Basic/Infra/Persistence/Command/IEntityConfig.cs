@@ -18,17 +18,20 @@ public abstract class EntityConfiguration<TEntity, TId> : IEntityConfig<TEntity,
     /// <summary>
     /// Ignore Id, Code And ShadowProperties
     /// </summary>
-    /// <param name="builder"></param>
-    public abstract void ConfigureProperties(EntityTypeBuilder<TEntity> builder);
+    /// <param name="b"></param>
+    public abstract void ConfigureProperties(EntityTypeBuilder<TEntity> b);
 
-    protected virtual void OnInitialized(EntityTypeBuilder<TEntity> builder)
+    protected virtual void OnInitialized(EntityTypeBuilder<TEntity> b)
     {
+        // آیا درست کار میکند
+        //b.ToTable(nameof(TEntity) + "s");
+
         #region id
 
-        builder
+        b
            .HasKey(e => e.Id);
 
-        builder
+        b
            .Property(_ => _.Id)
            .ValueGeneratedOnAdd()
            .Metadata
@@ -38,37 +41,37 @@ public abstract class EntityConfiguration<TEntity, TId> : IEntityConfig<TEntity,
 
         #region code
 
-        builder
+        b
             .HasIndex(_ => _.Code)
             .IsUnique();
 
-        builder
+        b
             .HasAlternateKey(_ => _.Code);
 
-        builder
+        b
             .Property(_ => _.Code)
             .HasConversion<CodeConverter>()
             .IsRequired();
 
         #endregion
 
-        ConfigureProperties(builder);
+        ConfigureProperties(b);
 
         #region shadow properties
 
-        builder
+        b
             .Property<string>("CreatedByUserId")
             .IsUnicode(false)
             .HasMaxLength(35); // 36 for guid
 
-        builder.Property<DateTime?>("CreatedAt");
+        b.Property<DateTime?>("CreatedAt");
 
-        builder
+        b
             .Property<string>("UpdatedByUserId")
             .IsUnicode(false)
             .HasMaxLength(35); // 36 for guid
 
-        builder.Property<DateTime?>("UpdatedAt");
+        b.Property<DateTime?>("UpdatedAt");
 
         #endregion
     }

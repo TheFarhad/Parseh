@@ -2,7 +2,7 @@
 
 public interface IQueryRequest<out TData> : IRequest<TData> { }
 
-public abstract class QueryRequest<TData> : IQueryRequest<TData>
+public abstract class PagingQueryRequest<TData> : IQueryRequest<TData>
 {
     public int Page { get; set; } = 1;
     public int Take { get; set; } = 8;
@@ -12,9 +12,9 @@ public abstract class QueryRequest<TData> : IQueryRequest<TData>
     public bool FetchTotalCount { get; set; } = false;
 }
 
-public abstract record QueryData<T>
+public abstract record QueryData<TItem>
 {
-    public IReadOnlyCollection<T> Items { get; init; } = [];
+    public IReadOnlyCollection<TItem> Items { get; init; } = [];
     public int? TotalCount { get; init; } = default!;
 
     public QueryData() { }

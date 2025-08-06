@@ -10,6 +10,7 @@
 		<PackageReference Include="Carter" Version="9.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.7" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.3.0" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
@@ -24,14 +25,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Core\AppService\" />
-		<Folder Include="Core\Contract\" />
-		<Folder Include="Core\Domain\Aggregates\Role\" />
+		<Folder Include="Core\AppService\Validator\" />
+		<Folder Include="Core\AppService\Event\" />
+		<Folder Include="Core\AppService\Query\" />
+		<Folder Include="Core\Contract\AppService\Query\" />
+		<Folder Include="Core\Contract\AppService\Shared\" />
+		<Folder Include="Core\Contract\Infra\Persistence\Query\" />
+		<Folder Include="Core\Contract\Infra\Persistence\Shared\" />
 		<Folder Include="Core\Domain\Aggregates\User\Enum\" />
-		<Folder Include="Endpoint\Keys\Private\" />
-		<Folder Include="Endpoint\Keys\Public\" />
-		<Folder Include="Infra\ExternalApi\" />
-		<Folder Include="Infra\Persistence\EF\" />
 	</ItemGroup>
 
 	<ItemGroup>

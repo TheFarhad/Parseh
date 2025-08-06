@@ -1,10 +1,10 @@
 ﻿namespace Framework;
 
-public abstract class QueryStoreContext<TOwner> : StoreContext
-    where TOwner : QueryStoreContext<TOwner>
+public abstract class QueryDbStore<TOwner> : StoreContext
+    where TOwner : QueryDbStore<TOwner>
 {
-    protected QueryStoreContext() : base() { }
-    public QueryStoreContext(DbContextOptions<TOwner> options) : base(options) { }
+    protected QueryDbStore() : base() { }
+    public QueryDbStore(DbContextOptions<TOwner> options) : base(options) { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

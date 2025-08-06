@@ -5,6 +5,8 @@ using System.Windows.Navigation;
 using System.Windows.Media.Animation;
 using System.Windows.Controls.Primitives;
 
+// Add-Migration init -Context NewsCommandDbContext -OutputDir ./Infra/Persistence/EF/Migrations
+
 internal sealed class PasscodeHasPlaceholder : AttachedProperty<PasscodeHasPlaceholder, bool>
 {
     public override void OnPropertyChanged(DependencyObject uielement, DependencyPropertyChangedEventArgs e)

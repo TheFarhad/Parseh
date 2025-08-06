@@ -39,8 +39,8 @@ public sealed class Code : ValueObject<Code>
 {
     public readonly Guid Value;
 
-    private Code(Guid value) => Value = value;
-    private Code(string value)
+    Code(Guid value) => Value = value;
+    Code(string value)
     {
         if (value.IsGuid(out Guid result)) Value = result;
 

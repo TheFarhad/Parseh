@@ -1,0 +1,1 @@
+﻿global using Parseh.Server.Core.Contract.AppService.DTO;

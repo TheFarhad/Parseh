@@ -4,7 +4,6 @@ using System.Threading;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using static Microsoft.Extensions.Hosting.Host;
-using System.Net.Sockets;
 
 public sealed class Ioc
 {

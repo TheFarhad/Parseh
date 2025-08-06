@@ -834,8 +834,8 @@ public static partial class Extention
     public static T Service<T>(this HttpContext source) where T : notnull
         => source.RequestServices.GetRequiredService<T>();
 
-    public static RequestPipe RequestPipeService(this HttpContext source)
-        => source.Service<RequestPipe>();
+    public static RequestController RequestPipeService(this HttpContext source)
+        => source.Service<RequestController>();
 }
 #endregion
 

@@ -3,13 +3,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-public class EventSourcingEFCoreCommandDbContext<TCommandStoreContext> : CommandStoreContext<TCommandStoreContext>
-    where TCommandStoreContext : EventSourcingEFCoreCommandDbContext<TCommandStoreContext>
+public class EventSourcingEFCoreCommandStoreContext<TCommandStoreContext> : CommandDbStore<TCommandStoreContext>
+    where TCommandStoreContext : EventSourcingEFCoreCommandStoreContext<TCommandStoreContext>
 {
     public DbSet<OutboxEvent> OutboxEvents => Set<OutboxEvent>();
 
-    protected EventSourcingEFCoreCommandDbContext() : base() { }
-    public EventSourcingEFCoreCommandDbContext(DbContextOptions<TCommandStoreContext> options) : base(options) { }
+    protected EventSourcingEFCoreCommandStoreContext() : base() { }
+    public EventSourcingEFCoreCommandStoreContext(DbContextOptions<TCommandStoreContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
