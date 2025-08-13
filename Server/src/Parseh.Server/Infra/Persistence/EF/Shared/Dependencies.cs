@@ -19,7 +19,7 @@ public static class Dependencies
         const string CommandConnectionString = "ParsehCommandDbConnectionString";
         const string QueryConnectionString = "ParsehQueryDbConnectionString";
         services
-            .DbStores<ParsehCommandDbStore, ParsehQueryDbStore>(configuration, CommandConnectionString, QueryConnectionString, []);
+            .DbStores<ParsehCommandDbStore, ParsehQueryDbStore>(configuration, CommandConnectionString, QueryConnectionString, [new SaveInterceptor()]);
 
         return services;
     }

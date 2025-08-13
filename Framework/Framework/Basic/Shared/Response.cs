@@ -5,7 +5,8 @@ public readonly record struct Response<TData>
     public readonly TData? Data = default!;
     public readonly List<Error> Errors = [];
     public bool HasError => Errors.Count > 0;
-    public bool Success => Errors.Count <= 0 && Data is null;
+    public bool Success => Errors.Count <= 0 && Data is not null;
+    public readonly ErrorType ErrorType = ErrorType.None;
 
     public Response() { }
     public Response(TData data)
@@ -17,11 +18,13 @@ public readonly record struct Response<TData>
     {
         Data = default!;
         Errors = [error];
+        ErrorType = error.Type;
     }
     public Response(List<Error> errors)
     {
-        Data = default;
+        Data = default!;
         Errors = [.. errors];
+        ErrorType = errors.First().Type;
     }
 
     public static Response<TData> NoContent() => new();
@@ -52,7 +55,7 @@ public readonly record struct Error
     }
 
     public static Error Server(string message, string description = "")
-       => new(ErrorType.Server, 500, message, description);
+       => new(ErrorType.InternalServer, 500, message, description);
 
     public static Error BadRequest(string message, string description = "")
         => new(ErrorType.BadRequest, 400, message, description);
@@ -75,11 +78,12 @@ public readonly record struct Error
 
 public enum ErrorType : byte
 {
+    None = 0,
     Conflict = 1,
     NotFound = 2,
     Unauthorized = 3,
     Forbidden = 4,
-    Server = 5,
+    InternalServer = 5,
     BadRequest = 6,
     Unknown = 7
 }

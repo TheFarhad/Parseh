@@ -1,6 +1,7 @@
 ﻿namespace Parseh.Server.Infra.Persistence.EF.Command;
 
 using System.Text;
+using System.Threading;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,21 +11,30 @@ using Framework;
 using Core.Domain.Aggregates.User.Entity;
 using Core.Contract.Infra.Persistence.Command;
 
-public static class TokenParameter
+internal static class TokenParameter
 {
-    public const string RefreshTokenCookieKey = nameof(RefreshTokenCookieKey);
-    public const string Role = nameof(Role);
-    public const string Permission = nameof(Permission);
-    public const string UserName = nameof(UserName);
+    internal const string RefreshTokenCookieKey = nameof(RefreshTokenCookieKey);
+    internal const string Roles = nameof(Roles);
+    internal const string Permissions = nameof(Permissions);
+    internal const string UserName = nameof(UserName);
 }
 
-public record JwtOption(string Issuer, string Audience, string SecretKey, int TokenExpirationInMin = 20, int RefreshTokenExpirationInDay = 7);
+public record JwtOption
+{
+    public string Issuer { get; init; }
+    public string Audience { get; init; }
+    public string SecretKey { get; init; } = String.Empty;
+    public int TokenExpirationInMin { get; init; } = 20;
+    public int RefreshTokenExpirationInDay { get; init; } = 7;
+
+    public JwtOption() { }
+}
 
 public sealed class TokenService : ITokenService
 {
-    private readonly ParsehCommandDbStore _context;
-    private readonly HttpContext _httpContext;
-    private readonly JwtOption _jwtOptions;
+    readonly ParsehCommandDbStore _context;
+    readonly HttpContext _httpContext;
+    readonly JwtOption _jwtOptions;
 
     public TokenService(ParsehCommandDbStore context, IOptionsMonitor<JwtOption> jwtOptions, IHttpContextAccessor httpContextAccessor)
     {
@@ -33,90 +43,106 @@ public sealed class TokenService : ITokenService
         _httpContext = httpContextAccessor.HttpContext!;
     }
 
-    public async Task<Response<TokenResponse>> GenerateRefereshTokenToken(User user)
+    public async Task<Response<TokenResponse>> GenerateAccessTokenAsync(User user, CancellationToken cancellationToken)
     {
         Response<TokenResponse> result = default!;
+        var (tokenExpire, refreshTokenExpire) = ExpirationDateTime();
 
-        // --- [ validate refresh-token ] --- \\
-        var (token, isReply) = RotateRefreshTokenAsync(user);
+        var accessToken = GenerateAccessToken(user, tokenExpire);
 
-        // -- [ توکن موجود است ولی ریووک شده ] -- \\
-        // -- [ احتمالا توکن سرقت شده و دارد تلاش می شود که از آن سواستفاده شود ] -- \\
-        if (isReply)
-        {
-            result = Error.Unknown("");
-            return result;
-        }
-
-        // -- [ توکن موجود نیست و یا منقضی شده ] -- \\
-        // -- [ login needed ] -- \\
-        if (token is null)
-        {
-            result = Error.Unauthorized(" پیغام مناسب نوشته شود ");
-            return result;
-        }
-
-        // --- [ create access-token ] --- \\
-        var tokenExpire = DateTime.UtcNow.AddMinutes(_jwtOptions.TokenExpirationInMin);
-        var newAccessToken = AccessToken(user, tokenExpire);
-
-        // -- [ revoke old refresh-token ] -- \\
-        token.Revoked();
-        token.TokenReplacedBy(newAccessToken);
-
-        // --- [ create new refresh-token ] -- \\
-        var newRefreshToken = GenerateRefreshToken(user.Code);
-
-        // -- [ add new refresh-token to current user ] -- \\
-        user.AddRerereshToken(newRefreshToken);
-
-        await _context.SaveChangesAsync();
-
-        return await GenerateAccessTokenAsync(user);
-    }
-
-    public async Task<Response<TokenResponse>> GenerateAccessTokenAsync(User user)
-    {
-        Response<TokenResponse> result = default!;
-
-        var now = DateTime.UtcNow;
-        var tokenExpire = now.AddMinutes(_jwtOptions.TokenExpirationInMin);
-        var refreshTokenExpire = now.AddDays(_jwtOptions.RefreshTokenExpirationInDay);
-
-        // --- [ create access-token ] --- \\
-        var accessToken = AccessToken(user, tokenExpire);
-
-        // --- [ create refresh-token ] --- \\
-        var refreshToken = GenerateRefreshToken(user.Code);
-
-
+        var refreshToken = GenerateRefreshToken();
         user.AddRerereshToken(refreshToken);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         // --- [ set refresh-token on cookie (httponly) ] --- \\
-        HttpOnlyRefreshTokenOnCookie(refreshToken.HashedToken, refreshTokenExpire);
+        SetRefreshTokenOnCookie(refreshToken.HashedToken, refreshTokenExpire);
 
-        var data = new TokenResponse(user.Code.Value.ToString(), accessToken, tokenExpire);
-        return new Response<TokenResponse>(data);
+        result = new TokenResponse(user.Code.Value.ToString(), accessToken, tokenExpire);
+        return result;
     }
 
-    public async Task RevokeRefreshToken(User user, string refreshToken)
+    public async Task<Response<TokenResponse>> GenerateRefreshTokenAsync(User user, CancellationToken cancellationToken)
+    {
+        Response<TokenResponse> result = default!;
+
+        //TODO: اگر رفرش توکن منقضی نشده و یا باطل نشده
+        // درخواست ارجاع داده شود
+        // چون نیازی به صدور توکن جدید نیست
+
+        var cookieRefreshToken = _httpContext.Request.Cookies[TokenParameter.RefreshTokenCookieKey] ?? "";
+        // -- [ توکنی در کوکی وجود ندارد ] -- \\
+        if (cookieRefreshToken.IsEmpty())
+        {
+            result = Error.Unknown("پیغام مناسب نوشته شود");
+            return result;
+        }
+
+
+        var existRefreshToken = user.RefreshTokens
+                                         .SingleOrDefault(_ => _.HashedToken.Equals(cookieRefreshToken));
+
+        if (existRefreshToken is { })
+        {
+            // -- [ توکن قبلا یکبار ریووک شده ] -- \\
+            if (existRefreshToken.IsRevoked)
+            {
+                // TODO: do somthings...
+                // احتمال خطر
+            }
+            // -- [ توکن منقضی شده و کاربر باید مجددا لاگین کند ] -- \\
+            else if (existRefreshToken.IsExpire)
+            {
+                result = Error.Unauthorized("پیغام مناسب نوشته شود");
+                return result;
+            }
+        }
+        // -- [ توکنی با این مقدار در دیتابیس وجود ندارد ] -- \\
+        // -- [  کاربر باید مجددا لاگین کند ] -- \\
+        else
+        {
+            result = Error.Unauthorized("پیغام مناسب نوشته شود");
+            return result;
+        }
+
+        // -- [ توکن وجود دارد ولی منقضی یا باطل شده است ] -- \\
+        var (tokenExpire, refreshTokenExpire) = ExpirationDateTime();
+
+        var accessToken = GenerateAccessToken(user, tokenExpire);
+        var refreshToken = GenerateRefreshToken();
+
+        // -- [ revoke old refresh-token ] -- \\
+        existRefreshToken.Revoked();
+        existRefreshToken.TokenReplacedBy(refreshToken.HashedToken);
+
+        // -- [ add new refresh-token to current user ] -- \\
+        user.AddRerereshToken(refreshToken);
+
+        SetRefreshTokenOnCookie(refreshToken.HashedToken, refreshTokenExpire);
+
+        await _context.SaveChangesAsync();
+
+        result = new TokenResponse(user.Code.Value.ToString(), accessToken, tokenExpire);
+        return result;
+    }
+
+    public async Task Logout(User user, string refreshToken)
     {
         // -- [ Call in logout method in user-repository ] -- \\
         var rt = user
                     .RefreshTokens
-                    .FirstOrDefault(x => x.HashedToken == refreshToken);
+                    .FirstOrDefault(x => x.HashedToken.Equals(refreshToken));
 
         if (rt is { })
         {
-            rt.Revoked();
+            rt.Revoked("", "Logout");
             await Task.Delay(1);
             //await _db.SaveChangesAsync();
+
+            _httpContext.Response.Cookies.Delete(TokenParameter.RefreshTokenCookieKey);
         }
-        _httpContext.Response.Cookies.Delete(TokenParameter.RefreshTokenCookieKey);
     }
 
-    string AccessToken(User user, DateTime expiration)
+    string GenerateAccessToken(User user, DateTime expiration)
     {
         SigningCredentials credential;
 
@@ -144,18 +170,26 @@ public sealed class TokenService : ITokenService
 
         List<Claim> claims = [];
 
-        // set role cliams
+        // TODO: رول ها و پرمیژن ها واکشی شوند.
+        // اینجا بهتر است اینکار انجام شود
+        // یا در هندلر مربوطه، که یکجا رول ها و پرمیژن های یوزر رو را فقط با یک کوئری واکشی کنیم؟؟
+
+        // -- [ set role cliams ] -- \\
+        // -- ex: { "Roles" : ["Admin", "GraphicDesigner", "Acountant"] -- \\
+        // -- [ مقادیر رول ها به صورت آرایه ای از رشته ها ذخیره می شود ] -- \\
         var roles = user.Roles.Select(_ => _.Role);
         foreach (var role in roles)
-            claims.Add(new(TokenParameter.Role, role.Title));
+            claims.Add(new(TokenParameter.Roles, role.Title));
 
         // set permission claims
+        // -- ex: { "Permissions" : ["Read", "Write", "Update", "Remove"] -- \\
+        // -- [ مقادیر پرمیژن ها به صورت آرایه ای از رشته ها ذخیره می شود ] -- \\
         foreach (var role in roles)
         {
             role
                 .Permissions
                 .Select(_ => _.Permission)
-                .Select(_ => new Claim(TokenParameter.Permission, _.Title))
+                .Select(_ => new Claim(TokenParameter.Permissions, _.Title))
                 .ToList()
                 .ForEach(claims.Add);
         }
@@ -165,8 +199,8 @@ public sealed class TokenService : ITokenService
             [
               new (TokenParameter.UserName, user.UserName),
               new (JwtRegisteredClaimNames.Sub, user.Code.Value.ToString()),
-              new (JwtRegisteredClaimNames.Iss, _jwtOptions.Issuer),
-              new (JwtRegisteredClaimNames.Aud, _jwtOptions.Audience),
+              //new (JwtRegisteredClaimNames.Iss, _jwtOptions.Issuer),
+              //new (JwtRegisteredClaimNames.Aud, _jwtOptions.Audience),
               new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
               ..claims
             ]
@@ -177,71 +211,116 @@ public sealed class TokenService : ITokenService
         return tokenHandler.WriteToken(securityToken);
     }
 
-    RefreshToken GenerateRefreshToken(Code user)
+    RefreshToken GenerateRefreshToken()
     {
-        var userAgent = _httpContext.Request.Headers.UserAgent.ToString() ?? "Unknown";
+        var userAgent = _httpContext.Request.Headers.UserAgent.ToString();
+        var ua = userAgent.IsEmpty() ? "Unknown" : userAgent;
+
         // -- [ آیپی آدرس همیشه وجود دارد حتی اگر از پروکسی استفاده شده باشد و آیپی جعلی باشد ] -- \\
-        var ip = _httpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+        var ipAddress = _httpContext.Connection.RemoteIpAddress?.ToString();
+        var ip = ipAddress.IsEmpty() ? "Unknown" : ipAddress;
         var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-        var result = RefreshToken.New(token, /*user.Value.ToString(),*/ ip, userAgent, _jwtOptions.RefreshTokenExpirationInDay);
+        var result = RefreshToken.New(token, ip, ua, _jwtOptions.RefreshTokenExpirationInDay);
         return result;
     }
 
-    (RefreshToken? token, bool isReplay) RotateRefreshTokenAsync(User user)
-    {
-        var recievedRefreshToken = _httpContext.Request.Cookies[TokenParameter.RefreshTokenCookieKey];
-
-        // -- [ توکنی در کوکی وجود ندارد ] -- \\
-        if (string.IsNullOrWhiteSpace(recievedRefreshToken))
-            return (null, false);
-
-        var rt = user
-                    .RefreshTokens
-                    .SingleOrDefault(_ => _.HashedToken.Equals(recievedRefreshToken));
-
-        // -- [ توکن معتبر نباشد ] -- \\
-        if (rt is null || rt.IsRevoked || DateTime.UtcNow > rt.ExpireAt)
-        {
-            // -- [ توکن موجود باشد ولی ریووک شده باشد ] -- \\
-            if (rt is { IsRevoked: true })
-                return (null, true);
-
-            else if (
-                    rt is null ||
-                    rt.RemoteIp != _httpContext.Connection.RemoteIpAddress?.ToString() ||
-                    rt.UserAgent != _httpContext.Request.Headers.UserAgent
-                    )
-                return (null, false);
-
-            else
-                return (null, false);
-        }
-
-        // -- [ توکن موجود و معتبر است ] -- \\
-        else
-            return (GenerateRefreshToken(user.Code), false);
-    }
-
-    void HttpOnlyRefreshTokenOnCookie(string refreshToken, DateTime expiration)
+    void SetRefreshTokenOnCookie(string refreshToken, DateTime refreshToenExpiration)
     {
         _httpContext.Response.Cookies.Append(TokenParameter.RefreshTokenCookieKey, refreshToken, new CookieOptions
         {
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.Strict,
-            Expires = expiration,
+            Expires = refreshToenExpiration,
             //Domain = default = "localhost" => برای استففاده از لوکال هاست، اصلا نیازی نیست نوشته شود
             /* اگر باربر با / باشد این کوکی برای همه مسیرهای وب سایت معتبر است و در صورت کال شدن هر ای پی آی، برای آن ارسال میشود */
             /* برای پرفورمنس بهتر، بهتر است که فقط برای ای پی آی مربوط به رفرش توکن ست شود */
             /* اینطوری این کوکی فقط برای ای پی آی رفرش ارسال می شود */
-            Path = "/refresh"
+            Path = "/users/refreshtoken"
         });
     }
+
+    (DateTime TokenExpiration, DateTime RefreshTokenExpiration) ExpirationDateTime()
+    {
+        var now = DateTime.UtcNow;
+        var tokenExpire = now.AddMinutes(_jwtOptions.TokenExpirationInMin);
+        var refreshTokenExpire = now.AddDays(_jwtOptions.RefreshTokenExpirationInDay);
+        return (tokenExpire, refreshTokenExpire);
+    }
+
+    //(RefreshToken? token, bool isReplay) RotateRefreshTokenAsync(User user)
+    //{
+    //    var recievedRefreshToken = _httpContext.Request.Cookies[TokenParameter.RefreshTokenCookieKey] ?? "";
+    //    // -- [ توکنی در کوکی وجود ندارد ] -- \\
+    //    if (recievedRefreshToken.IsEmpty())
+    //        return (null, false);
+
+    //    var rt = user
+    //                .RefreshTokens
+    //                .SingleOrDefault(_ => _.HashedToken.Equals(recievedRefreshToken));
+
+    //    // -- [ توکن معتبر نباشد ] -- \\
+    //    if (rt is null || rt.IsRevoked || DateTime.UtcNow > rt.ExpireAt)
+    //    {
+    //        // -- [ توکن موجود باشد ولی ریووک شده باشد ] -- \\
+    //        if (rt is { IsRevoked: true })
+    //            return (null, true);
+
+    //        else if (
+    //                rt is null ||
+    //                rt.RemoteIp != _httpContext.Connection.RemoteIpAddress?.ToString() ||
+    //                rt.UserAgent != _httpContext.Request.Headers.UserAgent
+    //                )
+    //            return (null, false);
+
+    //        else
+    //            return (null, false);
+    //    }
+
+    //    // -- [ توکن موجود و معتبر است ] -- \\
+    //    else
+    //        return (GenerateRefreshToken(), false);
+    //}
+
+    //(string? token, bool isReplay) RotateRefreshTokenAsync0(User user)
+    //{
+    //    var recievedRefreshToken = _httpContext.Request.Cookies[TokenParameter.RefreshTokenCookieKey] ?? "";
+
+    //    // -- [ توکنی در کوکی وجود ندارد ] -- \\
+    //    if (recievedRefreshToken.IsEmpty())
+    //        return (null, false);
+
+    //    var rt = user
+    //                .RefreshTokens
+    //                .SingleOrDefault(_ => _.HashedToken.Equals(recievedRefreshToken));
+
+    //    // -- [ توکن معتبر نباشد ] -- \\
+    //    if (rt is null || rt.IsRevoked || DateTime.UtcNow > rt.ExpireAt)
+    //    {
+    //        // -- [ توکن موجود باشد ولی ریووک شده باشد ] -- \\
+    //        if (rt is { IsRevoked: true })
+    //            return (null, true);
+
+    //        else if (
+    //                rt is null ||
+    //                rt.RemoteIp != _httpContext.Connection.RemoteIpAddress?.ToString() ||
+    //                rt.UserAgent != _httpContext.Request.Headers.UserAgent
+    //                )
+    //            return (null, false);
+
+    //        else
+    //            return (null, false);
+    //    }
+
+    //    // -- [ توکن موجود و معتبر است ] -- \\
+    //    else
+    //        return (GenerateRefreshToken(), false);
+    //}
 }
 
-public static class RsaKeyProvider
+internal static class RsaKeyProvider
 {
-    public static RSA LoadPrivateKey(string path)
+    internal static RSA LoadPrivateKey(string path)
     {
         var result = RSA.Create();
         var keyText = File.ReadAllText(path);
@@ -254,7 +333,7 @@ public static class RsaKeyProvider
         return result;
     }
 
-    public static RSA LoadPublicKey(string path)
+    internal static RSA LoadPublicKey(string path)
     {
         var result = RSA.Create();
         result.ImportFromPem(File.ReadAllText(path));
@@ -372,8 +451,6 @@ public static class RsaKeyProvider
 //    return Unauthorized("دستگاه یا مرورگر متفاوت از صادرکنندهٔ توکن است.");
 //}
 
-
-
 #region Token Service
 
 
@@ -388,7 +465,6 @@ public static class RsaKeyProvider
 //    }
 
 #endregion
-
 
 //        [Authorize]
 //        [HttpPost("logout")]
@@ -415,7 +491,6 @@ public static class RsaKeyProvider
 
 //     if (isReplay) return Unauthorized("Token reuse detected");
 // }
-
 
 #region Token and Refresh-Token Tips
 

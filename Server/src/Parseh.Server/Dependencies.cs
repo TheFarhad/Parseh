@@ -1,11 +1,11 @@
 ﻿namespace Parseh.Server;
 
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Carter;
-using Core.Domain.Aggregates.User.Entity;
 using Infra.Persistence.EF.Command;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Text.Json.Serialization;
 
 internal static class Dependencies
 {
@@ -27,8 +27,7 @@ internal static class Dependencies
                            .AllowAnyHeader();
                 });
 
-            })
-            ;
+            });
 
         return services;
     }
@@ -74,7 +73,7 @@ internal static class Dependencies
                 ValidateIssuerSigningKey = true
             };
         });
-        // TODO: define polices
+        // TODO: define policies
         services.AddAuthorization();
 
         return services;

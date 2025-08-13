@@ -1,0 +1,25 @@
+﻿@host = https://localhost:5111
+@route = {{host}}/users
+@ContentType = application/json
+
+POST {{route}}/login
+Content-Type: {{ContentType}}
+
+{
+  "UserName" : "Panah",
+  "Password" : "@BigBang_Supernova#"
+}
+######################
+
+POST {{route}}/refreshtoken
+Content-Type: {{ContentType}}
+
+{
+  "UserCode" : "d92a8bc2-23a2-45f5-a3ca-b782bb5fbb0b"
+}
+######################
+
+GET {{route}}/test
+Content-Type: {{ContentType}}
+######################
+

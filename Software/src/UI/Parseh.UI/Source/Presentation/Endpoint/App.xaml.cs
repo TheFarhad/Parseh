@@ -1,7 +1,6 @@
-﻿using Microsoft.Windows.Themes;
+﻿namespace Parseh.UI;
 
-namespace Parseh.UI;
-
+//var pass = "sleppofbridge_@#1991";
 public sealed partial class App : Application
 {
     static Dispatcher _dispatcher => Application.Current.Dispatcher;
@@ -43,13 +42,7 @@ public sealed partial class App : Application
 
     static void Test()
     {
-        //var pass = "فرهاد کاظمی 123۶۷۵";
-        ////var hash = "712770E29CE029994376A35833E8F1672D62FF6DE5B192A4F2070CA55A5B81EAD75E398D380198F71809A3C9A8CC0FD775CDCB64F37B4111A6D31064476B4B4F";
-        ////var salt = "94D43D938D58DF754772BDF95674D2CA";
 
-        //var encoder = new ArgonEncyptionService();
-
-        //var result = encoder.Hash(pass);
     }
 
     #endregion

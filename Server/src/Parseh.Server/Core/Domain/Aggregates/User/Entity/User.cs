@@ -57,7 +57,7 @@ public sealed class User : AggregateRoot<UserId>
 
     public void AddRerereshToken(RefreshToken refereshToken)
     {
-        if (_refereshTokens.Any(_ => _.HashedToken.Equals(refereshToken.HashedToken, StringComparison.Ordinal)))
+        if (!_refereshTokens.Any(_ => _.HashedToken.Equals(refereshToken.HashedToken, StringComparison.Ordinal)))
             _refereshTokens.Add(refereshToken);
 
         else

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Query;
 
 public abstract class CommandRepository<TAggregateRoot, TId, TDbStore> : ICommandRepository<TAggregateRoot, TId>
     where TId : Identity
@@ -49,19 +50,25 @@ public abstract class CommandRepository<TAggregateRoot, TId, TDbStore> : IComman
        => await Table.SingleOrDefaultAsync(predicate, token);
 
     public async Task<TAggregateRoot?> SingleOrDefaultAsync(IEnumerable<string> includes, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
-        => await IncludeGraph(includes).SingleOrDefaultAsync(predicate, token);
+        => await Includes(includes).SingleOrDefaultAsync(predicate, token);
 
     public async Task<TAggregateRoot?> SingleOrDefaultAsync(IEnumerable<Expression<Func<TAggregateRoot, object>>> includes, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
-       => await IncludeGraph(includes).SingleOrDefaultAsync(predicate, token);
+       => await Includes(includes).SingleOrDefaultAsync(predicate, token);
+
+    public async Task<TAggregateRoot?> SingleOrDefaultAsync(bool includeAll, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
+       => await IncludeAll(includeAll).SingleOrDefaultAsync(predicate, token);
 
     public async Task<TAggregateRoot?> FirstOrDefaultAsync(Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
         => await Table.FirstOrDefaultAsync(predicate, token);
 
     public async Task<TAggregateRoot?> FirstOrDefaultAsync(IEnumerable<string> includes, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
-        => await IncludeGraph(includes).FirstOrDefaultAsync(predicate, token);
+        => await Includes(includes).FirstOrDefaultAsync(predicate, token);
 
     public async Task<TAggregateRoot?> FirstOrDefaultAsync(IEnumerable<Expression<Func<TAggregateRoot, object>>> includes, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
-        => await IncludeGraph(includes).FirstOrDefaultAsync(predicate, token);
+        => await Includes(includes).FirstOrDefaultAsync(predicate, token);
+
+    public async Task<TAggregateRoot?> FirstOrDefaultAsync(bool includeAll, Expression<Func<TAggregateRoot, bool>> predicate, CancellationToken token = default)
+       => await IncludeAll(includeAll).FirstOrDefaultAsync(predicate, token);
 
     // To bulk insert and update
     public async Task<List<TAggregateRoot>?> ListAsync(Expression<Func<TAggregateRoot, bool>> predicate = default!, CancellationToken token = default) =>
@@ -84,25 +91,26 @@ public abstract class CommandRepository<TAggregateRoot, TId, TDbStore> : IComman
         await Task.Delay(1);
     }
 
-    IQueryable<TAggregateRoot> IncludeGraph(IEnumerable<string> includes)
+    IQueryable<TAggregateRoot> Includes(IEnumerable<string> includes)
       => Table.AsQueryable().ApplyIncludes(includes);
 
-    IQueryable<TAggregateRoot> IncludeGraph(IEnumerable<Expression<Func<TAggregateRoot, object>>> includes)
+    IQueryable<TAggregateRoot> Includes(IEnumerable<Expression<Func<TAggregateRoot, object>>> includes)
         => Table.AsQueryable().ApplyIncludes<TAggregateRoot>(includes);
 
-    IQueryable<TAggregateRoot> IncludeAll()
+    IQueryable<TAggregateRoot> IncludeAll(bool includeAll)
     {
         var result = Table.AsQueryable();
-        Context
-         .ApplyAllIncludes(Context.Model, typeof(TAggregateRoot))
-         .ToList()
-         .ForEach(_ => result.Include(_));
-
+        if (includeAll)
+        {
+            var includes = IncludeProvider.GetNavigationPaths<TAggregateRoot>(maxDepth: 4);
+            // TODO: درست کار نمی کند
+            result.ApplyIncludes(includes);
+        }
         return result;
     }
 }
 
-public static class IQueryableExtensions
+public static class IncludeProvider
 {
     public static IQueryable<T> ApplyIncludes<T>(
         this IQueryable<T> query,
@@ -126,44 +134,100 @@ public static class IQueryableExtensions
         return query;
     }
 
-    public static IEnumerable<string> ApplyAllIncludes(this DbContext context, IModel model, Type clrType)
+    public static List<string> GetNavigationPaths<T>(
+        int maxDepth = 3,
+        HashSet<Type> visitedTypes = null!,
+        string prefix = "")
     {
-        var entityType = model.FindEntityType(clrType);
-        var includedNavigations = new HashSet<INavigation>();
-        var stack = new Stack<IEnumerator<INavigation>>();
-        while (true)
+        // TODO: درست کار نمی کند
+
+        visitedTypes ??= new HashSet<Type>();
+        var paths = new List<string>();
+        var type = typeof(T);
+
+        if (visitedTypes.Contains(type) || maxDepth < 1)
+            return paths;
+
+        visitedTypes.Add(type);
+
+        var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => IsNavigationProperty(p));
+
+        foreach (var prop in properties)
         {
-            var navigations = new List<INavigation>();
-            var entityNavigations = entityType.GetNavigations();
-            foreach (var item in entityNavigations)
-            {
-                if (includedNavigations.Add(item))
-                    navigations.Add(item);
-            }
-            if (navigations.Count == 0)
-            {
-                if (stack.Count > 0)
-                    yield return string.Join(".", stack.Reverse().Select(e => e.Current.Name));
-            }
-            else
-            {
-                foreach (var navigation in navigations)
-                {
-                    var inverseNavigation = navigation.Inverse;
-                    if (inverseNavigation is { })
-                        includedNavigations.Add(inverseNavigation);
-                }
-                stack.Push(navigations.GetEnumerator());
-            }
+            var currentPath = string.IsNullOrEmpty(prefix) ? prop.Name : $"{prefix}.{prop.Name}";
+            paths.Add(currentPath);
 
-            while (stack.Count > 0 && !stack.Peek().MoveNext())
-                stack.Pop();
+            var nestedType = GetNavigationType(prop.PropertyType);
 
-            if (stack.Count is 0)
-                break;
-
-            entityType = stack.Peek().Current.TargetEntityType;
+            // جلوگیری از دنبال کردن Value Objectهایی که navigation نیستند
+            if (ShouldTraverseNestedType(nestedType))
+            {
+                paths.AddRange(GetNavigationPathsInternal(nestedType, maxDepth - 1, visitedTypes, currentPath));
+            }
         }
+        return paths;
+    }
+
+    static List<string> GetNavigationPathsInternal(
+        Type type,
+        int depth,
+        HashSet<Type> visitedTypes,
+        string prefix)
+    {
+        var method = typeof(IncludeProvider)
+            .GetMethod(nameof(GetNavigationPaths), BindingFlags.Public | BindingFlags.Static)
+            .MakeGenericMethod(type);
+
+        return (List<string>)method.Invoke(null, new object[] { depth, visitedTypes, prefix });
+    }
+
+    static bool IsNavigationProperty(PropertyInfo property)
+    {
+        var type = property.PropertyType;
+
+        // رد کردن primitiveها و string
+        if (type.IsPrimitive || type == typeof(string) || type.IsEnum || type.IsValueType)
+            return false;
+
+        // مجموعه‌ها مثل ICollection<T> یا List<T>
+        if (typeof(System.Collections.IEnumerable).IsAssignableFrom(type) && type != typeof(string))
+            return true;
+
+        // فقط کلاس‌هایی که Entity هستن
+        return IsEntity(type);
+    }
+
+    static bool IsEntity(Type type)
+    {
+        // Convention: داشتن Id یا [TypeName]Id
+        return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Any(p =>
+                String.Equals(p.Name, "Id", StringComparison.OrdinalIgnoreCase) ||
+                String.Equals(p.Name, $"{type.Name}Id", StringComparison.OrdinalIgnoreCase));
+    }
+
+    static Type GetNavigationType(Type propertyType)
+    {
+        if (typeof(System.Collections.IEnumerable).IsAssignableFrom(propertyType) && propertyType != typeof(string))
+        {
+            return propertyType.IsGenericType ? propertyType.GetGenericArguments()[0] : typeof(object);
+        }
+
+        return propertyType;
+    }
+
+    static bool ShouldTraverseNestedType(Type type)
+    {
+        // جلوگیری از دنبال کردن Value Objectهایی مثل DateTime، Guid، یا Structها
+        if (type.IsPrimitive || type == typeof(string) || type.IsEnum || type.IsValueType)
+            return false;
+
+        // جلوگیری از دنبال کردن کلاس‌های سیستمی
+        if (type.Namespace != null && type.Namespace.StartsWith("System"))
+            return false;
+
+        return true;
     }
 }
 

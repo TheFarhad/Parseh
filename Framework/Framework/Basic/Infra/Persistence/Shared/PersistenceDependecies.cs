@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿namespace Framework;
 
-namespace Framework;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 public static class PersistenceDependecies
 {
@@ -49,7 +49,9 @@ public static class PersistenceDependecies
         where TQueryStorContext : QueryDbStore<TQueryStorContext>
         => services.AddDbContext<TQueryStorContext>(_ =>
         {
-            _.UseSqlServer(connectionstring).LogOptions();
+            _
+            .UseSqlServer(connectionstring)
+            .LogOptions();
         });
 
     static void LogOptions(this DbContextOptionsBuilder source)

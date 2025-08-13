@@ -55,7 +55,7 @@ public sealed class UserConfig : AggregateRootConfiguration<User, UserId>
         // -- [ REFRESH TOKEN ] -- \\
         b.HasMany(_ => _.RefreshTokens)
          .WithOne()
-         .HasForeignKey("RefreshTokenId")
+         .HasForeignKey("UserId")
          .IsRequired()
          .OnDelete(DeleteBehavior.Cascade);
         // TODO: هر چند که ما رکوردی را حذف نمیکنیم
@@ -160,12 +160,6 @@ public sealed class RefreshTokenConfig : EntityConfiguration<RefreshToken, Refre
          .HasIndex(_ => _.HashedToken)
          .IsUnique();
 
-        //b
-        // .Property(_ => _.UserCode)
-        // .HasMaxLength(36)
-        // .IsRequired()
-        // .IsUnicode(false);
-
         b
          .Property(_ => _.RemoteIp)
          .HasMaxLength(15)
@@ -193,20 +187,20 @@ public sealed class RefreshTokenConfig : EntityConfiguration<RefreshToken, Refre
         b
         .Property(_ => _.RevokedByRemoteIp)
         .HasMaxLength(15)
-        .IsRequired()
+        .IsRequired(false)
         .IsUnicode(false);
 
         b
          .Property(_ => _.RevokeReason)
          .HasMaxLength(300)
-         .IsRequired()
+         .IsRequired(false)
          .IsUnicode(true);
 
         b
         .Property(_ => _.ReplacedByToken)
         // TODO: بعد از هش شدن، تعداد کارکترهای آن چند می شود؟؟
         .HasMaxLength(100)
-        .IsRequired()
+        .IsRequired(false)
         .IsUnicode(false);
 
         b

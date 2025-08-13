@@ -3,7 +3,6 @@
 using Contract.AppService.Command;
 using Contract.Infra.Persistence.Command;
 using Contract.Infra.Persistence.Command.User;
-using Parseh.Server.Core.Domain.Aggregates.User.Entity;
 
 public sealed class UserLoginCommandHandler(IUserCommandRepository userCommandRepository, ITokenService tokenService, IEncryptService encryptService, IParsehUnitOfWork unitOfWork)
     : CommandRequestHandler<UserLoginCommand, TokenResponse>(unitOfWork)
@@ -12,23 +11,24 @@ public sealed class UserLoginCommandHandler(IUserCommandRepository userCommandRe
     readonly ITokenService _tokenService = tokenService;
     readonly IEncryptService _encryptService = encryptService;
 
-    public override async Task<Response<TokenResponse>> HandleAsync(UserLoginCommand command, CancellationToken token = default)
+    public override async Task<Response<TokenResponse>> HandleAsync(UserLoginCommand command, CancellationToken cancellationToken = default)
     {
         Response<TokenResponse> result = default!;
         try
         {
+            // TODO: رول ها و پرمیژن های یوزر هم واکشی شود
+            // آیا باید اطلاعات را اینجا واکشی کنیم یا بهتر است در درخواست های جداگانه، در توکن سرویس اینکار انجام شود
+
+            List<string> includes = ["Roles", "Roles.Role", "Roles.Role.Permissions", "Roles.Role.Permissions.Permission"];
             var user = await _userCommandRepository
-                                .SingleOrDefaultAsync(_ => _.UserName == command.Username);
+                                .SingleOrDefaultAsync(includes, _ => _.UserName == command.UserName, cancellationToken);
+
             if (user is { })
             {
                 var isCorrectPassword = _encryptService.Verify(command.Password, user.Password, user.Salt);
-                if (!isCorrectPassword)
+                if (isCorrectPassword)
                 {
-                    result = Error.BadRequest("");
-                }
-                else
-                {
-                    result = await _tokenService.GenerateAccessTokenAsync(user);
+                    result = await _tokenService.GenerateAccessTokenAsync(user, cancellationToken);
                 }
             }
             else
@@ -47,23 +47,26 @@ public sealed class UserLoginCommandHandler(IUserCommandRepository userCommandRe
 public sealed class UserRefreshTokenCommandHandler(IUserCommandRepository userCommandRepository, ITokenService tokenService, IParsehUnitOfWork unitOfWork)
     : CommandRequestHandler<UserRefereshTokenCommand, TokenResponse>(unitOfWork)
 {
-    private readonly IUserCommandRepository _userCommandRepository = userCommandRepository;
-    private readonly ITokenService _tokenService = tokenService;
+    readonly IUserCommandRepository _userCommandRepository = userCommandRepository;
+    readonly ITokenService _tokenService = tokenService;
 
-    public override async Task<Response<TokenResponse>> HandleAsync(UserRefereshTokenCommand command, CancellationToken token = default)
+    public override async Task<Response<TokenResponse>> HandleAsync(UserRefereshTokenCommand command, CancellationToken canellationToken = default)
     {
         Response<TokenResponse> result = default!;
         try
         {
+            List<string> includes = ["RefreshTokens", "Roles", "Roles.Role", "Roles.Role.Permissions", "Roles.Role.Permissions.Permission"];
             var user = await _userCommandRepository
-                                .SingleOrDefaultAsync(
-                                        [_ => _.RefreshTokens],
-                                        _ => _.Code == Code.New(command.UserCode));
+                                .SingleOrDefaultAsync(includes, _ => _.Code == Code.New(command.UserCode));
 
             if (user is { })
-                result = await _tokenService.GenerateRefereshTokenToken(user);
+            {
+                result = await _tokenService.GenerateRefreshTokenAsync(user, canellationToken);
+            }
             else
+            {
                 result = Error.BadRequest("");
+            }
         }
         catch (Exception e)
         {
