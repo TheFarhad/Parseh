@@ -5,17 +5,26 @@ using Contract.Infra.Persistence.Command;
 using Contract.Infra.Persistence.Command.User;
 
 public sealed class UserLoginCommandHandler(IUserCommandRepository userCommandRepository, ITokenService tokenService, IEncryptService encryptService, IParsehUnitOfWork unitOfWork)
-    : CommandRequestHandler<UserLoginCommand, TokenResponse>(unitOfWork)
+    : CommandRequestHandler<UserLoginCommand, LoginResponse>(unitOfWork)
 {
     readonly IUserCommandRepository _userCommandRepository = userCommandRepository;
     readonly ITokenService _tokenService = tokenService;
     readonly IEncryptService _encryptService = encryptService;
 
-    public override async Task<Response<TokenResponse>> HandleAsync(UserLoginCommand command, CancellationToken cancellationToken = default)
+    public override async Task<Response<LoginResponse>> HandleAsync(UserLoginCommand command, CancellationToken cancellationToken = default)
     {
-        Response<TokenResponse> result = default!;
+        Response<LoginResponse> result = default!;
         try
         {
+            if (command is null)
+            {
+                return Error.BadRequest("");
+            }
+            if (command.UserName.IsEmpty() is true || command.Password.IsEmpty() is true)
+            {
+                return Error.BadRequest("");
+            }
+
             // TODO: رول ها و پرمیژن های یوزر هم واکشی شود
             // آیا باید اطلاعات را اینجا واکشی کنیم یا بهتر است در درخواست های جداگانه، در توکن سرویس اینکار انجام شود
 
@@ -45,14 +54,14 @@ public sealed class UserLoginCommandHandler(IUserCommandRepository userCommandRe
 }
 
 public sealed class UserRefreshTokenCommandHandler(IUserCommandRepository userCommandRepository, ITokenService tokenService, IParsehUnitOfWork unitOfWork)
-    : CommandRequestHandler<UserRefereshTokenCommand, TokenResponse>(unitOfWork)
+    : CommandRequestHandler<UserRefereshTokenCommand, RefreshTokenResponse>(unitOfWork)
 {
     readonly IUserCommandRepository _userCommandRepository = userCommandRepository;
     readonly ITokenService _tokenService = tokenService;
 
-    public override async Task<Response<TokenResponse>> HandleAsync(UserRefereshTokenCommand command, CancellationToken canellationToken = default)
+    public override async Task<Response<RefreshTokenResponse>> HandleAsync(UserRefereshTokenCommand command, CancellationToken canellationToken = default)
     {
-        Response<TokenResponse> result = default!;
+        Response<RefreshTokenResponse> result = default!;
         try
         {
             List<string> includes = ["RefreshTokens", "Roles", "Roles.Role", "Roles.Role.Permissions", "Roles.Role.Permissions.Permission"];

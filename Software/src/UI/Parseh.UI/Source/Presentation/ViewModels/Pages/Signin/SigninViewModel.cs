@@ -1,7 +1,11 @@
-﻿namespace Parseh.UI.ViewModels;
+﻿using Parseh.UI.Source.Infra.ExternalApi;
+
+namespace Parseh.UI.ViewModels;
 
 public sealed class SigninViewModel : VM
 {
+    private readonly UserService _userService;
+
     public string Username
     {
         get => Get();
@@ -27,26 +31,32 @@ public sealed class SigninViewModel : VM
     public IRelayCommand SignupCommand { get; private set; } = default!;
     public IRelayCommand SignoutCommand { get; private set; } = default!;
 
-    public SigninViewModel() => Init();
+    public SigninViewModel(/*UserService userService*/)
+    {
+        Init();
 
-    #region Private Functionality
+        // TODO:
+        //_userService = userService;
+    }
 
     protected override void OnCreate() { }
 
-    void Init()
+    #region Private Functionality
+
+    private void Init()
     {
         InitProperties();
         InitCommands();
     }
 
-    void InitProperties()
+    private void InitProperties()
     {
         Username = Empty;
         Passcode = Empty;
         IsSigning = false;
     }
 
-    void InitCommands()
+    private void InitCommands()
     {
         // TODO: شرط اجرایی کامند برگردانه شود
         SigninCommand = new Command<IHavePassword>(async page => await Signin(page)/*, _ => Username.Length > 0 && !IsSigning*/);
@@ -58,7 +68,7 @@ public sealed class SigninViewModel : VM
 
     #region Commands
 
-    async Task Signin(IHavePassword signinPage)
+    private async Task Signin(IHavePassword signinPage)
     {
         await RunAsync(async () =>
         {
@@ -76,9 +86,11 @@ public sealed class SigninViewModel : VM
             IsSigning = false;
         });
     }
-    void Signup() => Cortex.Default.Model.ToPage(PageMode.Signup);
 
-    async Task Signout()
+    private void Signup()
+        => Cortex.Default.Model.ToPage(PageMode.Signup);
+
+    private async Task Signout()
     {
         await RunAsync(async () =>
         {

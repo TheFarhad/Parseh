@@ -6,13 +6,13 @@ public partial class Layout : ContentLayout
 
     public Layout() => Init();
 
-    void Init()
+    private void Init()
     {
         _model = new LayoutViewModel(this);
         InitializeComponent();
     }
 
-    void OnAtcivated(object sender, EventArgs e) => _model.LayoutActivationCommand.Execute(null);
+    private void OnAtcivated(object sender, EventArgs e) => _model.LayoutActivationCommand.Execute(null);
 
-    void OnDeactivated(object sender, EventArgs e) => _model.LayoutActivationCommand.Execute(null);
+    private void OnDeactivated(object sender, EventArgs e) => _model.LayoutActivationCommand.Execute(null);
 }

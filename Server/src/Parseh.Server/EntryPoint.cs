@@ -30,13 +30,13 @@ internal static class EntryPoint
     {
         if (useResponseCompression) app.UseResponseCompression();
 
-        app.UseExceptionHandler();
 
         var devEnvironment = app.Environment.IsDevelopment();
 
         if (devEnvironment)
             app.MapOpenApi();
 
+        app.UseExceptionHandler();
 
         app.UseHttpsRedirection();
 

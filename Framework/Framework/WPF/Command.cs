@@ -24,20 +24,20 @@ public sealed class Command : IRelayCommand
     public void Execute(object? parameter) => _execute?.Invoke();
 }
 
-public sealed class Command<T> : IRelayCommand
+public sealed class Command<TInput> : IRelayCommand
 {
-    private readonly Action<T> _execute;
-    private readonly Func<T, bool> _canexecute = _ => true;
+    private readonly Action<TInput> _execute;
+    private readonly Func<TInput, bool> _canexecute = _ => true;
     public event EventHandler? CanExecuteChanged = (sender, eventArgs) => { };
 
-    public Command(Action<T> execute, Func<T, bool> canexecute = default!)
+    public Command(Action<TInput> execute, Func<TInput, bool> canexecute = default!)
     {
         _execute = execute;
         if (canexecute is { }) _canexecute = canexecute;
     }
 
     public void Notify() => CanExecuteChanged!.Invoke(this, EventArgs.Empty);
-    public bool CanExecute(object? parameter) => _canexecute.Invoke(parameter!.As<T>());
-    public void Execute(object? parameter) => _execute?.Invoke(parameter!.As<T>());
+    public bool CanExecute(object? parameter) => _canexecute.Invoke(parameter!.As<TInput>());
+    public void Execute(object? parameter) => _execute?.Invoke(parameter!.As<TInput>());
 }
 

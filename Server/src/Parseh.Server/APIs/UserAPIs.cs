@@ -13,14 +13,14 @@ public sealed class UserAPIs : CarterModule
 
         group.MapPost("login", async ([FromBody] UserLoginCommand command, [FromServices] RequestController requestController, CancellationToken token = default) =>
         {
-            var response = await requestController.SendAsync<UserLoginCommand, TokenResponse>(command, token);
+            var response = await requestController.SendAsync<UserLoginCommand, LoginResponse>(command, token);
             return response.JsonOutput();
         })
         .WithName("Login");
 
         group.MapPost("refreshtoken", async ([FromBody] UserRefereshTokenCommand command, [FromServices] RequestController requestController, CancellationToken token = default) =>
         {
-            var response = await requestController.SendAsync<UserRefereshTokenCommand, TokenResponse>(command, token);
+            var response = await requestController.SendAsync<UserRefereshTokenCommand, LoginResponse>(command, token);
             return response.JsonOutput();
         })
         .WithName("refreshtoken");

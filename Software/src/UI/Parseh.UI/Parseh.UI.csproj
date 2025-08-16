@@ -66,11 +66,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Source\Core\Contract\Infra\" />
+		<Folder Include="Source\Core\Contract\AppService\" />
+		<Folder Include="Source\Core\Domain\" />
+		<Folder Include="Source\Infra\Persistence\" />
 		<Folder Include="Source\Presentation\Resources\Controls\" />
 		<Folder Include="Source\Presentation\Resources\Documents\" />
 		<Folder Include="Source\Presentation\Resources\Animations\" />
-		<Folder Include="Source\Infra\" />
-		<Folder Include="Source\Core\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -86,7 +88,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<!--old 9.0.4-->
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.6" />
@@ -149,6 +150,12 @@
 		<Compile Update="Source\Presentation\Views\Controls\Custome\Passcode.xaml.cs">
 			<SubType>Code</SubType>
 		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

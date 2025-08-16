@@ -7,7 +7,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 public static class PersistenceDependecies
 {
     public static IServiceCollection FrameworkPersistenceDependencies(this IServiceCollection services, Assembly assembly)
-        => services.Repositories(assembly).UnitOfWork(assembly);
+        => services
+            .Repositories(assembly)
+            .UnitOfWork(assembly);
 
     public static IServiceCollection DbStores<TCommandStorContext, TQueryStoreContext>(this IServiceCollection services, IConfiguration configuration, string commandDbConnectionStringName, string queryDbConnectionStringName, params IEnumerable<IInterceptor> interceptors)
         where TCommandStorContext : CommandDbStore<TCommandStorContext>
@@ -29,32 +31,36 @@ public static class PersistenceDependecies
         return services;
     }
 
-    static IServiceCollection Repositories(this IServiceCollection services, Assembly assembly)
-      => services.Dependencies([assembly], [typeof(ICommandRepository<,>), typeof(IQueryRepository)], ServiceLifetime.Transient);
+    private static IServiceCollection Repositories(this IServiceCollection services, Assembly assembly)
+      => services
+          .Dependencies([assembly], [typeof(ICommandRepository<,>), typeof(IQueryRepository)], ServiceLifetime.Transient);
 
-    static IServiceCollection UnitOfWork(this IServiceCollection services, Assembly assembly)
-        => services.Dependencies(assembly, typeof(IUnitOfWork), ServiceLifetime.Scoped);
+    private static IServiceCollection UnitOfWork(this IServiceCollection services, Assembly assembly)
+        => services
+            .Dependencies(assembly, typeof(IUnitOfWork), ServiceLifetime.Scoped);
 
-    static IServiceCollection CommandStoreContext<TCommandStorContext>(this IServiceCollection services, string connectionstring, params IEnumerable<IInterceptor> interceptors)
+    private static IServiceCollection CommandStoreContext<TCommandStorContext>(this IServiceCollection services, string connectionstring, params IEnumerable<IInterceptor> interceptors)
         where TCommandStorContext : CommandDbStore<TCommandStorContext>
-        => services.AddDbContext<TCommandStorContext>(_ =>
-        {
-            _
-            .UseSqlServer(connectionstring)
-            .AddInterceptors(interceptors)
-            .LogOptions();
-        });
+        => services
+            .AddDbContext<TCommandStorContext>(_ =>
+            {
+                _
+                .UseSqlServer(connectionstring)
+                .AddInterceptors(interceptors)
+                .LogOptions();
+            });
 
-    static IServiceCollection QueryStoreContext<TQueryStorContext>(this IServiceCollection services, string connectionstring)
+    private static IServiceCollection QueryStoreContext<TQueryStorContext>(this IServiceCollection services, string connectionstring)
         where TQueryStorContext : QueryDbStore<TQueryStorContext>
-        => services.AddDbContext<TQueryStorContext>(_ =>
-        {
-            _
-            .UseSqlServer(connectionstring)
-            .LogOptions();
-        });
+        => services
+            .AddDbContext<TQueryStorContext>(_ =>
+            {
+                _
+                .UseSqlServer(connectionstring)
+                .LogOptions();
+            });
 
-    static void LogOptions(this DbContextOptionsBuilder source)
+    private static void LogOptions(this DbContextOptionsBuilder source)
     {
 #if DEBUG
         source

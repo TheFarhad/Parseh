@@ -1,8 +1,11 @@
 ﻿namespace Parseh.UI;
 
-using System.Threading;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System.Configuration;
+using System.IO;
+using System.Threading;
 using static Microsoft.Extensions.Hosting.Host;
 
 public sealed class Ioc
@@ -61,7 +64,10 @@ public sealed class Ioc
     }
     public async Task<Ioc> StopAsync()
     {
-        await _host.StopAsync();
+        using (_host)
+        {
+            await _host.StopAsync();
+        }
         return this;
     }
 

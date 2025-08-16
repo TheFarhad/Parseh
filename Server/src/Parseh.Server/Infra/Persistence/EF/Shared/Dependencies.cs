@@ -11,15 +11,15 @@ public static class Dependencies
 
     public static IServiceCollection InfraPersistenceLayerDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        services.FrameworkPersistenceDependencies(_assembly);
-
-        services.AddScoped<ITokenService, TokenService>();
-        services.Configure<JwtOption>(configuration.GetSection("JwtOptions"));
-
         const string CommandConnectionString = "ParsehCommandDbConnectionString";
         const string QueryConnectionString = "ParsehQueryDbConnectionString";
+
         services
-            .DbStores<ParsehCommandDbStore, ParsehQueryDbStore>(configuration, CommandConnectionString, QueryConnectionString, [new SaveInterceptor()]);
+            .FrameworkPersistenceDependencies(_assembly)
+            .DbStores<ParsehCommandDbStore, ParsehQueryDbStore>(configuration, CommandConnectionString, QueryConnectionString, [new SaveInterceptor()])
+            .AddScoped<ITokenService, TokenService>()
+            .Configure<JwtOption>(configuration.GetSection("JwtOptions"))
+            ;
 
         return services;
     }

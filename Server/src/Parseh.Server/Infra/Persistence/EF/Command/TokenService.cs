@@ -43,9 +43,9 @@ public sealed class TokenService : ITokenService
         _httpContext = httpContextAccessor.HttpContext!;
     }
 
-    public async Task<Response<TokenResponse>> GenerateAccessTokenAsync(User user, CancellationToken cancellationToken)
+    public async Task<Response<LoginResponse>> GenerateAccessTokenAsync(User user, CancellationToken cancellationToken)
     {
-        Response<TokenResponse> result = default!;
+        Response<LoginResponse> result = default!;
         var (tokenExpire, refreshTokenExpire) = ExpirationDateTime();
 
         var accessToken = GenerateAccessToken(user, tokenExpire);
@@ -57,13 +57,13 @@ public sealed class TokenService : ITokenService
         // --- [ set refresh-token on cookie (httponly) ] --- \\
         SetRefreshTokenOnCookie(refreshToken.HashedToken, refreshTokenExpire);
 
-        result = new TokenResponse(user.Code.Value.ToString(), accessToken, tokenExpire);
+        result = new LoginResponse(user.Code.Value.ToString(), accessToken, tokenExpire);
         return result;
     }
 
-    public async Task<Response<TokenResponse>> GenerateRefreshTokenAsync(User user, CancellationToken cancellationToken)
+    public async Task<Response<RefreshTokenResponse>> GenerateRefreshTokenAsync(User user, CancellationToken cancellationToken)
     {
-        Response<TokenResponse> result = default!;
+        Response<RefreshTokenResponse> result = default!;
 
         //TODO: اگر رفرش توکن منقضی نشده و یا باطل نشده
         // درخواست ارجاع داده شود
@@ -121,7 +121,7 @@ public sealed class TokenService : ITokenService
 
         await _context.SaveChangesAsync();
 
-        result = new TokenResponse(user.Code.Value.ToString(), accessToken, tokenExpire);
+        result = new RefreshTokenResponse(user.Code.Value.ToString(), accessToken, tokenExpire);
         return result;
     }
 

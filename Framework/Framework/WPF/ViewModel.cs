@@ -23,7 +23,7 @@ public class Reference : Dictionary<string, object>
 
 public abstract class ViewModel : Atom, INotify
 {
-    readonly Reference _reference;
+    private readonly Reference _reference;
     protected Type OwnerType => GetType();
     public event PropertyChangedEventHandler? PropertyChanged = (seder, e) => { };
 
@@ -44,7 +44,7 @@ public abstract class ViewModel : Atom, INotify
 
     protected void Set(object value, [CallerMemberName] string property = Empty)
     {
-        if (HasProp(property))
+        if (HasProperty(property))
         {
             // TODO: ممکن است برای کوئرس ولیو در اتچ پراپرتی ها مشکل ایجاد کند
             // چون کوئرس ولیو حتی اگر مقدار تکراری به یک اتچ پراپرتی داده شود هم فراخوانی می شود
@@ -100,15 +100,17 @@ public abstract class ViewModel : Atom, INotify
 
     #region Private Functionality
 
-    bool HasProp(string property) => _reference.ContainsKey(property);
+    private bool HasProperty(string property)
+        => _reference.ContainsKey(property);
 
-    void Set(string property, object value) => _reference[property] = Verify(property, value);
+    private void Set(string property, object value)
+        => _reference[property] = Verify(property, value);
 
-    bool ProprtyNotChanged(object newvalue, string property)
-        // its ok...
+    // its ok...
+    private bool ProprtyNotChanged(object newvalue, string property)
         => EqualityComparer<object>.Default.Equals(newvalue, _reference[property]);
 
-    void InitDefaults()
+    private void InitDefaults()
     {
         var ownerType = OwnerType;
         var membersInfo = ownerType.GetProperties().Where(_ => _.ShoudSet());
@@ -128,7 +130,7 @@ public abstract class ViewModel : Atom, INotify
         }
     }
 
-    object? DefaultValue(PropertyInfo info, Type owner)
+    private object? DefaultValue(PropertyInfo info, Type owner)
     {
         object? result = default!;
         var type = info.PropertyType;
@@ -146,7 +148,7 @@ public abstract class ViewModel : Atom, INotify
         return result;
     }
 
-    object Verify(string property, object? value)
+    private object Verify(string property, object? value)
     {
         var result = value;
         var ownerType = OwnerType;
@@ -158,7 +160,8 @@ public abstract class ViewModel : Atom, INotify
         return result!;
     }
 
-    object? DefaultSet(Type type) => typeof(ObservableSet<>).Generic(type.FirstGenericType());
+    private object? DefaultSet(Type type)
+        => typeof(ObservableSet<>).Generic(type.FirstGenericType());
 
     #endregion
 }
