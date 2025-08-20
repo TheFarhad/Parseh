@@ -2,10 +2,9 @@
 
 public partial class MessageBox : Dialog
 {
-    public MessageBox() => Init();
+    public MessageBox()
+        => Init();
 
-    void Init()
-    {
-        InitializeComponent();
-    }
+    private void Init()
+        => InitializeComponent();
 }

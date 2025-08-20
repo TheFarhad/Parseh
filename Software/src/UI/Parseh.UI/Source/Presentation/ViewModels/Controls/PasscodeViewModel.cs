@@ -2,7 +2,7 @@
 
 namespace Parseh.UI.ViewModels;
 
-public sealed class PasscodeViewModel : VM
+public sealed class PasscodeViewModel : ViewModel
 {
     #region Fields
 

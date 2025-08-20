@@ -6,5 +6,6 @@ public partial class Signin : ContentPage<SigninViewModel>, IHavePassword
 {
     public SecureString SecurePasscode => Passcode.SecurePassword;
 
-    public Signin() => InitializeComponent();
+    public Signin(SigninViewModel model) : base(model)
+        => InitializeComponent();
 }

@@ -13,12 +13,22 @@
         WindowStyle="None"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
-        MinWidth="{Binding MinWidth}" MinHeight="{Binding MinHeight}"
-        Width="{Binding Width}" Height="{Binding Height}"
         Activated="OnAtcivated"
         Deactivated="OnDeactivated"
-        d:Width="900" d:Height="506"
-         >
+        MinWidth="{Binding MinWidth}" 
+        Width="{Binding Width}"
+        MinHeight="{Binding MinHeight}"
+        Height="{Binding Height}"
+        d:Width="900" 
+        d:Height="506" >
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome ResizeBorderThickness="{Binding ResizeBorderThickness}"
+                      CaptionHeight="{Binding CaptionHeight}"
+                      CornerRadius="0"
+                      GlassFrameThickness="0"
+                      />
+    </WindowChrome.WindowChrome>
 
     <local:ContentLayout.Resources>
 
@@ -26,7 +36,7 @@
             <Setter Property="Template">
                 <Setter.Value>
 
-                    <ControlTemplate TargetType="{x:Type Window}">
+                    <ControlTemplate TargetType="{x:Type local:Layout}">
 
                         <!--Resize Border Zone-->
                         <Border Background="Transparent" 
@@ -153,14 +163,7 @@
 
     </local:ContentLayout.Resources>
 
-    <WindowChrome.WindowChrome>
-        <WindowChrome ResizeBorderThickness="{Binding ResizeBorderThickness}"
-                      CaptionHeight="{Binding CaptionHeight}"
-                      CornerRadius="0"
-                      GlassFrameThickness="0"
-                      />
-    </WindowChrome.WindowChrome>
-
-    <local:Pager Page="{Binding Path=Model.Page, Source={x:Static vm:Cortex.Default}}"/>
+    <!--<local:Pager Page="{Binding Path=Model.Page, Source={x:Static vm:Cortex.Default}}"/>-->
+    <local:Pager Page="{Binding Path=Page, Source={StaticResource CortexViewModel}}"/>
 
 </local:ContentLayout>

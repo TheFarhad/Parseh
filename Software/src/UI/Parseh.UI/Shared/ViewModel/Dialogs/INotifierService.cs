@@ -1,12 +1,12 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-internal interface INotifierService
+public interface INotifierService
 {
     Task MessageboxNotifyAsync(DialogMessageViewModel message);
     // TODO: متناسب با دیالوگ های مختلف، متود های مختلفی هم نوشته شود که هر کدام ویومدل خودشان را دارند و همینطور دیالوگ اختصاصی خودشان را فراخوانی می کنند
 }
 
-internal sealed class NotifierService : INotifierService
+public sealed class NotifierService : INotifierService
 {
     public Task MessageboxNotifyAsync(DialogMessageViewModel message)
     {

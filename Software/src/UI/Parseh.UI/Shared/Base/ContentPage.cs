@@ -2,11 +2,10 @@
 
 public class ContentPage : Page
 {
-    const double FadeFrom = 0;
-    const double FadeTo = 1;
+    private const double FadeFrom = 0;
+    private const double FadeTo = 1;
     public const double AnimateDuration = 0.4;
     public bool ShouldUnload { get; set; } = false;
-    public readonly Ioc Ioc = Ioc.Default;
 
     public ContentPage() => Init();
 
@@ -24,11 +23,15 @@ public class ContentPage : Page
 
     #region Private Functionality
 
-    void Init() => Loaded += OnLoaded;
+    private void Init()
+        => Loaded += OnLoaded;
 
-    void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (ShouldUnload) App.DispatchAsync(AnimateOut);
+        if (ShouldUnload)
+        {
+            App.DispatchAsync(AnimateOut);
+        }
         else
         {
             Visibility = Visibility.Collapsed;
@@ -47,9 +50,13 @@ public class ContentPage : Page
     #endregion
 }
 
-public class ContentPage<TVM> : ContentPage where TVM : VM, new()
+public class ContentPage<TViewmodel> : ContentPage where TViewmodel : ViewModel
 {
-    public readonly TVM Model = default!;
+    public readonly TViewmodel Model = default!;
 
-    public ContentPage() => DataContext = Model = Ioc.Service<TVM>() ?? new();
+    public ContentPage() : base()
+        => DataContext = Model = App.RequiredService<TViewmodel>();
+
+    public ContentPage(TViewmodel viewmodel) : base()
+        => DataContext = Model = viewmodel;
 }

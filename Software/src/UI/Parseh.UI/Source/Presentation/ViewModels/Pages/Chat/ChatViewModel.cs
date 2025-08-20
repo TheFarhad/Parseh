@@ -2,8 +2,9 @@
 
 using System.ComponentModel;
 
-public sealed class ChatViewModel : VM
+public sealed class ChatViewModel : ViewModel
 {
+    //private readonly IServiceProvider _serviceProvider;
     #region Properties
 
     public double SettingbarHeight { get => Get(); private set => Set(value); }
@@ -36,17 +37,21 @@ public sealed class ChatViewModel : VM
 
     #endregion
 
-    public ChatViewModel() => Init();
+    public ChatViewModel(IServiceProvider serviceProvider)
+    {
+        //_serviceProvider = serviceProvider;
+        Init();
+    }
 
     #region Private Functionality
 
-    void Init()
+    private void Init()
     {
         InitProperties();
         InitCommands();
     }
 
-    void InitProperties()
+    private void InitProperties()
     {
         SettingbarHeight = 60;
         IsSearching = false;
@@ -257,11 +262,10 @@ public sealed class ChatViewModel : VM
 
         //MonitorContacts();
 
-        // TODO:  SettingMenuModel = Cortex.Default.Model.SettingMenuModel;
-        SettingMenuModel = new();
+        SettingMenuModel = App.Cortex.SettingMenuModel;
     }
 
-    void InitCommands()
+    private void InitCommands()
     {
         ShowSearchbarCommand = new Command(ShowSearchbar);
         CloseSearchbarCommand = new Command(CloseSearchbar);
@@ -275,18 +279,18 @@ public sealed class ChatViewModel : VM
         SelectContactCommand = new Command<ContactChatViewModel>(SelectContatc);
     }
 
-    void MonitorContacts()
+    private void MonitorContacts()
         => Contacts
             .ToList()
             .ForEach(contact => contact.PropertyChanged += OnContactPropertyChanged);
 
-    void OnContactPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void OnContactPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName?.Equals(nameof(ContactChatViewModel.Selected)) is true)
             ChangeSelectedContact(sender!.As<ContactChatViewModel>());
     }
 
-    void ChangeSelectedContact(ContactChatViewModel contact)
+    private void ChangeSelectedContact(ContactChatViewModel contact)
     {
         if (contact.Selected)
         {
@@ -306,28 +310,36 @@ public sealed class ChatViewModel : VM
 
     #region Command Methds
 
-    void ShowSearchbar() => IsSearching = true;
-    void CloseSearchbar()
+    private void ShowSearchbar()
+        => IsSearching = true;
+
+    private void CloseSearchbar()
     {
         IsSearching = false;
         SearchText = Empty;
         Search();
     }
-    void Lock() => Cortex.Default.Model.ToPage(PageMode.Signin);
-    void ToggleSettingMenu()
+
+    private void Lock()
+        => App.Cortex.ToPage(PageMode.Signin);
+
+    private void ToggleSettingMenu()
     {
         IsOpenSettingMenu ^= true;
         SettingMenuUnedittedMode();
 
     }
-    void ToggleAttachmentMenu() => IsOpenAttachmentMenu ^= true;
-    void SettingMenuUnedittedMode()
+
+    private void ToggleAttachmentMenu() => IsOpenAttachmentMenu ^= true;
+
+    private void SettingMenuUnedittedMode()
     {
         SettingMenuModel.Name.IsEditing = false;
         SettingMenuModel.Email.IsEditing = false;
         SettingMenuModel.Passcode.IsEditing = false;
     }
-    void SendMessage()
+
+    private void SendMessage()
     {
         if (Message.IsEmpty()) return;
 
@@ -348,8 +360,11 @@ public sealed class ChatViewModel : VM
 
         Message = Empty;
     }
-    void Search() => SelectedContact.Search(SearchText);
-    void SelectContatc(ContactChatViewModel source)
+
+    private void Search()
+        => SelectedContact.Search(SearchText);
+
+    private void SelectContatc(ContactChatViewModel source)
     {
         SelectedContact = source;
         SelectedContact.Select();

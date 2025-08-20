@@ -1,11 +1,7 @@
-﻿using Parseh.UI.Source.Infra.ExternalApi;
+﻿namespace Parseh.UI.ViewModels;
 
-namespace Parseh.UI.ViewModels;
-
-public sealed class SigninViewModel : VM
+public sealed class SigninViewModel : ViewModel
 {
-    private readonly UserService _userService;
-
     public string Username
     {
         get => Get();
@@ -76,19 +72,19 @@ public sealed class SigninViewModel : VM
 
             Passcode = signinPage.SecurePasscode.Unsecure();
 
-            await Task.Delay(20);
+            await Task.Delay(0);
 
-            Cortex.Default.Model.ToPage(PageMode.Chat);
             // TODO:
             // get user-data from server and init setting-viewmodel
-            //Cortex.Default.Model.SettingMenuModel = ;
+            App.Cortex.SettingMenuModel = new();
+            App.Cortex.ToPage(PageMode.Chat);
 
             IsSigning = false;
         });
     }
 
     private void Signup()
-        => Cortex.Default.Model.ToPage(PageMode.Signup);
+        => App.Cortex.ToPage(PageMode.Signup);
 
     private async Task Signout()
     {

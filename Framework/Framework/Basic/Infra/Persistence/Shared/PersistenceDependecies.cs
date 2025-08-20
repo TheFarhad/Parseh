@@ -44,6 +44,8 @@ public static class PersistenceDependecies
         => services
             .AddDbContext<TCommandStorContext>(_ =>
             {
+                // TODO: شرایط برای استفاده از سایر پرووایدرها هم مهیا شود
+                //       مثل sqlite
                 _
                 .UseSqlServer(connectionstring)
                 .AddInterceptors(interceptors)

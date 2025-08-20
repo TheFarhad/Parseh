@@ -1,6 +1,6 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-public abstract class DialogMessageViewModel : VM
+public abstract class DialogMessageViewModel : ViewModel
 {
     public string Title { get => Get(); set => Set(value); }
     public string Message { get => Get(); set => Set(value); }

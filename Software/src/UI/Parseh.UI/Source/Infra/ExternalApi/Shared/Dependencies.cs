@@ -1,4 +1,5 @@
-﻿namespace Parseh.UI.Source.Infra.ExternalApi;
+﻿namespace Parseh.UI.Source.Infra.ExternalApi.Shared;
+using Parseh.UI.Source.Infra.ExternalApi;
 
 using System.Reflection;
 

@@ -23,7 +23,6 @@ public abstract class Dialog : Component
             Notifier = new();
             Notifier.Owner = App.Layout;
             Notifier.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-
             CloseCommand = new Command(Close);
         }
     }
@@ -49,5 +48,6 @@ public abstract class Dialog : Component
         return tcs.Task;
     }
 
-    void Close() => Notifier.Model.CloseCommand.Execute(null);
+    private void Close()
+        => Notifier.Model.CloseCommand.Execute(null);
 }

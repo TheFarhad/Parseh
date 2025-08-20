@@ -1,6 +1,6 @@
 ﻿namespace Parseh.UI.Views;
 
-public sealed class PopupMenuItemViewModel : VM
+public sealed class PopupMenuItemViewModel : ViewModel
 {
     public string Title { get => Get(); set => Set(value); }
     public PopupMenuItemType Type { get => Get(); set => Set(value); }
@@ -15,7 +15,7 @@ public sealed class PopupMenuItemViewModel : VM
     }
 }
 
-public class PopupMenuViewModel : VM
+public class PopupMenuViewModel : ViewModel
 {
     public CornerRadius CornerRadius { get => Get(); protected set => Set(value); }
     public Thickness Padding { get => Get(); protected set => Set(value); }

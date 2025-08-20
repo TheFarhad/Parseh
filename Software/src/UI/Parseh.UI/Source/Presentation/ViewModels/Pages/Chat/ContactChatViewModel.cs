@@ -1,6 +1,6 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-public sealed class ContactChatViewModel : VM
+public sealed class ContactChatViewModel : ViewModel
 {
     #region Properties
 

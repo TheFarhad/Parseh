@@ -15,11 +15,12 @@ public sealed partial class Pager : Component
         set => SetValue(PageProperty, value);
     }
 
-    public Pager() => Init();
+    public Pager()
+        => Init();
 
     #region Private Functionality
 
-    void Init()
+    private void Init()
     {
         InitializeComponent();
 
@@ -27,12 +28,10 @@ public sealed partial class Pager : Component
         //    Current.Content = Generic.Self.ViewModel.Page;
     }
 
-    static void OnPageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    private static void OnPageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
         var pager = sender.As<Pager>();
         var currentpage = e.NewValue.As<ContentPage>();
-
-
 
         var prevFrame = pager.Previous;
         var currFrame = pager.Current;
@@ -44,6 +43,8 @@ public sealed partial class Pager : Component
         {
             // در اینجا هم تعیین میکنیم که در هنگام لود مجدد، باید انیمیت اوت اتفاق بیفتد
             oldpage.ShouldUnload = true;
+            // در اینجا چون پیج جاری را به المان پشتی اختصاص میدهیم
+            // پس این پیج، مجددا بارگذاری شده و اینبار به انیمین از صفحه خارج می شود
             prevFrame.Content = oldpage;
 
             // در اینجا م به اندازه مدت زمان اجرای انیمشین صبر میکنیم تا به صورت کامل اجرا شود
@@ -52,6 +53,7 @@ public sealed partial class Pager : Component
                 .ContinueWith((t) =>
                 {
                     App.Dispatch(() => oldpage.Content = null);
+                    //App.Dispatch(() => oldpage = null!);
                 });
         }
         else

@@ -1,6 +1,6 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-public sealed class ContactChatMessageViewModel : VM
+public sealed class ContactChatMessageViewModel : ViewModel
 {
     #region Properties
 
@@ -59,7 +59,7 @@ public sealed class ContactChatMessageViewModel : VM
     #endregion
 }
 
-public sealed class ContactChatMessageImage : VM
+public sealed class ContactChatMessageImage : ViewModel
 {
     public string Title { get => Get(); set => Set(value); }
     public string FileName { get => Get(); set => Set(value); }

@@ -4,7 +4,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Views;
 
-public abstract class BaseLayoutViewModel : VM
+public abstract class BaseLayoutViewModel : ViewModel
 {
     #region Fileds
 

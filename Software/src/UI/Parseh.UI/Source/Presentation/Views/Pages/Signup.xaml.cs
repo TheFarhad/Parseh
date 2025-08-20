@@ -2,10 +2,9 @@
 
 public partial class Signup : ContentPage<SignupViewModel>
 {
-    public Signup() => InitializeComponent();
+    public Signup(SignupViewModel model) : base(model)
+        => InitializeComponent();
 
     private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        Cortex.Default.Model.ToPage(PageMode.Signin);
-    }
+        => App.Cortex.ToPage(PageMode.Signin);
 }

@@ -1,6 +1,6 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-public sealed class EntryViewModel : VM
+public sealed class EntryViewModel : ViewModel
 {
     #region Fields
 

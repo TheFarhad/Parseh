@@ -1,18 +1,16 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-public sealed class SettingMenuViewModel : VM
+public sealed class SettingMenuViewModel : ViewModel
 {
     #region Properties
 
     public double CornerRadius { get => Get(); private set => Set(value); }
     public string Title { get => Get(); private set => Set(value); }
-
     public EntryViewModel Name { get => Get(); set => Set(value); }
     public EntryViewModel Username { get => Get(); set => Set(value); }
     public PasscodeViewModel Passcode { get => Get(); set => Set(value); }
     public EntryViewModel Email { get => Get(); set => Set(value); }
     public string LogoutButton { get => Get(); private set => Set(value); }
-
 
     #endregion
 
@@ -23,24 +21,34 @@ public sealed class SettingMenuViewModel : VM
 
     #endregion
 
-    public SettingMenuViewModel() => Init();
+    public SettingMenuViewModel()
+        => Init();
+
+    public void ClearUserdata()
+    {
+        Name = new();
+        Username = new();
+        Passcode = new();
+        Email = new();
+    }
 
     #region Private Functionality
 
-    protected override void OnCreate() => base.OnCreate();
+    protected override void OnCreate()
+        => base.OnCreate();
 
-    void Init()
+    private void Init()
     {
         InitProperties();
         InitCommands();
     }
 
-    void InitProperties()
+    private void InitProperties()
     {
+        // TODO: این مقادیر باید از دیتابیس یا سرویس کاربر خوانده شوند
+        //       فقط اگر لازم بود مقدار دیفالت داده شود
         Title = "Settings";
         CornerRadius = Constant.CornerRadius;
-
-        // TODO: remove form this and get userdata in signin-viewmodel after signin
         Name = new()
         {
             Label = "Nickname",
@@ -63,7 +71,7 @@ public sealed class SettingMenuViewModel : VM
         LogoutButton = "Logout";
     }
 
-    void InitCommands()
+    private void InitCommands()
     {
         LogoutCommand = new Command(async () => await Logout());
         ClearUserdataCommand = new Command(ClearUserdata);
@@ -80,16 +88,10 @@ public sealed class SettingMenuViewModel : VM
 
 
         await Task.Delay(1000);
-        Cortex.Default.Model.ToPage(PageMode.Signin);
+        App.Cortex.ToPage(PageMode.Signin);
     }
 
-    public void ClearUserdata()
-    {
-        Name = new();
-        Username = new();
-        Passcode = new();
-        Email = new();
-    }
+
 
     #endregion
 }

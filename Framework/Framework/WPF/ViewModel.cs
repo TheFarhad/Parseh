@@ -65,6 +65,7 @@ public abstract class ViewModel : Atom, INotify
 
     protected async Task RunAsync(Func<Task> command, Action<Exception> exeptionHandler = default!, Action final = default!)
     {
+        await command();
         try
         {
             await command();

@@ -12,6 +12,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ApplicationDefinition Include="Source\Presentation\Endpoint\App.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+		</ApplicationDefinition>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Remove="Source\Presentation\Views\Layout\Setting.xaml.cs" />
 		<Compile Remove="Source\Presentation\Views\Layout\Signin.xaml.cs" />
 	</ItemGroup>
@@ -69,17 +82,9 @@
 		<Folder Include="Source\Core\Contract\Infra\" />
 		<Folder Include="Source\Core\Contract\AppService\" />
 		<Folder Include="Source\Core\Domain\" />
-		<Folder Include="Source\Infra\Persistence\" />
 		<Folder Include="Source\Presentation\Resources\Controls\" />
 		<Folder Include="Source\Presentation\Resources\Documents\" />
 		<Folder Include="Source\Presentation\Resources\Animations\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ApplicationDefinition Include="Source\Presentation\Endpoint\App.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</ApplicationDefinition>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -88,9 +93,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.8">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -143,19 +160,12 @@
 		<Resource Include="Source\Presentation\Resources\Images\Icon\Warning.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\smalllogo.png" />
 		<Resource Include="Source\Presentation\Resources\Images\Logo\logo.png" />
-		<Resource Include="Source\Presentation\Resources\Images\Logo\textlogo.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Update="Source\Presentation\Views\Controls\Custome\Passcode.xaml.cs">
 			<SubType>Code</SubType>
 		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="appsettings.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	</ItemGroup>
 
 </Project>

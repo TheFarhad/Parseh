@@ -2,9 +2,12 @@
 
 public partial class Layout : ContentLayout
 {
-    LayoutViewModel _model = default!;
+    private LayoutViewModel _model = default!;
 
-    public Layout() => Init();
+    public Layout()
+        => Init();
+
+    #region Private Functionlity
 
     private void Init()
     {
@@ -12,7 +15,11 @@ public partial class Layout : ContentLayout
         InitializeComponent();
     }
 
-    private void OnAtcivated(object sender, EventArgs e) => _model.LayoutActivationCommand.Execute(null);
+    private void OnAtcivated(object sender, EventArgs e)
+        => _model.LayoutActivationCommand.Execute(null);
 
-    private void OnDeactivated(object sender, EventArgs e) => _model.LayoutActivationCommand.Execute(null);
+    private void OnDeactivated(object sender, EventArgs e)
+        => _model.LayoutActivationCommand.Execute(null);
+
+    #endregion
 }
