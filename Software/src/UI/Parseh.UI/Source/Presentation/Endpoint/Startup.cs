@@ -3,5 +3,6 @@
 internal static class Startup
 {
     [STAThread]
-    internal static void Main(string[] args) => new App().Run();
+    internal static void Main(string[] args)
+        => App.Default.Run();
 }

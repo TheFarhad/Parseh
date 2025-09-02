@@ -5,9 +5,18 @@ using ValueObject;
 
 public sealed class Role : AggregateRoot<RoleId>
 {
-    public const string PermissionsBackingField = nameof(_permissions);
+    public const string ClaimsBackingField = nameof(_claims);
 
-    readonly List<RolePermission> _permissions = [];
+    private readonly List<RoleClaim> _claims;
+
+    private Role() { }
+    private Role(string title, string display, string description)
+    {
+        Title = title;
+        Display = display;
+        Description = description;
+        _claims = [];
+    }
 
     public string Title { get; private set; }
     public string Display { get; private set; }
@@ -15,16 +24,23 @@ public sealed class Role : AggregateRoot<RoleId>
 
     // -- [ نباید از طریق رول، به یوزر دسترسی داشته باشیم ] -- \\
 
-    public IReadOnlyList<RolePermission> Permissions => _permissions.AsReadOnly();
+    public IReadOnlyList<RoleClaim> Cliams => [.. _claims];
 
-    Role() { }
-    Role(string title, string display, string description)
-    {
-        Title = title;
-        Display = display;
-        Description = description;
-    }
-
-    public static Role New(string title, string display, string description)
+    public static Role Construct(string title, string display, string description)
         => new(title, display, description);
+
+    public void AddClaim(Claim claim)
+    {
+        if (claim is null)
+            return;
+
+        if (_claims.Any(_ => _.ClaimId == claim.Id))
+        {
+            // TODO:
+            return;
+        }
+
+        var roleClaim = RoleClaim.Construct(Id, claim.Id);
+        _claims.Add(roleClaim);
+    }
 }

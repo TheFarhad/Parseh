@@ -2,17 +2,12 @@
 
 public sealed class CortexViewModel : ViewModel
 {
-    private readonly IServiceProvider _serviceProvider;
+    public CortexViewModel()
+        => Init();
 
     public PageMode Mode { get => Get(); private set => Set(value); }
     public ContentPage Page { get => Get(); private set => Set(value); }
-    public SettingMenuViewModel SettingMenuModel { get => Get(); set => Set(value); }
-
-    public CortexViewModel(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-        Init();
-    }
+    public ProfileViewModel SettingMenuModel { get => Get(); set => Set(value); }
 
     public void ToPage(PageMode mode)
     {
@@ -33,31 +28,19 @@ public sealed class CortexViewModel : ViewModel
         {
             Page = mode switch
             {
-                PageMode.Signin => _serviceProvider.GetRequiredService<Signin>(),
-                PageMode.Signup => _serviceProvider.GetRequiredService<Signup>(),
-                PageMode.Chat => _serviceProvider.GetRequiredService<Chat>(),
+                PageMode.Signin => App.RequiredService<Signin>(),
+                PageMode.Signup => App.RequiredService<Signup>(),
+                PageMode.Chat => App.RequiredService<Chat>(),
                 _ => throw new NotImplementedException("A page for this mode has not been implemented."),
             };
+            Mode = mode;
         }
         catch (Exception)
         {
             Page = null!;
+            Mode = PageMode.Unspecified;
         }
-        Mode = mode;
     }
 
     #endregion
 }
-
-//internal sealed class Cortex
-//{
-//    readonly Ioc _ioc = default!;
-//    public static readonly Cortex Default = new();
-
-//    private Cortex()
-//    {
-//        _ioc = Ioc.Default;
-//    }
-
-//    public CortexViewModel Model => _ioc.CortexViewModel;
-//}

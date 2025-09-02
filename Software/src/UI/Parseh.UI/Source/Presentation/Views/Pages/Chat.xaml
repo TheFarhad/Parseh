@@ -15,8 +15,8 @@
     <Grid>
 
         <!--setting menu-->
-        <local:SettingMenu DataContext="{Binding SettingMenuModel}" 
-                           res:SettingMenuZIndexAnimate.Value="{Binding DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"
+        <local:Profile DataContext="{Binding Profile}" 
+                           res:SettingMenuZIndexAnimate.Value="{Binding DataContext.IsOpenSettingMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}, AncestorLevel=1}}"
                            />
 
         <!--chat main content-->

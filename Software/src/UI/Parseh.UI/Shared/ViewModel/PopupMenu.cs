@@ -22,7 +22,7 @@ public class PopupMenuViewModel : ViewModel
     public HorizontalAlignment HorizontalAlignment { get => Get(); protected set => Set(value); }
     public VerticalAlignment VerticalAlignment { get => Get(); protected set => Set(value); }
     public Thickness Margin { get => Get(); protected set => Set(value); }
-    public ObservableSet<PopupMenuItemViewModel> Items { get => Get(); protected set => Set(value); }
+    public MvvmSet<PopupMenuItemViewModel> Items { get => Get(); protected set => Set(value); }
 
     public PopupMenuViewModel() => Init();
 

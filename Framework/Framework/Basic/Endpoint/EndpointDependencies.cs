@@ -4,11 +4,11 @@ using System.IO.Compression;
 using System.Text.Json.Serialization;
 //using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.Extensions.Logging;
 
 public static class EndpointDependencies
 {
@@ -73,7 +73,7 @@ public static class EndpointDependencies
             })
            .AddExceptionHandler(options =>
            {
-               options.ExceptionHandler = async context =>
+               options.ExceptionHandler = async (HttpContext context) =>
                {
                    var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
                    if (exception is { })
@@ -103,6 +103,8 @@ public static class EndpointDependencies
                 _.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 _.SerializerOptions.IncludeFields = true;
             });
+
+        services.Configure<Regexes>(configuration.GetSection("Regexes"));
 
         return services;
     }

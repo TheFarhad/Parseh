@@ -7,6 +7,7 @@
         xmlns:vm="clr-namespace:Parseh.UI.ViewModels"
         xmlns:converters="clr-namespace:Parseh.UI.BindingConverters"
         xmlns:res="clr-namespace:Parseh.UI.Resources"
+        xmlns:root="clr-namespace:Parseh.UI"
         mc:Ignorable="d"
         x:Name="AppShell"
         Title="Parseh"
@@ -163,7 +164,11 @@
 
     </local:ContentLayout.Resources>
 
-    <!--<local:Pager Page="{Binding Path=Model.Page, Source={x:Static vm:Cortex.Default}}"/>-->
-    <local:Pager Page="{Binding Path=Page, Source={StaticResource CortexViewModel}}"/>
+    <local:Pager Page="{Binding Path=Page, Source={x:Static root:App.Cortex}}"/>
+
+    <!--کد زیر باید در متود OnStartup از App.xaml.cs قرار گیرد-->
+    <!--Application.Current.Resources["CortexViewModel"] = App.Cortex;-->
+    <!--سپس کد زیر فعال شود-->
+    <!--<local:Pager Page="{Binding Path=Page, Source={StaticResource CortexViewModel}}"/>-->
 
 </local:ContentLayout>

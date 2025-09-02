@@ -28,7 +28,8 @@ internal static class EntryPoint
 
     static void Configure(this WebApplication app, bool useResponseCompression = false)
     {
-        if (useResponseCompression) app.UseResponseCompression();
+        if (useResponseCompression)
+            app.UseResponseCompression();
 
 
         var devEnvironment = app.Environment.IsDevelopment();

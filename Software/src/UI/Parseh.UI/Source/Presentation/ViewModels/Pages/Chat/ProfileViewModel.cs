@@ -1,6 +1,6 @@
 ﻿namespace Parseh.UI.ViewModels;
 
-public sealed class SettingMenuViewModel : ViewModel
+public sealed class ProfileViewModel : ViewModel
 {
     #region Properties
 
@@ -21,7 +21,7 @@ public sealed class SettingMenuViewModel : ViewModel
 
     #endregion
 
-    public SettingMenuViewModel()
+    public ProfileViewModel()
         => Init();
 
     public void ClearUserdata()

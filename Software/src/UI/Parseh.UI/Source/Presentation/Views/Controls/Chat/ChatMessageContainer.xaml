@@ -12,7 +12,7 @@
     <Grid>
 
         <!--attahment menu-->
-        <local:AttachmentMenu DataContext="{Binding AttachmentMenuModel}" 
+        <local:AttachmentMenu DataContext="{Binding AttachmentMenu}" 
                               Panel.ZIndex="0"
                               Opacity="0"
                               res:AttachmentMenuMouseOver.Value="{Binding Path=DataContext.IsOpenAttachmentMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Chat}}}"

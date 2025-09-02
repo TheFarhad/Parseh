@@ -20,7 +20,7 @@ public sealed class ContactChatViewModel : ViewModel
         }
     }
     public bool HaveUnreadMessages => UnreadMessageCount > 0;
-    public ObservableSet<ContactChatMessageViewModel> Messages
+    public MvvmSet<ContactChatMessageViewModel> Messages
     {
         get => Get(); set
         {
@@ -28,7 +28,7 @@ public sealed class ContactChatViewModel : ViewModel
             Notify(nameof(Message));
         }
     }
-    public ObservableSet<ContactChatMessageViewModel> SearchMessages { get => Get(); private set => Set(value); }
+    public MvvmSet<ContactChatMessageViewModel> SearchMessages { get => Get(); private set => Set(value); }
     public string Message => Messages?.Any() is true ? Messages.Last().Message : Empty;
     public bool ShowChevronDownButton { get => Get(); set => Set(value); }
     public bool ScrollToLastMessage { get => Get(); set => Set(value); }
@@ -49,7 +49,7 @@ public sealed class ContactChatViewModel : ViewModel
     public void Select()
     {
         Selected = true;
-        SearchMessages = new ObservableSet<ContactChatMessageViewModel>(Messages);
+        SearchMessages = new MvvmSet<ContactChatMessageViewModel>(Messages);
 
         // TODO: لود کردن تعداد مشخصی از پیامها از آخر
         // مثلا 20 پیام آخر لود شود 
@@ -59,7 +59,7 @@ public sealed class ContactChatViewModel : ViewModel
     public void Search(string filter)
     {
         var filterdMessages = Messages.Where(_ => _.Message.Contains(filter));
-        SearchMessages = new ObservableSet<ContactChatMessageViewModel>(filterdMessages);
+        SearchMessages = new MvvmSet<ContactChatMessageViewModel>(filterdMessages);
     }
 
     #endregion

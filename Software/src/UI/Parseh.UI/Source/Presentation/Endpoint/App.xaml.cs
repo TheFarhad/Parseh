@@ -16,11 +16,12 @@ public sealed partial class App : Application
     private static IServiceProvider _provider = default!;
     private static Dispatcher _dispatcher => Application.Current.Dispatcher;
 
+    private App()
+      => Init();
+
+    public static App Default => new App();
     public static Layout Layout => Application.Current.MainWindow.As<Layout>();
     public static CortexViewModel Cortex => _provider.GetRequiredService<CortexViewModel>();
-
-    public App()
-        => Init();
 
     #region Public Functionality
 
@@ -39,15 +40,18 @@ public sealed partial class App : Application
 
     #endregion
 
-    #region App Override Functionality
+    #region Override Functionality
 
     protected override async void OnStartup(StartupEventArgs e)
     {
+        //Test();
+
         // سرویس های که
         // IHostedService
         // رو پیاده سازی کردن، اجرا میکنه
         await _host.StartAsync();
-        Application.Current.Resources["CortexViewModel"] = App.Cortex;
+
+        //Application.Current.Resources["CortexViewModel"] = App.Cortex;
         RunApplication();
         base.OnStartup(e);
     }
@@ -168,6 +172,54 @@ public sealed partial class App : Application
     }
 
     #endregion
+
+    void Test()
+    {
+        var result = VBN([1, 0, 2, 0, 0, 0, 4, 5, 0, 6, 0]);
+    }
+
+    List<int> VBN(List<int> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i] > 0)
+                continue;
+
+            var currentItem = list[i];
+            var nextItem = list[i + 1];
+
+            list[i] = nextItem;
+            list[i + 1] = 0;
+        }
+
+        foreach (var item in list)
+        {
+            if (item > 0)
+                continue;
+
+
+        }
+
+        foreach (var item in list)
+        {
+            if (item > 0)
+                continue;
+
+            var zeroItemIndex = list.IndexOf(item);
+            var nextNonZeroItem = list.Where(_ => list.IndexOf(_) > zeroItemIndex).FirstOrDefault();
+            var nextNonZeroItemIndex = list.IndexOf(nextNonZeroItem);
+
+            if (nextNonZeroItem != 0)
+            {
+                list[zeroItemIndex] = nextNonZeroItem;
+                list[nextNonZeroItemIndex] = 0;
+                VBN(list);
+            }
+            else
+                continue;
+        }
+        return list;
+    }
 }
 
 // TODO:

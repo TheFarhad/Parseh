@@ -1,8 +1,8 @@
 ﻿namespace Parseh.UI.Views;
 
-public partial class SettingMenu : Component
+public partial class Profile : Component
 {
-    public SettingMenu() => Init();
+    public Profile() => Init();
 
     private void Init()
         => InitializeComponent();

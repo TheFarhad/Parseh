@@ -1,11 +1,11 @@
 ﻿namespace Parseh.Server;
 
-using Carter;
-using Infra.Persistence.EF.Command;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Carter;
+using Infra.Persistence.EF.Command;
 
 internal static class Dependencies
 {
@@ -32,7 +32,7 @@ internal static class Dependencies
         return services;
     }
 
-    static IServiceCollection JwtConfigurations(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection JwtConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication(options =>
         {

@@ -1,8 +1,9 @@
 ﻿namespace Framework;
 
-public interface IQueryRequest<out TData> : IRequest<TData> { }
+public interface IQueryBase { }
+public interface IQuery<out TData> : IRequest<TData>, IQueryBase { }
 
-public abstract class PagingQueryRequest<TData> : IQueryRequest<TData>
+public abstract class PagingQuery<TData> : IQuery<TData>
 {
     public int Page { get; set; } = 1;
     public int Take { get; set; } = 8;

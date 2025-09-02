@@ -112,7 +112,7 @@ public sealed class TokenService : ITokenService
 
         // -- [ revoke old refresh-token ] -- \\
         existRefreshToken.Revoked();
-        existRefreshToken.TokenReplacedBy(refreshToken.HashedToken);
+        existRefreshToken.ReplacedBy(refreshToken.HashedToken);
 
         // -- [ add new refresh-token to current user ] -- \\
         user.AddRerereshToken(refreshToken);
@@ -187,7 +187,7 @@ public sealed class TokenService : ITokenService
         foreach (var role in roles)
         {
             role
-                .Permissions
+                .Cliams
                 .Select(_ => _.Permission)
                 .Select(_ => new Claim(TokenParameter.Permissions, _.Title))
                 .ToList()
@@ -220,7 +220,7 @@ public sealed class TokenService : ITokenService
         var ipAddress = _httpContext.Connection.RemoteIpAddress?.ToString();
         var ip = ipAddress.IsEmpty() ? "Unknown" : ipAddress;
         var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-        var result = RefreshToken.New(token, ip, ua, _jwtOptions.RefreshTokenExpirationInDay);
+        var result = RefreshToken.Construct(token, ip, ua, _jwtOptions.RefreshTokenExpirationInDay);
         return result;
     }
 

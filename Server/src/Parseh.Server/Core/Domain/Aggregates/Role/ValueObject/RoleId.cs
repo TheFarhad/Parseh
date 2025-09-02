@@ -2,11 +2,13 @@
 
 public sealed class RoleId : Identity
 {
-    public long Id { get; }
+    private RoleId(long id)
+        => Id = id;
 
-    RoleId(long id) => Id = id;
+    public readonly long Id;
 
-    public static RoleId New(long id) => new(id);
+    public static RoleId Construct(long id)
+        => new(id);
 
     protected override IEnumerable<object> GetEqualityProperties()
     {

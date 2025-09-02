@@ -9,9 +9,9 @@ public sealed class ParsehCommandDbStore : CommandDbStore<ParsehCommandDbStore>
     public DbSet<User> Users => Set<User>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public DbSet<Role> Roles => Set<Role>();
-    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<Claim> Permissions => Set<Claim>();
     public DbSet<UserRole> UserRoles => Set<UserRole>();
-    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    public DbSet<RoleClaim> RolePermissions => Set<RoleClaim>();
 
     public ParsehCommandDbStore(DbContextOptions<ParsehCommandDbStore> options)
         : base(options)

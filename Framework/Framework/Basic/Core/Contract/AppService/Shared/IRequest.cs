@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 public interface IRequest { }
 public interface IRequest<out TData> : IRequest { }
 
-public abstract class RequestController : Pipe<RequestController>
+public abstract class Responser : Pipe<Responser>
 {
     public abstract Task SendAsync<TRequest>(TRequest request, CancellationToken token = default)
         where TRequest : IRequest;
@@ -30,7 +30,7 @@ public abstract class RequestController : Pipe<RequestController>
 }
 
 public sealed class RequestValidator(ILogger<RequestValidator> logger, IServiceProvider service)
-    : RequestController
+    : Responser
 {
     private readonly IServiceProvider _serviceProvider = service;
     private readonly ILogger<RequestValidator> _logger = logger;
@@ -125,7 +125,7 @@ public sealed class RequestValidator(ILogger<RequestValidator> logger, IServiceP
     }
 }
 
-public sealed class RequestExecutor : RequestController
+public sealed class RequestExecutor : Responser
 {
     private readonly IServiceProvider _provider;
     //private readonly ILogger<Executor> _logger;

@@ -1,18 +1,18 @@
 ﻿namespace Framework;
 
-public interface ICommandRequestHandler<in TCommandRequest>
-    : IRequestHandler<TCommandRequest>
-    where TCommandRequest : ICommandRequest
+public interface ICommandHandler<in TCommand>
+    : IRequestHandler<TCommand>
+    where TCommand : ICommand
 { }
 
-public interface ICommandRequestHandler<in TCommandRequest, TData>
-    : IRequestHandler<TCommandRequest, TData>
-    where TCommandRequest : ICommandRequest<TData>
+public interface ICommandHandler<in TCommand, TData>
+    : IRequestHandler<TCommand, TData>
+    where TCommand : ICommandRequest<TData>
 { }
 
-public abstract class CommandRequestHandler<TCommandRequest>
-    : ICommandRequestHandler<TCommandRequest>
-    where TCommandRequest : ICommandRequest
+public abstract class CommandRequestHandler<TCommand>
+    : ICommandHandler<TCommand>
+    where TCommand : ICommand
 {
     protected readonly IUnitOfWork UnitOfWork;
 
@@ -21,17 +21,12 @@ public abstract class CommandRequestHandler<TCommandRequest>
     public CommandRequestHandler(IUnitOfWork unitOfWork)
         => UnitOfWork = unitOfWork;
 
-    public abstract Task HandleAsync(TCommandRequest command, CancellationToken token = default);
-
-    Task IRequestHandler<TCommandRequest>.HandleAsync(TCommandRequest request, CancellationToken token)
-    {
-        throw new NotImplementedException();
-    }
+    public abstract Task HandleAsync(TCommand command, CancellationToken token = default);
 }
 
-public abstract class CommandRequestHandler<TCommandRequest, TData>
-    : ICommandRequestHandler<TCommandRequest, TData>
-    where TCommandRequest : ICommandRequest<TData>
+public abstract class CommandRequestHandler<TCommand, TData>
+    : ICommandHandler<TCommand, TData>
+    where TCommand : ICommandRequest<TData>
 {
     protected readonly IUnitOfWork UnitOfWork;
 
@@ -40,5 +35,5 @@ public abstract class CommandRequestHandler<TCommandRequest, TData>
     public CommandRequestHandler(IUnitOfWork unitOfWork)
         => UnitOfWork = unitOfWork;
 
-    public abstract Task<Response<TData>> HandleAsync(TCommandRequest command, CancellationToken token = default);
+    public abstract Task<Response<TData>> HandleAsync(TCommand command, CancellationToken token = default);
 }

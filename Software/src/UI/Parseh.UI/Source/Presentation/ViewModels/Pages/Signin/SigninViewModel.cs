@@ -2,6 +2,9 @@
 
 public sealed class SigninViewModel : ViewModel
 {
+    private Func<IHavePassword, bool> CanExcuteLoginCommand
+         => _ => Username.Length > 0 && !IsSigning;
+
     public string Username
     {
         get => Get();
@@ -55,7 +58,7 @@ public sealed class SigninViewModel : ViewModel
     private void InitCommands()
     {
         // TODO: شرط اجرایی کامند برگردانه شود
-        SigninCommand = new Command<IHavePassword>(async page => await Signin(page)/*, _ => Username.Length > 0 && !IsSigning*/);
+        SigninCommand = new Command<IHavePassword>(async page => await Signin(page), CanExcuteLoginCommand);
         SignupCommand = new Command(Signup);
         SignoutCommand = new Command(async () => await Signout());
     }

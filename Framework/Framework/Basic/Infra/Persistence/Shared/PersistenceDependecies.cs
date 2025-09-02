@@ -33,7 +33,7 @@ public static class PersistenceDependecies
 
     private static IServiceCollection Repositories(this IServiceCollection services, Assembly assembly)
       => services
-          .Dependencies([assembly], [typeof(ICommandRepository<,>), typeof(IQueryRepository)], ServiceLifetime.Transient);
+          .Dependencies([assembly], [typeof(ICommandRepository<,>), typeof(IQueryRepository)], ServiceLifetime.Scoped);
 
     private static IServiceCollection UnitOfWork(this IServiceCollection services, Assembly assembly)
         => services

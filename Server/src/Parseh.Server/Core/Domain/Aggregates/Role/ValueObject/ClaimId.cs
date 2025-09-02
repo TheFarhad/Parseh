@@ -1,13 +1,13 @@
-﻿namespace Parseh.Server.Core.Domain.Aggregates.User.ValueObject;
+﻿namespace Parseh.Server.Core.Domain.Aggregates.Role.ValueObject;
 
-public sealed class UserId : Identity
+public sealed class ClaimId : Identity
 {
-    private UserId(long id)
+    private ClaimId(long id)
         => Id = id;
 
     public readonly long Id;
 
-    public static UserId Construct(long id)
+    public static ClaimId Construct(long id)
         => new(id);
 
     protected override IEnumerable<object> GetEqualityProperties()

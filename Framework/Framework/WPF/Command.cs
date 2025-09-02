@@ -2,9 +2,9 @@
 
 using System.Windows.Input;
 
-public interface IRelayCommand : ICommand
+public interface IRelayCommand : System.Windows.Input.ICommand
 {
-    void Notify();
+    void Notify(object? sender);
 }
 
 public sealed class Command : IRelayCommand
@@ -16,12 +16,19 @@ public sealed class Command : IRelayCommand
     public Command(Action execute, Func<bool> canexecute = default!)
     {
         _execute = execute;
-        if (canexecute is not null) _canexecute = canexecute;
+
+        if (canexecute is not null)
+            _canexecute = canexecute;
     }
 
-    public void Notify() => CanExecuteChanged!.Invoke(this, EventArgs.Empty);
-    public bool CanExecute(object? parameter) => _canexecute!.Invoke();
-    public void Execute(object? parameter) => _execute?.Invoke();
+    public void Notify(object? sender)
+        => CanExecuteChanged!.Invoke(sender, EventArgs.Empty);
+
+    public bool CanExecute(object? parameter)
+        => _canexecute!.Invoke();
+
+    public void Execute(object? parameter)
+        => _execute?.Invoke();
 }
 
 public sealed class Command<TInput> : IRelayCommand
@@ -33,11 +40,18 @@ public sealed class Command<TInput> : IRelayCommand
     public Command(Action<TInput> execute, Func<TInput, bool> canexecute = default!)
     {
         _execute = execute;
-        if (canexecute is { }) _canexecute = canexecute;
+
+        if (canexecute is { })
+            _canexecute = canexecute;
     }
 
-    public void Notify() => CanExecuteChanged!.Invoke(this, EventArgs.Empty);
-    public bool CanExecute(object? parameter) => _canexecute.Invoke(parameter!.As<TInput>());
-    public void Execute(object? parameter) => _execute?.Invoke(parameter!.As<TInput>());
+    public void Notify(object? sender)
+        => CanExecuteChanged!.Invoke(sender, EventArgs.Empty);
+
+    public bool CanExecute(object? parameter)
+        => _canexecute.Invoke(parameter!.As<TInput>());
+
+    public void Execute(object? parameter)
+        => _execute?.Invoke(parameter!.As<TInput>());
 }
 

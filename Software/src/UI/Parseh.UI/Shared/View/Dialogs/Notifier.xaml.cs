@@ -25,9 +25,11 @@ public partial class Notifier : ContentLayout
         InitializeComponent();
     }
 
-    void OnAtcivated(object sender, EventArgs e) => Model.LayoutActivationCommand.Execute(null);
+    void OnAtcivated(object sender, EventArgs e)
+        => Model.LayoutActivationCommand.Execute(null);
 
-    void OnDeactivated(object sender, EventArgs e) => Model.LayoutActivationCommand.Execute(null);
+    void OnDeactivated(object sender, EventArgs e)
+        => Model.LayoutActivationCommand.Execute(null);
 
     static void OnDialogContnetChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) { }
 }

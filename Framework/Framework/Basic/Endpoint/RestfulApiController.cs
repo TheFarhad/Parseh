@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[Controller]")]
 public abstract class RestfulApiController : ControllerBase
 {
-    protected RequestController RequestController => HttpContext.RequestPipeService();
+    protected Responser RequestController => HttpContext.RequestPipeService();
 
     protected async Task<IResult> GetAsync<TRequest, TOutput>(TRequest source, CancellationToken token = default!)
        where TRequest : IRequest<TOutput>

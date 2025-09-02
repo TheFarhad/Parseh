@@ -2,11 +2,13 @@
 
 public sealed class RefreshTokenId : Identity
 {
-    public long Id { get; }
+    private RefreshTokenId(long id)
+        => Id = id;
 
-    RefreshTokenId(long id) => Id = id;
+    public readonly long Id;
 
-    public static RefreshTokenId New(long id) => new(id);
+    public static RefreshTokenId Construct(long id)
+        => new(id);
 
     protected override IEnumerable<object> GetEqualityProperties()
     {

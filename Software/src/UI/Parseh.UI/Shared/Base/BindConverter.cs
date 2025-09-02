@@ -1,8 +1,5 @@
 ﻿namespace Parseh.UI.Views;
 
-using System.Windows.Data;
-using System.Windows.Markup;
-
 public abstract class BindConverter<TOwner> : MarkupExtension, IValueConverter
     where TOwner : BindConverter<TOwner>, new()
 {

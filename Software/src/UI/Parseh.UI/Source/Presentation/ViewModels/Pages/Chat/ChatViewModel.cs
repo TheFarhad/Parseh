@@ -4,7 +4,8 @@ using System.ComponentModel;
 
 public sealed class ChatViewModel : ViewModel
 {
-    //private readonly IServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider;
+
     #region Properties
 
     public double SettingbarHeight { get => Get(); private set => Set(value); }
@@ -12,9 +13,9 @@ public sealed class ChatViewModel : ViewModel
     public bool IsOpenAttachmentMenu { get => Get(); set => Set(value); }
     public bool IsOpenSettingMenu { get => Get(); private set => Set(value); }
     public bool IsShowGoToBottomButton { get => Get(); private set => Set(value); }
-    public ObservableSet<ContactChatViewModel> Contacts { get => Get(); private set => Set(value); }
-    public AttachmentMenuViewModel AttachmentMenuModel { get => Get(); private set => Set(value); }
-    public SettingMenuViewModel SettingMenuModel { get => Get(); private set => Set(value); }
+    public MvvmSet<ContactChatViewModel> Contacts { get => Get(); private set => Set(value); }
+    public AttachmentMenuViewModel AttachmentMenu { get => Get(); private set => Set(value); }
+    public ProfileViewModel Profile { get => Get(); private set => Set(value); }
     public string Message { get => Get(); set => Set(value); }
     //public ChatContactViewModel? SelectedContact { get => Get(); private set => Set(value); }
     public ContactChatViewModel SelectedContact { get => Get(); private set => Set(value); }
@@ -39,7 +40,7 @@ public sealed class ChatViewModel : ViewModel
 
     public ChatViewModel(IServiceProvider serviceProvider)
     {
-        //_serviceProvider = serviceProvider;
+        _serviceProvider = serviceProvider;
         Init();
     }
 
@@ -58,7 +59,7 @@ public sealed class ChatViewModel : ViewModel
         IsOpenAttachmentMenu = false;
         IsOpenSettingMenu = false;
         IsShowGoToBottomButton = false;
-        AttachmentMenuModel = new();
+        AttachmentMenu = new();
         SearchText = Empty;
 
         // TODO: Load data form server (only Contats-Items Info)
@@ -262,7 +263,7 @@ public sealed class ChatViewModel : ViewModel
 
         //MonitorContacts();
 
-        SettingMenuModel = App.Cortex.SettingMenuModel;
+        Profile = App.Cortex.SettingMenuModel;
     }
 
     private void InitCommands()
@@ -334,9 +335,9 @@ public sealed class ChatViewModel : ViewModel
 
     private void SettingMenuUnedittedMode()
     {
-        SettingMenuModel.Name.IsEditing = false;
-        SettingMenuModel.Email.IsEditing = false;
-        SettingMenuModel.Passcode.IsEditing = false;
+        Profile.Name.IsEditing = false;
+        Profile.Email.IsEditing = false;
+        Profile.Passcode.IsEditing = false;
     }
 
     private void SendMessage()

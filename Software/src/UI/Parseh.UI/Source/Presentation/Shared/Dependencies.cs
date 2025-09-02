@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.Extensions.Logging;
-
-namespace Parseh.UI.Source.Presentation.Shared;
+﻿namespace Parseh.UI.Source.Presentation.Shared;
 
 public static class Dependencies
 {

@@ -6,6 +6,7 @@ using Core.Domain.Aggregates.User.Entity;
 using Core.Domain.Aggregates.Role.Entity;
 using Core.Domain.Aggregates.User.ValueObject;
 using Core.Domain.Aggregates.Role.ValueObject;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 public sealed class UserConfig : AggregateRootConfiguration<User, UserId>
 {
@@ -36,7 +37,7 @@ public sealed class UserConfig : AggregateRootConfiguration<User, UserId>
 
         b
          .HasIndex(_ => _.UserName)
-         .IsUnique(true); // unique non-clusterd index, تکراری نمی تواند باشد
+         .IsUnique(true);
 
         b
         .Property(_ => _.Password)
@@ -53,7 +54,7 @@ public sealed class UserConfig : AggregateRootConfiguration<User, UserId>
         #region Navigation Properties
 
         // -- [ REFRESH TOKEN ] -- \\
-        b.HasMany(_ => _.RefreshTokens)
+        b.HasMany<RefreshToken>(_ => _.RefreshTokens)
          .WithOne()
          .HasForeignKey("UserId")
          .IsRequired()
@@ -74,7 +75,7 @@ public sealed class UserConfig : AggregateRootConfiguration<User, UserId>
 
         // -- [ ROLES ] -- \\
         b
-         .HasMany(_ => _.Roles)
+         .HasMany<UserRole>(_ => _.Roles)
          .WithOne(_ => _.User)
          .HasForeignKey(_ => _.UserId)
          .IsRequired()
@@ -108,6 +109,7 @@ public sealed class RoleConfig : AggregateRootConfiguration<Role, RoleId>
          .HasMaxLength(70)
          .IsRequired()
          .IsUnicode(false);
+
         b
         .Property(_ => _.Display)
         .HasMaxLength(100)
@@ -122,7 +124,7 @@ public sealed class RoleConfig : AggregateRootConfiguration<Role, RoleId>
 
         // -- [ PERMISSIONS ] -- \\
         b
-         .HasMany(_ => _.Permissions)
+         .HasMany<RoleClaim>(_ => _.Cliams)
          .WithOne(_ => _.Role)
          .HasForeignKey(_ => _.RoleId)
          .IsRequired()
@@ -130,13 +132,13 @@ public sealed class RoleConfig : AggregateRootConfiguration<Role, RoleId>
 
         b
         .Metadata
-        .FindNavigation(nameof(Role.Permissions))?
+        .FindNavigation(nameof(Role.Cliams))?
         .SetPropertyAccessMode(PropertyAccessMode.Field);
 
         b
-        .Navigation(_ => _.Permissions)
+        .Navigation(_ => _.Cliams)
         .Metadata
-        .SetField(Role.PermissionsBackingField);
+        .SetField(Role.ClaimsBackingField);
     }
 }
 
@@ -209,14 +211,14 @@ public sealed class RefreshTokenConfig : EntityConfiguration<RefreshToken, Refre
     }
 }
 
-public sealed class PermissionConfig : EntityConfiguration<Permission, PermissionId>
+public sealed class ClaimConfig : EntityConfiguration<Claim, ClaimId>
 {
-    public override void ConfigureProperties(EntityTypeBuilder<Permission> b)
+    public override void ConfigureProperties(EntityTypeBuilder<Claim> b)
     {
-        b.ToTable("Permissions");
+        b.ToTable("Claims");
 
         b.Property(_ => _.Id)
-         .HasConversion<PermissionIdConverter>();
+         .HasConversion<ClaimIdConverter>();
 
         b
          .Property(_ => _.Title)
@@ -245,20 +247,22 @@ public sealed class UserRoleConfig : IEntityTypeConfiguration<UserRole>
          .ToTable("UserRoles");
 
         // TODO:
-        //      اگر این جدول نوع انتیتی بود و آیدی داشت
-        //      برای اینکه برای آیدی، کلاستر ایندکس ایجاد نشود
-        //      باید به صورت زیر عمل کرد
+        /*
+           اگر انتیتی بود و آیدی داشت
+           برای اینکه کلاستر ایندکس ایجاد نشود
+           باید به صورت زیر عمل کرد
 
-        //b.HasKey(_ => _.Id).IsClustered(false);
-        // OR ...
-        //b
-        // .Property(x => x.Id)
-        // .IsRequired()
-        // .UseIdentityColumn();
-        //b
-        // .HasIndex(x => x.Id)
-        // .IsUnique()
-        // .IsClustered(false);
+           b
+            .HasKey(e => e.Id)
+            .IsClustered(false);
+           b
+            .HasIndex(e => new { e.UserId, e.RoleId })
+            .IsUnique()
+            .IsClustered(true);
+
+            در نتیجه یک پرایمری کی بدون ایندکس داریم
+            و یک یونیک کلاسترد ایندکس کامپوزیت
+         */
 
         b.Property(_ => _.UserId)
          .HasConversion<UserIdConverter>();
@@ -291,9 +295,9 @@ public sealed class UserRoleConfig : IEntityTypeConfiguration<UserRole>
     }
 }
 
-public sealed class RolePermissionConfig : IEntityTypeConfiguration<RolePermission>
+public sealed class RolePermissionConfig : IEntityTypeConfiguration<RoleClaim>
 {
-    public void Configure(EntityTypeBuilder<RolePermission> b)
+    public void Configure(EntityTypeBuilder<RoleClaim> b)
     {
         b
         .ToTable("RolePermissions");
@@ -301,11 +305,11 @@ public sealed class RolePermissionConfig : IEntityTypeConfiguration<RolePermissi
         b.Property(_ => _.RoleId)
          .HasConversion<RoleIdConverter>();
 
-        b.Property(_ => _.PermissionId)
-         .HasConversion<PermissionIdConverter>();
+        b.Property(_ => _.ClaimId)
+         .HasConversion<ClaimIdConverter>();
 
         b
-         .HasKey(_ => new { _.RoleId, _.PermissionId })
+         .HasKey(_ => new { _.RoleId, _.ClaimId })
          .IsClustered(true);
 
         // TODO:
@@ -329,7 +333,7 @@ public sealed class RolePermissionConfig : IEntityTypeConfiguration<RolePermissi
 
         b
          .HasOne(_ => _.Role)
-         .WithMany(_ => _.Permissions)
+         .WithMany(_ => _.Cliams)
          .HasForeignKey(_ => _.RoleId)
          .IsRequired()
          .OnDelete(DeleteBehavior.Cascade);
@@ -337,7 +341,7 @@ public sealed class RolePermissionConfig : IEntityTypeConfiguration<RolePermissi
         b
         .HasOne(_ => _.Permission)
         .WithMany()
-        .HasForeignKey(_ => _.PermissionId)
+        .HasForeignKey(_ => _.ClaimId)
         .IsRequired()
         .OnDelete(DeleteBehavior.Cascade);
 

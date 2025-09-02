@@ -14,22 +14,22 @@ public interface INotify : INotifyPropertyChanged
     void Notify([CallerMemberName] string property = "");
 }
 
-public class Reference : Dictionary<string, object>
+public class Properties : Dictionary<string, object>
 {
-    public Reference() : base() { }
-    public Reference(IDictionary<string, object> source) : base(source) { }
-    public Reference(IEnumerable<KeyValuePair<string, object>> source) : base(source) { }
+    public Properties() : base() { }
+    public Properties(IDictionary<string, object> source) : base(source) { }
+    public Properties(IEnumerable<KeyValuePair<string, object>> source) : base(source) { }
 }
 
 public abstract class ViewModel : Atom, INotify
 {
-    private readonly Reference _reference;
+    private readonly Properties _properties;
     protected Type OwnerType => GetType();
     public event PropertyChangedEventHandler? PropertyChanged = (seder, e) => { };
 
     protected ViewModel()
     {
-        _reference = new();
+        _properties = new();
         OnCreate();
         InitDefaults();
     }
@@ -37,7 +37,7 @@ public abstract class ViewModel : Atom, INotify
     protected virtual void OnCreate() { }
 
     protected T Get<T>([CallerMemberName] string property = Empty)
-        => _reference.TryGetValue(property, out object? value) ? (T)value : default!;
+        => _properties.TryGetValue(property, out object? value) ? (T)value : default!;
 
     protected dynamic Get([CallerMemberName] string property = Empty)
         => Get<dynamic>(property);
@@ -61,7 +61,8 @@ public abstract class ViewModel : Atom, INotify
     public void Notify([CallerMemberName] string property = Empty)
       => PropertyChanged!.Invoke(this, new PropertyChangedEventArgs(property));
 
-    protected void Notify(IRelayCommand command) => command?.Notify();
+    protected void Notify(IRelayCommand command)
+        => command?.Notify(this);
 
     protected async Task RunAsync(Func<Task> command, Action<Exception> exeptionHandler = default!, Action final = default!)
     {
@@ -90,7 +91,6 @@ public abstract class ViewModel : Atom, INotify
         catch (Exception e)
         {
             errorhandler?.Invoke(e);
-            //throw;
         }
         finally
         {
@@ -102,14 +102,14 @@ public abstract class ViewModel : Atom, INotify
     #region Private Functionality
 
     private bool HasProperty(string property)
-        => _reference.ContainsKey(property);
+        => _properties.ContainsKey(property);
 
     private void Set(string property, object value)
-        => _reference[property] = Verify(property, value);
+        => _properties[property] = Verify(property, value);
 
     // its ok...
     private bool ProprtyNotChanged(object newvalue, string property)
-        => EqualityComparer<object>.Default.Equals(newvalue, _reference[property]);
+        => EqualityComparer<object>.Default.Equals(newvalue, _properties[property]);
 
     private void InitDefaults()
     {
@@ -162,7 +162,7 @@ public abstract class ViewModel : Atom, INotify
     }
 
     private object? DefaultSet(Type type)
-        => typeof(ObservableSet<>).Generic(type.FirstGenericType());
+        => typeof(MvvmSet<>).Generic(type.FirstGenericType());
 
     #endregion
 }

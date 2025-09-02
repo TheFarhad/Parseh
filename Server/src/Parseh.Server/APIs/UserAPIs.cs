@@ -9,21 +9,21 @@ public sealed class UserAPIs : CarterModule
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/users/");
+        var group = app.MapGroup("/users");
 
-        group.MapPost("login", async ([FromBody] UserLoginCommand command, [FromServices] RequestController requestController, CancellationToken token = default) =>
+        group.MapPost("login", async ([FromBody] UserLoginCommand command, [FromServices] Responser requestController, CancellationToken token = default) =>
         {
             var response = await requestController.SendAsync<UserLoginCommand, LoginResponse>(command, token);
             return response.JsonOutput();
         })
-        .WithName("Login");
+        .WithName("/login");
 
-        group.MapPost("refreshtoken", async ([FromBody] UserRefereshTokenCommand command, [FromServices] RequestController requestController, CancellationToken token = default) =>
+        group.MapPost("refreshtoken", async ([FromBody] UserRefereshTokenCommand command, [FromServices] Responser requestController, CancellationToken token = default) =>
         {
             var response = await requestController.SendAsync<UserRefereshTokenCommand, LoginResponse>(command, token);
             return response.JsonOutput();
         })
-        .WithName("refreshtoken");
+        .WithName("/refreshtoken");
 
         group.MapGet("test", () =>
         {
