@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 Server/src/Parseh.Server/Endpoint/Keys/Private/
+/Server/src/Parseh.Server/Security/Keys/Private/private.key
