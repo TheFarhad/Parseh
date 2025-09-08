@@ -10,7 +10,7 @@ public abstract class BaseLayoutViewModel : ViewModel
 
     protected ContentLayout _view = default!;
     WindowState _state => _view.WindowState;
-    LayoutFitAdjuster _fitAdjuster = default!;
+    WindowSizeManager _fitAdjuster = default!;
     // TODO: ببین در پروژه اصلی با پراپرتی زیر دقیقا چه کاری کرده
     WindowDockPosition _dockPosition = WindowDockPosition.Undocked;
 
@@ -53,7 +53,7 @@ public abstract class BaseLayoutViewModel : ViewModel
         _view = layout;
         _view.DataContext = this;
 
-        _fitAdjuster = new LayoutFitAdjuster(layout);
+        _fitAdjuster = new WindowSizeManager(layout);
         _fitAdjuster.WindowDockChanged += WindowDockChanged;
 
         _view.StateChanged += OnStateChanged;

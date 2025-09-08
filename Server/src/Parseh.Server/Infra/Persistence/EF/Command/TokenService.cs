@@ -32,11 +32,11 @@ public record JwtOption
 
 public sealed class TokenService : ITokenService
 {
-    readonly ParsehCommandDbStore _context;
+    readonly ParsehCommandDbContext _context;
     readonly HttpContext _httpContext;
     readonly JwtOption _jwtOptions;
 
-    public TokenService(ParsehCommandDbStore context, IOptionsMonitor<JwtOption> jwtOptions, IHttpContextAccessor httpContextAccessor)
+    public TokenService(ParsehCommandDbContext context, IOptionsMonitor<JwtOption> jwtOptions, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _jwtOptions = jwtOptions.CurrentValue;
@@ -188,7 +188,7 @@ public sealed class TokenService : ITokenService
         {
             role
                 .Cliams
-                .Select(_ => _.Permission)
+                .Select(_ => _.Cliam)
                 .Select(_ => new Claim(TokenParameter.Permissions, _.Title))
                 .ToList()
                 .ForEach(claims.Add);

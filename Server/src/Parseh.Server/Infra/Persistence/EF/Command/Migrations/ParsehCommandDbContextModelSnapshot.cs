@@ -10,19 +10,19 @@ using Parseh.Server.Infra.Persistence.EF.Command;
 
 namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
 {
-    [DbContext(typeof(ParsehCommandDbStore))]
-    partial class ParsehCommandDbStoreModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ParsehCommandDbContext))]
+    partial class ParsehCommandDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.8")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.Role.Entity.Permission", b =>
+            modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.Role.Entity.Claim", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,7 +74,7 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("Permissions", (string)null);
+                    b.ToTable("Claims", (string)null);
                 });
 
             modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.Role.Entity.Role", b =>
@@ -132,21 +132,21 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                     b.ToTable("Roles", (string)null);
                 });
 
-            modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.Role.Entity.RolePermission", b =>
+            modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.Role.Entity.RoleClaim", b =>
                 {
                     b.Property<long>("RoleId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("PermissionId")
+                    b.Property<long>("ClaimId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("RoleId", "PermissionId");
+                    b.HasKey("RoleId", "ClaimId");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("RoleId", "PermissionId"));
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("RoleId", "ClaimId"));
 
-                    b.HasIndex("PermissionId");
+                    b.HasIndex("ClaimId");
 
-                    b.ToTable("RolePermissions", (string)null);
+                    b.ToTable("RoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.User.Entity.RefreshToken", b =>
@@ -173,7 +173,7 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(35)");
 
-                    b.Property<DateTime>("ExpireAt")
+                    b.Property<DateTime?>("ExpireAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HashedToken")
@@ -284,12 +284,6 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<string>("Salt")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -334,21 +328,21 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.Role.Entity.RolePermission", b =>
+            modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.Role.Entity.RoleClaim", b =>
                 {
-                    b.HasOne("Parseh.Server.Core.Domain.Aggregates.Role.Entity.Permission", "Permission")
+                    b.HasOne("Parseh.Server.Core.Domain.Aggregates.Role.Entity.Claim", "Cliam")
                         .WithMany()
-                        .HasForeignKey("PermissionId")
+                        .HasForeignKey("ClaimId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Parseh.Server.Core.Domain.Aggregates.Role.Entity.Role", "Role")
-                        .WithMany("Permissions")
+                        .WithMany("Cliams")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Permission");
+                    b.Navigation("Cliam");
 
                     b.Navigation("Role");
                 });
@@ -383,7 +377,7 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
 
             modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.Role.Entity.Role", b =>
                 {
-                    b.Navigation("Permissions");
+                    b.Navigation("Cliams");
                 });
 
             modelBuilder.Entity("Parseh.Server.Core.Domain.Aggregates.User.Entity.User", b =>

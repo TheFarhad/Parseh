@@ -15,7 +15,7 @@ public sealed class RoleClaim
     public ClaimId ClaimId { get; private set; }
 
     public Role Role { get; private set; }
-    public Claim Permission { get; private set; }
+    public Claim Cliam { get; private set; }
 
     public static RoleClaim Construct(RoleId roleId, ClaimId permissionId)
         => new(roleId, permissionId);

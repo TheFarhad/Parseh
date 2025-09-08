@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
 {
     /// <inheritdoc />
-    public partial class init1 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Permissions",
+                name: "Claims",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -28,8 +28,8 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Permissions", x => x.Id);
-                    table.UniqueConstraint("AK_Permissions_Code", x => x.Code);
+                    table.PrimaryKey("PK_Claims", x => x.Id);
+                    table.UniqueConstraint("AK_Claims_Code", x => x.Code);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,24 +78,24 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RolePermissions",
+                name: "RoleClaims",
                 columns: table => new
                 {
                     RoleId = table.Column<long>(type: "bigint", nullable: false),
-                    PermissionId = table.Column<long>(type: "bigint", nullable: false)
+                    ClaimId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolePermissions", x => new { x.RoleId, x.PermissionId })
+                    table.PrimaryKey("PK_RoleClaims", x => new { x.RoleId, x.ClaimId })
                         .Annotation("SqlServer:Clustered", true);
                     table.ForeignKey(
-                        name: "FK_RolePermissions_Permissions_PermissionId",
-                        column: x => x.PermissionId,
-                        principalTable: "Permissions",
+                        name: "FK_RoleClaims_Claims_ClaimId",
+                        column: x => x.ClaimId,
+                        principalTable: "Claims",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RolePermissions_Roles_RoleId",
+                        name: "FK_RoleClaims_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
@@ -112,11 +112,11 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                     RemoteIp = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: false),
                     UserAgent = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    ExpireAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpireAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsRevoked = table.Column<bool>(type: "bit", nullable: false),
-                    RevokedByRemoteIp = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: false),
+                    RevokedByRemoteIp = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
                     RevokedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RevokeReason = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    RevokeReason = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     ReplacedByToken = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedByUserId = table.Column<string>(type: "varchar(35)", unicode: false, maxLength: 35, nullable: true),
@@ -163,8 +163,8 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Permissions_Code",
-                table: "Permissions",
+                name: "IX_Claims_Code",
+                table: "Claims",
                 column: "Code",
                 unique: true);
 
@@ -186,9 +186,9 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RolePermissions_PermissionId",
-                table: "RolePermissions",
-                column: "PermissionId");
+                name: "IX_RoleClaims_ClaimId",
+                table: "RoleClaims",
+                column: "ClaimId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_Code",
@@ -221,13 +221,13 @@ namespace Parseh.Server.Infra.Persistence.EF.Command.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "RolePermissions");
+                name: "RoleClaims");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "Permissions");
+                name: "Claims");
 
             migrationBuilder.DropTable(
                 name: "Roles");

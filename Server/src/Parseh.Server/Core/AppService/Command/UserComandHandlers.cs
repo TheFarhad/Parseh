@@ -4,12 +4,12 @@ using Contract.AppService.Command;
 using Contract.Infra.Persistence.Command;
 using Contract.Infra.Persistence.Command.User;
 
-public sealed class UserLoginCommandHandler(IUserCommandRepository userCommandRepository, ITokenService tokenService, IEncryptService encryptService, IParsehUnitOfWork unitOfWork)
+public sealed class UserLoginCommandHandler(IUserCommandRepository userCommandRepository, ITokenService tokenService, IEncryptionService encryptService, IParsehUnitOfWork unitOfWork)
     : CommandRequestHandler<UserLoginCommand, LoginResponse>(unitOfWork)
 {
     readonly IUserCommandRepository _userCommandRepository = userCommandRepository;
     readonly ITokenService _tokenService = tokenService;
-    readonly IEncryptService _encryptService = encryptService;
+    readonly IEncryptionService _encryptService = encryptService;
 
     public override async Task<Response<LoginResponse>> HandleAsync(UserLoginCommand command, CancellationToken cancellationToken = default)
     {
@@ -28,16 +28,20 @@ public sealed class UserLoginCommandHandler(IUserCommandRepository userCommandRe
             // TODO: رول ها و پرمیژن های یوزر هم واکشی شود
             // آیا باید اطلاعات را اینجا واکشی کنیم یا بهتر است در درخواست های جداگانه، در توکن سرویس اینکار انجام شود
 
-            List<string> includes = ["Roles", "Roles.Role", "Roles.Role.Permissions", "Roles.Role.Permissions.Permission"];
+            List<string> includes = ["Roles", "Roles.Role", "Roles.Role.Cliams", "Roles.Role.Cliams.Cliam"];
             var user = await _userCommandRepository
                                 .SingleOrDefaultAsync(includes, _ => _.UserName == command.UserName, cancellationToken);
 
             if (user is { })
             {
-                var isCorrectPassword = _encryptService.Verify(command.Password, user.Password, user.Salt);
+                var isCorrectPassword = _encryptService.Verify(command.Password, user.Password);
                 if (isCorrectPassword)
                 {
                     result = await _tokenService.GenerateAccessTokenAsync(user, cancellationToken);
+                }
+                else
+                {
+                    result = Error.BadRequest("");
                 }
             }
             else
@@ -64,7 +68,7 @@ public sealed class UserRefreshTokenCommandHandler(IUserCommandRepository userCo
         Response<RefreshTokenResponse> result = default!;
         try
         {
-            List<string> includes = ["RefreshTokens", "Roles", "Roles.Role", "Roles.Role.Permissions", "Roles.Role.Permissions.Permission"];
+            List<string> includes = ["RefreshTokens", "Roles", "Roles.Role", "Roles.Role.Cliams", "Roles.Role.Cliams.Cliam"];
             var user = await _userCommandRepository
                                 .SingleOrDefaultAsync(includes, _ => _.Code == Code.New(command.UserCode));
 

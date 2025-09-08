@@ -1,7 +1,7 @@
 ﻿namespace Parseh.Server;
 
-using Carter;
 using Core.AppService.Shared;
+using Framework.Presentation;
 using Infra.Persistence.EF.Shared;
 
 internal static class EntryPoint
@@ -18,9 +18,9 @@ internal static class EntryPoint
         var configuration = builder.Configuration;
 
         services
-            .ApplicationLayerDependencies()
-            .InfraPersistenceLayerDependencies(configuration)
-            .EndpointDependencies(configuration)
+            .ApplicationLayerRegistery()
+            .InfraPersistenceLayerRegistery(configuration)
+            .PresentationRegistery(configuration)
             ;
 
         return builder.Build();
@@ -45,7 +45,8 @@ internal static class EntryPoint
         app.UseAuthorization();
 
         app.UseCors("WindowsApp");
-        app.MapCarter();
+
+        app.MapEndpoints();
 
         app.Run();
     }

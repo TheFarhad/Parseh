@@ -2,8 +2,8 @@
 
 namespace Parseh.Server.Infra.Persistence.EF.Command;
 
-public sealed class ParsehUnitOfWork(ParsehCommandDbStore db)
-    : UnitOfWork<ParsehCommandDbStore>(db), IParsehUnitOfWork
+public sealed class ParsehUnitOfWork(ParsehCommandDbContext db)
+    : UnitOfWork<ParsehCommandDbContext>(db), IParsehUnitOfWork
 {
 
 }

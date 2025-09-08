@@ -1,5 +1,6 @@
 ﻿namespace Parseh.UI;
 
+using System.Diagnostics;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +9,7 @@ using Source.Presentation.Shared;
 using Source.Core.AppService.Shared;
 using Source.Infra.ExternalApi.Shared;
 using Source.Infra.Persistence.EF.Shared;
+using Microsoft.AspNetCore.Builder;
 
 public sealed partial class App : Application
 {
@@ -44,7 +46,7 @@ public sealed partial class App : Application
 
     protected override async void OnStartup(StartupEventArgs e)
     {
-        //Test();
+        Test();
 
         // سرویس های که
         // IHostedService
@@ -175,48 +177,45 @@ public sealed partial class App : Application
 
     void Test()
     {
-        var result = VBN([1, 0, 2, 0, 0, 0, 4, 5, 0, 6, 0]);
+        //var result = VBN([1, 0, 2, 0, 0, 0, 4, 5, 0, 6, 0]);
     }
 
     List<int> VBN(List<int> list)
     {
+        //for (int i = 0; i < list.Count; i++)
+        //{
+        //    var item = list[i];
+        //    if (item == 0)
+        //    {
+        //        var hasNextNonZeroItem = list
+        //            .Where(_ => list.IndexOf(_) > i)
+        //            .Any(_ => _ != 0);
+
+        //        if (!hasNextNonZeroItem)
+        //            break;
+
+        //        var currentZeroItemIndex = list.IndexOf(item);
+        //        var nextNonZeroItem = list
+        //            .Where(_ => list.IndexOf(_) > currentZeroItemIndex)
+        //            .Single();
+
+        //        var nextNonZeroItemIndex = list.IndexOf(nextNonZeroItem);
+        //        list[currentZeroItemIndex] = nextNonZeroItem;
+        //        list[nextNonZeroItemIndex] = 0;
+        //    }
+        //}
+
+        var j = 0;
         for (int i = 0; i < list.Count; i++)
         {
-            if (list[i] > 0)
-                continue;
-
-            var currentItem = list[i];
-            var nextItem = list[i + 1];
-
-            list[i] = nextItem;
-            list[i + 1] = 0;
-        }
-
-        foreach (var item in list)
-        {
-            if (item > 0)
-                continue;
-
-
-        }
-
-        foreach (var item in list)
-        {
-            if (item > 0)
-                continue;
-
-            var zeroItemIndex = list.IndexOf(item);
-            var nextNonZeroItem = list.Where(_ => list.IndexOf(_) > zeroItemIndex).FirstOrDefault();
-            var nextNonZeroItemIndex = list.IndexOf(nextNonZeroItem);
-
-            if (nextNonZeroItem != 0)
+            if (list[i] != 0)
             {
-                list[zeroItemIndex] = nextNonZeroItem;
-                list[nextNonZeroItemIndex] = 0;
-                VBN(list);
+                list[j++] = list[i];
             }
-            else
-                continue;
+        }
+        for (int i = j; i < list.Count; i++)
+        {
+            list[i] = 0;
         }
         return list;
     }

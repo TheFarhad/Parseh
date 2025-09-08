@@ -6,7 +6,7 @@ public static class Dependencies
 {
     static readonly Assembly assembly = typeof(Dependencies).Assembly;
 
-    public static IServiceCollection ApplicationLayerDependencies(this IServiceCollection services)
+    public static IServiceCollection ApplicationLayerRegistery(this IServiceCollection services)
     {
         services.FrameworkAppServiceDependencies(assembly);
 

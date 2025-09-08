@@ -78,7 +78,7 @@ public sealed class RequestValidator(ILogger<RequestValidator> logger, IServiceP
         else
         {
             //LogSuccess(command, type);
-            result = await InvokeChainAsync<TRequest, TData>(command, token);
+            result = await InvokeChainAsync<TRequest, TData>(command, token)!;
         }
         return result;
     }

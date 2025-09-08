@@ -14,14 +14,13 @@ public sealed class User : AggregateRoot<UserId>
     private readonly List<RefreshToken> _refereshTokens = [];
 
     private User() { }
-    private User(string name, string family, string email, string username, string password, string salt)
+    private User(string name, string family, string email, string username, string password)
     {
         Name = name;
         Family = family;
         Email = email;
         UserName = username;
         Password = password;
-        Salt = salt;
     }
 
     public string Name { get; private set; }
@@ -30,13 +29,12 @@ public sealed class User : AggregateRoot<UserId>
     public string Email { get; private set; }
     public string UserName { get; private set; }
     public string Password { get; private set; }
-    public string Salt { get; private set; }
 
     public IReadOnlyList<UserRole> Roles => _roles.AsReadOnly();
     public IReadOnlyList<RefreshToken> RefreshTokens => _refereshTokens.AsReadOnly();
 
-    public static User Construct(string name, string family, string email, string username, string password, string salt)
-        => new(name, family, email, username, password, salt);
+    public static User Construct(string name, string family, string email, string username, string password)
+        => new(name, family, email, username, password);
 
     public void AssignRoles(params UserRole[] roles)
     {

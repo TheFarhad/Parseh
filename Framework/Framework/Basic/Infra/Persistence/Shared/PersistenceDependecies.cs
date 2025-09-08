@@ -6,27 +6,27 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 public static class PersistenceDependecies
 {
-    public static IServiceCollection FrameworkPersistenceDependencies(this IServiceCollection services, Assembly assembly)
+    public static IServiceCollection FrameworkPersistenceRegistery(this IServiceCollection services, Assembly assembly)
         => services
             .Repositories(assembly)
             .UnitOfWork(assembly);
 
-    public static IServiceCollection DbStores<TCommandStorContext, TQueryStoreContext>(this IServiceCollection services, IConfiguration configuration, string commandDbConnectionStringName, string queryDbConnectionStringName, params IEnumerable<IInterceptor> interceptors)
+    public static IServiceCollection DbContexts<TCommandStorContext, TQueryStoreContext>(this IServiceCollection services, IConfiguration configuration, string commandDbConnectionStringName, string queryDbConnectionStringName, params IEnumerable<IInterceptor> interceptors)
         where TCommandStorContext : CommandDbStore<TCommandStorContext>
         where TQueryStoreContext : QueryDbStore<TQueryStoreContext>
     {
-        var commandConncetionstring = configuration.GetConnectionString(commandDbConnectionStringName)!;
-        var queryConncetionstring = configuration.GetConnectionString(commandDbConnectionStringName)!;
+        var commandConncetionString = configuration.GetConnectionString(commandDbConnectionStringName)!;
+        var queryConncetionString = configuration.GetConnectionString(queryDbConnectionStringName)!;
 
-        if (commandConncetionstring.IsEmpty() || queryConncetionstring.IsEmpty())
+        if (commandConncetionString.IsEmpty() || queryConncetionString.IsEmpty())
         {
             // TODO: throw new InvalidOperationException($"Connection strings for '{commandDbConnectionStringName}' or '{queryDbConnectionStringName}' are not configured.");
         }
         else
         {
             services
-                  .CommandStoreContext<TCommandStorContext>(commandConncetionstring!, interceptors)
-                  .QueryStoreContext<TQueryStoreContext>(queryConncetionstring!);
+                  .CommandDbContext<TCommandStorContext>(commandConncetionString!, interceptors)
+                  .QueryDbContext<TQueryStoreContext>(queryConncetionString!);
         }
         return services;
     }
@@ -39,7 +39,7 @@ public static class PersistenceDependecies
         => services
             .Dependencies(assembly, typeof(IUnitOfWork), ServiceLifetime.Scoped);
 
-    private static IServiceCollection CommandStoreContext<TCommandStorContext>(this IServiceCollection services, string connectionstring, params IEnumerable<IInterceptor> interceptors)
+    private static IServiceCollection CommandDbContext<TCommandStorContext>(this IServiceCollection services, string connectionstring, params IEnumerable<IInterceptor> interceptors)
         where TCommandStorContext : CommandDbStore<TCommandStorContext>
         => services
             .AddDbContext<TCommandStorContext>(_ =>
@@ -52,7 +52,7 @@ public static class PersistenceDependecies
                 .LogOptions();
             });
 
-    private static IServiceCollection QueryStoreContext<TQueryStorContext>(this IServiceCollection services, string connectionstring)
+    private static IServiceCollection QueryDbContext<TQueryStorContext>(this IServiceCollection services, string connectionstring)
         where TQueryStorContext : QueryDbStore<TQueryStorContext>
         => services
             .AddDbContext<TQueryStorContext>(_ =>

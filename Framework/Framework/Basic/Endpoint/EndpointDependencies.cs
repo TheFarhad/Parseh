@@ -12,18 +12,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 public static class EndpointDependencies
 {
-    public static IServiceCollection FrameworkEndpointDependencies(this IServiceCollection services, IConfiguration configuration, bool useController = true)
+    public static IServiceCollection FrameworkEndpointRegistery(this IServiceCollection services, IConfiguration configuration, bool useController = true)
     {
         if (useController)
             services.AddControllers();
 
         services
             .AddHttpContextAccessor()
-            .FilingServiceDependencies()
-            .GZipLargeObjectCompressionDependencies()
+            .FilingServiceRegistery()
+            .GZipLargeObjectCompressionRegistery()
             .SerializationServicesDependencies()
-            .EncryptionServicesDependencies()
-            .IdentityServicesDependencies(configuration)
+            .EncryptionServicesRegistery(configuration)
+            .IdentityServicesRegsitery(configuration)
             .Configure<GzipCompressionProviderOptions>(options =>
             {
                 // مصرف بالاتر cpu

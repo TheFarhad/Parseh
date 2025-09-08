@@ -6,7 +6,6 @@ using Core.Domain.Aggregates.User.Entity;
 using Core.Domain.Aggregates.Role.Entity;
 using Core.Domain.Aggregates.User.ValueObject;
 using Core.Domain.Aggregates.Role.ValueObject;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 public sealed class UserConfig : AggregateRootConfiguration<User, UserId>
 {
@@ -45,11 +44,11 @@ public sealed class UserConfig : AggregateRootConfiguration<User, UserId>
         .IsRequired()
         .IsUnicode(false);
 
-        b
-        .Property(_ => _.Salt)
-        .HasMaxLength(200)
-        .IsRequired()
-        .IsUnicode(false);
+        //b
+        //.Property(_ => _.Salt)
+        //.HasMaxLength(200)
+        //.IsRequired()
+        //.IsUnicode(false);
 
         #region Navigation Properties
 
@@ -295,12 +294,12 @@ public sealed class UserRoleConfig : IEntityTypeConfiguration<UserRole>
     }
 }
 
-public sealed class RolePermissionConfig : IEntityTypeConfiguration<RoleClaim>
+public sealed class RoleClaimConfig : IEntityTypeConfiguration<RoleClaim>
 {
     public void Configure(EntityTypeBuilder<RoleClaim> b)
     {
         b
-        .ToTable("RolePermissions");
+        .ToTable("RoleClaims");
 
         b.Property(_ => _.RoleId)
          .HasConversion<RoleIdConverter>();
@@ -339,7 +338,7 @@ public sealed class RolePermissionConfig : IEntityTypeConfiguration<RoleClaim>
          .OnDelete(DeleteBehavior.Cascade);
 
         b
-        .HasOne(_ => _.Permission)
+        .HasOne(_ => _.Cliam)
         .WithMany()
         .HasForeignKey(_ => _.ClaimId)
         .IsRequired()

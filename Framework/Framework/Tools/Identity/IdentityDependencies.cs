@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 public static class IdentityDependencies
 {
-    public static IServiceCollection IdentityServicesDependencies(this IServiceCollection source, IConfiguration configuration)
+    public static IServiceCollection IdentityServicesRegsitery(this IServiceCollection source, IConfiguration configuration)
     {
         var identitySection = configuration.GetSection("IdentitySection");
         source.Configure<IdentityServiceConfig>(identitySection);

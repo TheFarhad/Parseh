@@ -1,67 +1,30 @@
 ﻿namespace Parseh.UI;
 
 using System;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 //using System.Drawing; for Point
 using System.Windows.Media;
-using System.Windows.Interop;
-using System.Runtime.InteropServices;
 
-/// <summary>
-/// The dock position of the window
-/// </summary>
 public enum WindowDockPosition
 {
-    /// <summary>
-    /// Not docked
-    /// </summary>
     Undocked = 0,
-    /// <summary>
-    /// Docked to the left of the screen
-    /// </summary>
     Left = 1,
-    /// <summary>
-    /// Docked to the right of the screen
-    /// </summary>
     Right = 2,
-    /// <summary>
-    /// Docked to the top/bottom of the screen
-    /// </summary>
     TopBottom = 3,
-    /// <summary>
-    /// Docked to the top-left of the screen
-    /// </summary>
     TopLeft = 4,
-    /// <summary>
-    /// Docked to the top-right of the screen
-    /// </summary>
     TopRight = 5,
-    /// <summary>
-    /// Docked to the bottom-left of the screen
-    /// </summary>
     BottomLeft = 6,
-    /// <summary>
-    /// Docked to the bottom-right of the screen
-    /// </summary>
     BottomRight = 7,
 }
 
-
-/// <summary>
-/// Fixes the issue with Windows of Style <see cref="WindowStyle.None"/> covering the taskbar
-/// </summary>
-public class LayoutFitAdjuster
+public class WindowSizeManager
 {
     #region Private Members
 
-    /// <summary>
-    /// The window to handle the resizing for
-    /// </summary>
     private Window _window;
 
-    /// <summary>
-    /// The last calculated available screen size
-    /// </summary>
     private Rect _screenSize = new Rect();
 
     /// <summary>
@@ -79,9 +42,6 @@ public class LayoutFitAdjuster
     /// </summary>
     private IntPtr _lastScreen;
 
-    /// <summary>
-    /// The last known dock position
-    /// </summary>
     private WindowDockPosition mLastDock = WindowDockPosition.Undocked;
 
     /// <summary>
@@ -156,16 +116,16 @@ public class LayoutFitAdjuster
     /// </summary>
     /// <param name="window">The window to monitor and correctly maximize</param>
     /// <param name="adjustSize">The callback for the host to adjust the maximum available size if needed</param>
-    public LayoutFitAdjuster(Window window)
+    public WindowSizeManager(Window window)
     {
         _window = window;
 
         // Listen out for source initialized to setup
-        _window.SourceInitialized += Window_SourceInitialized;
+        _window.SourceInitialized += Window_SourceInitialized!;
 
         // Monitor for edge docking
         _window.SizeChanged += Window_SizeChanged;
-        _window.LocationChanged += Window_LocationChanged;
+        _window.LocationChanged += Window_LocationChanged!;
     }
 
     #endregion
@@ -317,116 +277,95 @@ public class LayoutFitAdjuster
 
     #endregion
 
-    /// <summary>
-    /// Get the min/max window size for this window
-    /// Correctly accounting for the task bar size and position
-    /// </summary>
-    /// <param name="hwnd"></param>
-    /// <param name="lParam"></param>
-    private void WmGetMinMaxInfo(System.IntPtr hwnd, System.IntPtr lParam)
+    private void WmGetMinMaxInfo(nint hwnd, nint lParam)
     {
-        // Get the point position to determine what screen we are on
-        GetCursorPos(out var lMousePosition);
+        // گرفتن موقعیت موس برای تشخیص مانیتور فعلی
+        GetCursorPos(out var mousePos);
 
-        // Now get the current screen
-        var lCurrentScreen = _beingMoved ?
-            // If being dragged get it from the mouse position
-            MonitorFromPoint(lMousePosition, MonitorOptions.MONITOR_DEFAULTTONULL) :
-            // Otherwise get it from the window position (for example being moved via Win + Arrow)
-            // in case the mouse is on another monitor
-            MonitorFromWindow(hwnd, MonitorOptions.MONITOR_DEFAULTTONULL);
+        // گرفتن هندل مانیتور فعلی
+        var currentMonitor = _beingMoved
+            ? MonitorFromPoint(mousePos, MonitorOptions.MONITOR_DEFAULTTONULL)
+            : MonitorFromWindow(hwnd, MonitorOptions.MONITOR_DEFAULTTONULL);
 
-        var lPrimaryScreen = MonitorFromPoint(new POINT(0, 0), MonitorOptions.MONITOR_DEFAULTTOPRIMARY);
-
-        // Try and get the current screen information
-        var lCurrentScreenInfo = new MONITORINFO();
-        if (GetMonitorInfo(lCurrentScreen, lCurrentScreenInfo) == false)
+        // گرفتن اطلاعات مانیتور ای که پنجره در آن قرار دارد نه صرفا مانیتور اصلی سیتم
+        // چون ممکن است چند مانیتور به سیستم وصل باشند
+        var monitorInfo = new MONITORINFO();
+        if (!GetMonitorInfo(currentMonitor, monitorInfo))
             return;
 
-        // Try and get the primary screen information
-        var lPrimaryScreenInfo = new MONITORINFO();
-        if (GetMonitorInfo(lPrimaryScreen, lPrimaryScreenInfo) == false)
-            return;
+        // گرفتن اطلاعات مانیتور اصلی برای مقایسه
+        //var lPrimaryScreen = MonitorFromPoint(new POINT(0, 0), MonitorOptions.MONITOR_DEFAULTTOPRIMARY);
+        //var lPrimaryScreenInfo = new MONITORINFO();
+        //if (GetMonitorInfo(lPrimaryScreen, lPrimaryScreenInfo) == false)
+        //    return;
 
-        // NOTE: Always update it
-        // If this has changed from the last one, update the transform
-        //if (lCurrentScreen != mLastScreen || mMonitorDpi == null)
+        //var primaryX = lPrimaryScreenInfo.RCWork.Left - lPrimaryScreenInfo.RCMonitor.Left;
+        //var primaryY = lPrimaryScreenInfo.RCWork.Top - lPrimaryScreenInfo.RCMonitor.Top;
+        //var primaryWidth = lPrimaryScreenInfo.RCWork.Right - lPrimaryScreenInfo.RCWork.Left;
+        //var primaryHeight = lPrimaryScreenInfo.RCWork.Bottom - lPrimaryScreenInfo.RCWork.Top;
+        //var primaryRatio = primaryWidth / (float)primaryHeight;
+
+        // گرفتن DPI فعلی
         _monitorDpi = VisualTreeHelper.GetDpi(_window);
+        if (_monitorDpi is null)
+            return;
 
-        // Store last know screen
-        _lastScreen = lCurrentScreen;
+        var monitorDpiValue = _monitorDpi.Value;
+        var monitorRCWork = monitorInfo.RCWork;
+        var monitorRCMonitor = monitorInfo.RCMonitor;
 
-        // Get work area sizes and rations
-        var currentX = lCurrentScreenInfo.RCWork.Left - lCurrentScreenInfo.RCMonitor.Left;
-        var currentY = lCurrentScreenInfo.RCWork.Top - lCurrentScreenInfo.RCMonitor.Top;
-        var currentWidth = (lCurrentScreenInfo.RCWork.Right - lCurrentScreenInfo.RCWork.Left);
-        var currentHeight = (lCurrentScreenInfo.RCWork.Bottom - lCurrentScreenInfo.RCWork.Top);
-        var currentRatio = (float)currentWidth / (float)currentHeight;
-
-        var primaryX = lPrimaryScreenInfo.RCWork.Left - lPrimaryScreenInfo.RCMonitor.Left;
-        var primaryY = lPrimaryScreenInfo.RCWork.Top - lPrimaryScreenInfo.RCMonitor.Top;
-        var primaryWidth = (lPrimaryScreenInfo.RCWork.Right - lPrimaryScreenInfo.RCWork.Left);
-        var primaryHeight = (lPrimaryScreenInfo.RCWork.Bottom - lPrimaryScreenInfo.RCWork.Top);
-        var primaryRatio = (float)primaryWidth / (float)primaryHeight;
-
-        if (lParam != IntPtr.Zero)
+        // تنظیم اندازه‌ی قابل استفاده (RCWork) به جای اندازه‌ی کامل مانیتور (RCMonitor)
+        if (lParam != nint.Zero)
         {
-            // Get min/max structure to fill with information
-            var lMmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
+            var mmi = Marshal.PtrToStructure<MINMAXINFO>(lParam);
 
-            //
-            //   NOTE: The below setting of max sizes we no longer do
-            //         as through observations, it appears Windows works
-            //         correctly only when the max window size is set to
-            //         EXACTLY the size of the primary window
-            // 
-            //         Anything else and the behavior is wrong and the max
-            //         window width on a secondary monitor if larger than the
-            //         primary then goes too large
-            //
-            //          lMmi.PointMaxPosition.X = 0;
-            //          lMmi.PointMaxPosition.Y = 0;
-            //          lMmi.PointMaxSize.X = lCurrentScreenInfo.RCMonitor.Right - lCurrentScreenInfo.RCMonitor.Left;
-            //          lMmi.PointMaxSize.Y = lCurrentScreenInfo.RCMonitor.Bottom - lCurrentScreenInfo.RCMonitor.Top;
-            //
-            //         Instead we now just add a margin to the window itself
-            //         to compensate when maximized
-            // 
-            //
-            // NOTE: rcMonitor is the monitor size
-            //       rcWork is the available screen size (so the area inside the task bar start menu for example)
+            // Set to current monitor size
+            mmi.PointMaxPosition.X = monitorRCWork.Left;
+            mmi.PointMaxPosition.Y = monitorRCWork.Top;
+            mmi.PointMaxSize.X = monitorRCWork.Right - monitorRCWork.Left;
+            mmi.PointMaxSize.Y = monitorRCWork.Bottom - monitorRCWork.Top;
 
-            // Size limits (used by Windows when maximized)
-            // relative to 0,0 being the current screens top-left corner
+            // تنظیم حداقل اندازه‌ی پنجره با در نظر گرفتن DPI
+            var minSize = new Point
+            {
+                X = _window.MinWidth * monitorDpiValue.DpiScaleX,
+                Y = _window.MinHeight * monitorDpiValue.DpiScaleY
+            };
+            mmi.PointMinTrackSize.X = (int)minSize.X;
+            mmi.PointMinTrackSize.Y = (int)minSize.Y;
 
-            // Set to primary monitor size
-            lMmi.PointMaxPosition.X = lPrimaryScreenInfo.RCMonitor.Left;
-            lMmi.PointMaxPosition.Y = lPrimaryScreenInfo.RCMonitor.Top;
-            lMmi.PointMaxSize.X = lPrimaryScreenInfo.RCMonitor.Right;
-            lMmi.PointMaxSize.Y = lPrimaryScreenInfo.RCMonitor.Bottom;
-
-            // Set min size
-            var minSize = new Point(_window.MinWidth * _monitorDpi.Value.DpiScaleX, _window.MinHeight * _monitorDpi.Value.DpiScaleX);
-            lMmi.PointMinTrackSize.X = (int)minSize.X;
-            lMmi.PointMinTrackSize.Y = (int)minSize.Y;
-
-            // Now we have the max size, allow the host to tweak as needed
-            Marshal.StructureToPtr(lMmi, lParam, true);
+            Marshal.StructureToPtr(mmi, lParam, true);
         }
 
-        // Set monitor size
-        CurrentMonitorSize = new Rectangle(currentX, currentY, currentWidth + currentX, currentHeight + currentY);
+        // به‌روزرسانی اطلاعات مانیتور و حاشیه‌ها
+        CurrentMonitorSize = new Rectangle
+        {
+            Left = monitorRCWork.Left,
+            Top = monitorRCWork.Top,
+            Right = monitorRCWork.Right,
+            Bottom = monitorRCWork.Bottom
+        };
 
-        // Get margin around window
-        CurrentMonitorMargin = new Thickness(
-            (lCurrentScreenInfo.RCWork.Left - lCurrentScreenInfo.RCMonitor.Left) / _monitorDpi.Value.DpiScaleX,
-            (lCurrentScreenInfo.RCWork.Top - lCurrentScreenInfo.RCMonitor.Top) / _monitorDpi.Value.DpiScaleY,
-            (lCurrentScreenInfo.RCMonitor.Right - lCurrentScreenInfo.RCWork.Right) / _monitorDpi.Value.DpiScaleX,
-            (lCurrentScreenInfo.RCMonitor.Bottom - lCurrentScreenInfo.RCWork.Bottom) / _monitorDpi.Value.DpiScaleY
-            );
+        var leftMargin = monitorRCWork.Left - monitorRCMonitor.Left;
+        var topMargin = monitorRCWork.Top - monitorRCMonitor.Top;
+        var rightMargin = monitorRCMonitor.Right - monitorRCWork.Right;
+        var bottomMargin = monitorRCMonitor.Bottom - monitorRCWork.Bottom;
+        CurrentMonitorMargin = new Thickness
+        {
+            Left = leftMargin / monitorDpiValue.DpiScaleX,
+            Top = topMargin / monitorDpiValue.DpiScaleY,
+            Right = rightMargin / monitorDpiValue.DpiScaleX,
+            Bottom = bottomMargin / monitorDpiValue.DpiScaleY
+        };
 
         // Store new size
-        _screenSize = new Rect(lCurrentScreenInfo.RCWork.Left, lCurrentScreenInfo.RCWork.Top, currentWidth, currentHeight);
+        _screenSize = new Rect
+        {
+            X = monitorRCWork.Left,
+            Y = monitorRCWork.Top,
+            Width = monitorRCWork.Right - monitorRCWork.Left,
+            Height = monitorRCWork.Bottom - monitorRCWork.Top
+        };
     }
 
     /// <summary>

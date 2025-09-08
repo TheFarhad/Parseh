@@ -10,7 +10,7 @@ public static class Dependencies
     public static IServiceCollection InfraExternalApiLayerDependencies(this IServiceCollection services)
     {
         services
-            .FrameworkPersistenceDependencies(_assembly)
+            .FrameworkPersistenceRegistery(_assembly)
             .AddScoped<UserService>();
 
         // TODO: other dependencies can be added here

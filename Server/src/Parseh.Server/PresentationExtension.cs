@@ -4,19 +4,18 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Carter;
 using Infra.Persistence.EF.Command;
+using Framework.Presentation;
 
-internal static class Dependencies
+internal static class PresentationExtension
 {
-    internal static IServiceCollection EndpointDependencies(this IServiceCollection services, IConfiguration configuration)
+    internal static IServiceCollection PresentationRegistery(this IServiceCollection services, IConfiguration configuration)
     {
-        services.FrameworkEndpointDependencies(configuration, false);
-
         services
+            .FrameworkEndpointRegistery(configuration, false)
             .JwtConfigurations(configuration)
             .AddOpenApi()
-            .AddCarter()
+            .AddEndpoints(typeof(PresentationExtension).Assembly)
             .AddCors(_ =>
             {
                 // TODO: فقط برای کلاینت ست شود

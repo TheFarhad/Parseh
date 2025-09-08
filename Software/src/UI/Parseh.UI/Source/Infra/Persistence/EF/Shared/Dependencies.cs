@@ -9,7 +9,7 @@ public static class Dependencies
     public static IServiceCollection InfraPersistenceLayerDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .FrameworkPersistenceDependencies(_assembly) // for repositories and unit of work
+            .FrameworkPersistenceRegistery(_assembly) // for repositories and unit of work
                                                          //.AddDbContext<ParsehUICommandDbStore>(option)
             ;
 
